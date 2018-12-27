@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="/js/d3.layout.cloud.js"></script>
+<head>
+    <title>Word Cloud Example</title>
+</head>
+<style>
+    body {
+        font-family:"Lucida Grande","Droid Sans",Arial,Helvetica,sans-serif;
+    }
+    .legend {
+        border: 1px solid #555555;
+        border-radius: 5px 5px 5px 5px;
+        font-size: 0.8em;
+        margin: 10px;
+        padding: 8px;
+    }
+    .bld {
+        font-weight: bold;
+    }
+</style>
+<body>
+</body>
+<script th:inline="javascript">
+
+
+    var frequency_list = [    	  	
+    ];
+    var fontSize;
+    /*[# th:each="variationPoint : ${variationPoints}"]*/
+    fontSize = Math.floor([[${variationPoint.linesDeleted}+${variationPoint.linesAdded}/${totalLines}*100*${#lists.size(variationPoints)}]])
+	frequency_list.push({"text":"[[${variationPoint.id}]]","size": fontSize});
+    /*[/]*/
+    
+
+	var color = d3.scale.linear()
+            .domain([0,1,2,3,4,5,6,10,15,20,100])
+            .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+ 
+    var size = [950, 600]
+    d3.layout.cloud().size(size)
+            .words(frequency_list)
+    		.rotate(0)
+    		.padding(5)
+            .fontSize(function(d) { return d.size; })
+            .on("end", draw)
+            .start();
+    function draw(words) {
+    	  d3.select("body").append("svg")
+    	      .attr("width", size[0])
+    	      .attr("height", size[1])
+    	    .append("g")
+    	      .attr("transform", "translate(" + size[0] / 2 + "," + size[1] /3 * 2 + ")")
+    	    .selectAll("text")
+    	      .data(words)
+    	    .enter().append("text")
+    	      .style("font-size", function(d) { return (d.size>12  ? d.size : 14)+ "px"; })
+    	      .style("font-family", "Impact")
+    	      .attr("text-anchor", "middle")
+    		  .style("fill", function(d, i) { return color(i); })
+    	      .attr("transform", function(d) {
+    	        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+    	      })
+    	      .text(function(d) { return d.text; });
+    	}
+    
+    /*function draw(words) {
+        d3.select("body").append("svg")
+                .attr("width", 1300)
+                .attr("height", 850)
+                .attr("class", "wordcloud")
+                .append("g")
+                .selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; })
+                .style("fill", function(d, i) { return color(i); })
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+    }*/
+</script>
+
+<div style="width: 40%;">
+    <div class="legend">
+        Commonly used words are larger and slightly faded in color.  Less common words are smaller and darker.
+    </div>
+
+</div>
+
+
+
+</html>

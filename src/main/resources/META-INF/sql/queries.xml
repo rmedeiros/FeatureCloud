@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="queries" class="java.util.Properties">
+		<constructor-arg index="0">
+			<props>
+				<prop key="get.variation.point.customizations.with.feature">
+			  		<![CDATA[
+			  			SELECT IDVARIATIONPOINT, SUM(LINES_ADDED),SUM(LINES_DELETED) 
+			  			FROM VARIATION_POINT VP NATURAL JOIN CUSTOMIZATION_FACT
+			  			WHERE ID_FEATURE_GROUP!=0 
+			  			GROUP BY IDVARIATIONPOINT
+			  		]]>
+				</prop>
+				<prop key="get.variation.point.customizations">
+			  		<![CDATA[
+			  			SELECT IDVARIATIONPOINT, SUM(LINES_ADDED),SUM(LINES_DELETED) 
+			  			FROM VARIATION_POINT VP NATURAL JOIN CUSTOMIZATION_FACT
+			  			GROUP BY IDVARIATIONPOINT
+			  		]]>
+				</prop>
+				<prop key="get.features.customizations">
+			  		<![CDATA[
+					  SELECT FEATURE_NAME,SUM(LINES_ADDED),SUM(LINES_DELETED) 
+					  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT
+					  WHERE FEATURE_NAME!='NO FEATURE' GROUP BY FEATURE_NAME;
+					]]>
+				</prop>
+				<prop key="get.feature.variation.points">
+			  		<![CDATA[
+					  SELECT IDVARIATIONPOINT,SUM(LINES_ADDED),SUM(LINES_DELETED) 
+					  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT
+					  WHERE LOWER(FEATURE_NAME)=? GROUP BY IDVARIATIONPOINT;
+					]]>
+				</prop>
+			</props>
+
+		</constructor-arg>
+	</bean>
+
+</beans>
