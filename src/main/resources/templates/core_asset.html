@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout/template">
+<style>
+</style>
+<body>
+	<section layout:fragment="content">
+		<div class="container">
+			<pre class="prettyprint" th:text="${coreAssetContent}">
+		</pre>
+		</div>
+	</section>
+
+
+	<script src="/js/run_prettify.js"></script>
+
+</body>
+</html>
+

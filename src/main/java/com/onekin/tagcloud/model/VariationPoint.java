@@ -5,17 +5,21 @@ public class VariationPoint {
 	private Integer id;
 	private Integer linesAdded;
 	private Integer linesDeleted;
+	private Integer coreAssetId;
+	private String coreAssetName;
 
 	public VariationPoint() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public VariationPoint(Integer id, Integer linesAdded, Integer linesDeleted) {
+	public VariationPoint(Integer id, Integer linesAdded, Integer linesDeleted, String coreAssetName, Integer coreAssetId) {
 		super();
 		this.id = id;
 		this.linesAdded = linesAdded;
 		this.linesDeleted = linesDeleted;
+		this.coreAssetName = coreAssetName;
+		this.coreAssetId = coreAssetId;
 	}
 
 	public Integer getId() {
@@ -78,6 +82,22 @@ public class VariationPoint {
 		builder.append(linesDeleted);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	public String getCoreAssetName() {
+		return coreAssetName;
+	}
+
+	public void setCoreAssetName(String coreAssetName) {
+		this.coreAssetName = coreAssetName;
+	}
+
+	public Integer getCoreAssetId() {
+		return coreAssetId;
+	}
+
+	public void setCoreAssetId(Integer coreAssetId) {
+		this.coreAssetId = coreAssetId;
 	}
 
 }

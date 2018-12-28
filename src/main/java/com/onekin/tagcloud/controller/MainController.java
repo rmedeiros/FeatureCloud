@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.onekin.tagcloud.model.CoreAsset;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.VariationPoint;
 import com.onekin.tagcloud.service.SoftwareProductLineService;
@@ -32,7 +33,7 @@ public class MainController {
 		model.addAttribute("variationPoints", variationPoints);
 		model.addAttribute("totalLines", totalLines);
 		return "index";
-	}
+	} 
 
 	@GetMapping("/")
 	public String getVariationPoints(Model model) {
@@ -64,6 +65,16 @@ public class MainController {
 		model.addAttribute("variationPoints", variationPoints);
 		model.addAttribute("totalLines", totalLines);
 		return "index";
+	}
+	
+	
+	
+	@GetMapping("/asset/{coreAssetId}")
+	public String getCoreAssetContent(@PathVariable( value = "coreAssetId") Integer coreAssetId, Model model) {
+		CoreAsset coreAsset = softwareProductLineService.getCoreAssetContent(coreAssetId);
+		model.addAttribute("coreAssetContent",coreAsset.getContent());
+		return "core_asset";
+		
 	}
 
 }

@@ -15,6 +15,8 @@ public class VariationPointRowMapper implements RowMapper<VariationPoint> {
 		variationPointCust.setId(resultSet.getInt(1));
 		variationPointCust.setLinesAdded(resultSet.getInt(2));
 		variationPointCust.setLinesDeleted(resultSet.getInt(3));
+		variationPointCust.setCoreAssetId(resultSet.getInt(4));
+		variationPointCust.setCoreAssetName(resultSet.getString(5));
 		return variationPointCust;
 	}
 
