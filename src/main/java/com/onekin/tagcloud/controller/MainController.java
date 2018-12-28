@@ -37,13 +37,13 @@ public class MainController {
 
 	@GetMapping("/")
 	public String getVariationPoints(Model model) {
-		List<VariationPoint> variationPoints = softwareProductLineService.getVariationPointsWithFeature();
+		/*List<VariationPoint> variationPoints = softwareProductLineService.getVariationPointsWithFeature();
 		int totalLines = variationPoints.stream().map(VariationPoint::getLinesAdded)
 				.collect(Collectors.summingInt(i -> i));
 		totalLines += variationPoints.stream().map(VariationPoint::getLinesDeleted)
 				.collect(Collectors.summingInt(i -> i));
 		model.addAttribute("variationPoints", variationPoints);
-		model.addAttribute("totalLines", totalLines);
+		model.addAttribute("totalLines", totalLines);*/
 		return "index";
 	}
 
@@ -72,7 +72,7 @@ public class MainController {
 	@GetMapping("/asset/{coreAssetId}")
 	public String getCoreAssetContent(@PathVariable( value = "coreAssetId") Integer coreAssetId, Model model) {
 		CoreAsset coreAsset = softwareProductLineService.getCoreAssetContent(coreAssetId);
-		model.addAttribute("coreAssetContent",coreAsset.getContent());
+		model.addAttribute("coreAsset",coreAsset);
 		return "core_asset";
 		
 	}

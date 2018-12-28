@@ -3,18 +3,30 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	layout:decorator="layout/template">
-<style>
-</style>
+<head>
+<th:block layout:fragment="script">
+
+	<link rel="stylesheet" href="/css/highlight/github.css">
+	<script src="/js/highlight/highlight.pack.js"></script>
+	<script src="/js/highlight/highlightjs-line-numbers.min.js"></script>
+
+	<script>
+		hljs.initHighlightingOnLoad();
+		hljs.initLineNumbersOnLoad();
+	</script>
+</th:block>
+</head>
 <body>
 	<section layout:fragment="content">
 		<div class="container">
-			<pre class="prettyprint" th:text="${coreAssetContent}">
-		</pre>
+			<h2 class="asset-title" th:text="${coreAsset.name}"></h2>
+				<pre class="code-pre"> 
+				<code th:text="${coreAsset.content}"></code>
+			</pre>
 		</div>
 	</section>
 
 
-	<script src="/js/run_prettify.js"></script>
 
 </body>
 </html>

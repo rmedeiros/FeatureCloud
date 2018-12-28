@@ -1,6 +1,36 @@
 .footer {
-	margin-top: 10px;
+	margin-top: 20px;
     bottom: 0;
     width: 100%;
-    background-color: #f5f5f5;
+    position: absolute;
+}
+td.hljs-ln-code {
+    padding-left: 22px !important;
+}
+
+
+td.hljs-ln-numbers {
+    text-align: right;    
+}
+
+
+h2.asset-title {
+    margin-bottom: 15px;
+    margin-top: 0px;
+}
+
+table.hljs-ln {
+    width: 100%;
+}
+
+
+table.hljs-ln>tbody>tr {
+    border-bottom : 1px solid rgba(0,0,0,0.08);
+}
+
+pre.code-pre {
+    padding-bottom: 0px;
+    padding-top: 0px;
+    height: 70vh;
+    overflow: auto;
 }
