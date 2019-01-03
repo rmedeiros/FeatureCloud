@@ -1,36 +1,44 @@
 .footer {
 	margin-top: 20px;
-    bottom: 0;
-    width: 100%;
-    position: absolute;
-}
-td.hljs-ln-code {
-    padding-left: 22px !important;
+	bottom: 0;
+	width: 100%;
+	position: absolute;
 }
 
+td.hljs-ln-code {
+	padding-left: 22px !important;
+}
 
 td.hljs-ln-numbers {
-    text-align: right;    
+	text-align: right;
 }
 
-
 h2.asset-title {
-    margin-bottom: 15px;
-    margin-top: 0px;
+	margin-bottom: 15px;
+	margin-top: 0px;
 }
 
 table.hljs-ln {
-    width: 100%;
+	width: 100%;
 }
 
-
 table.hljs-ln>tbody>tr {
-    border-bottom : 1px solid rgba(0,0,0,0.08);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 pre.code-pre {
-    padding-bottom: 0px;
-    padding-top: 0px;
-    height: 70vh;
-    overflow: auto;
+	padding-bottom: 0px;
+	padding-top: 0px;
+	height: 70vh;
+	overflow: auto;
+}
+
+
+.navbar {
+	margin-bottom: 0px;
+}
+
+
+.filters-container {
+    padding-left: 15%;
 }

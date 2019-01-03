@@ -8,9 +8,14 @@ import org.springframework.stereotype.Service;
 import com.onekin.tagcloud.dao.FeatureDAO;
 import com.onekin.tagcloud.dao.VariationPointDAO;
 import com.onekin.tagcloud.model.CoreAsset;
+import com.onekin.tagcloud.model.Developer;
 import com.onekin.tagcloud.model.Feature;
+import com.onekin.tagcloud.model.Filter;
+import com.onekin.tagcloud.model.ProductRelease;
 import com.onekin.tagcloud.model.VariationPoint;
 import com.onekin.tagcloud.repository.CoreAssetRepository;
+import com.onekin.tagcloud.repository.DeveloperRepository;
+import com.onekin.tagcloud.repository.ProductReleaseRepository;
 
 @Service
 public class SoftwareProductLineServiceImpl implements SoftwareProductLineService {
@@ -28,18 +33,13 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	private CoreAssetRepository coreAssetRepo;
 	
 	
-	@Override
-	public List<VariationPoint> getAllVariationPoints() {
-		
-		return variationPointDAO.getAllVariationPoints();
-	}
-
-
-
-	@Override
-	public List<VariationPoint> getVariationPointsWithFeature() {
-		return variationPointDAO.getVariationPointsWithFeature();
-	}
+	@Autowired
+	private ProductReleaseRepository productReleaseRepo;
+	
+	@Autowired
+	private DeveloperRepository developerRepo;
+	
+	
 
 
 
@@ -61,6 +61,37 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	@Override
 	public CoreAsset getCoreAssetContent(Integer coreAssetId) {
 		return coreAssetRepo.getCoreAssetByIdcoreasset(coreAssetId);
+	}
+
+
+
+	@Override
+	public Iterable<ProductRelease> getProductRealeses() {
+		return productReleaseRepo.findAll();
+	}
+
+
+
+	@Override
+	public Iterable<Developer> getDevelopers() {
+		
+		return developerRepo.findAll();
+	}
+
+
+
+	@Override
+	public List<Feature> getFeaturesFiltered(Filter filter) {
+		
+		return featureDAO.getFeaturesFiltered(filter);
+	}
+
+
+
+	@Override
+	public List<VariationPoint> getVariationPointsFiltered(Filter filter) {
+	
+		return variationPointDAO.getVariationPointsFiltered(filter);
 	}
 
 	

@@ -1,0 +1,170 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout/template">
+<body>
+	<section layout:fragment="content">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid filters-container">
+				<!-- Brand and toggle get grouped for better mobile display -->
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand">Filters </a>
+				</div>
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-2">
+					<ul class="nav navbar-nav">
+						<li><a>Product release:</a></li>
+						<li class="dropdown" id="product-list"><a href="#"
+							class="dropdown-toggle" data-toggle="dropdown" role="button"
+							aria-haspopup="true" aria-expanded="false" data-id="0">All <span
+								class="caret"></span>
+						</a>
+							<ul class="dropdown-menu filter-menu">
+								<li><a href="#" data-id="0">All</a></li>
+								<th:block th:each="product : ${products}">
+									<li role="separator" class="divider"></li>
+									<li><a href="#" th:text="${product.name}"
+										th:data-id="${product.idProductRelease}"></a></li>
+								</th:block>
+							</ul></li>
+
+						<li><a>Developer: </a></li>
+						<li class="dropdown" id="developer-list"><a href="#"
+							class="dropdown-toggle" data-toggle="dropdown" role="button"
+							aria-haspopup="true" aria-expanded="false" data-id="0">All <span
+								class="caret"></span>
+						</a>
+							<ul class="dropdown-menu filter-menu">
+								<li><a href="#" data-id="0">All</a></li>
+								<th:block th:each="developer : ${developers}">
+									<li role="separator" class="divider"></li>
+									<li><a href="#" th:text="${developer.name}"
+										th:data-id="${developer.idDeveloper}"></a></li>
+								</th:block>
+							</ul></li>
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+		</nav>
+		<div class="container">
+
+
+			<div class="row">
+				<div class="col-md-6" id="tagcloud"></div>
+				<div class="col-md-6"></div>
+			</div>
+
+
+			<script th:inline="javascript">
+				var feature = window.location.pathname.split('/');
+				feature = feature[feature.length-1];
+			    var frequency_list = [    	  	
+			    ];
+			    var fontSize;
+			    /*[# th:each="variationPoint : ${variationPoints}"]*/
+			    fontSize = Math.floor([[((${variationPoint.linesDeleted}+${variationPoint.linesAdded})/${totalLines})*120]])
+				frequency_list.push({"text":"[[${variationPoint.id}]]","size": fontSize, "coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.coreAssetId}]]"});
+			    /*[/]*/
+			    
+			
+				var color = d3.scale.linear()
+			            .domain([0,1,2,3,4,5,6,10,15,20,100])
+			            .range(["#ccccff","#b2b2ff","#9999ff", "#7f7fff", "#6666ff", "#4c4cff", "#3232ff","#1919ff","#0000ff","#0000cc","#0000e5","#0000ff"]);
+			
+			 
+			    var size = [800, 450]
+			    d3.layout.cloud().size(size)
+			            .words(frequency_list)
+			    		.rotate(0)
+			    		.padding(5)
+			            .fontSize(function(d) { return d.size; })
+			            .on("end", draw)
+			            .start();
+			    function draw(words) {
+			    	  d3.selectAll("#tagcloud").append("svg")
+			    	      .attr("width", size[0])
+			    	      .attr("height", size[1])
+			    	    .append("g")
+			    	      .attr("transform", "translate(" + size[0]/2 + "," + size[1]/2+ ")")
+			    	    .selectAll("text")
+			    	      .data(words)
+			    	    .enter()
+			    	      .append("a").attr("href",function(d) { return "/asset/"+d.coreAssetId; })
+			    	       .attr("data-toggle", "tooltip")
+			    	      .attr("data-placement", "top")
+			    	      .attr("title",function(d) { return d.coreAssetName; })
+			    	      .append("text")
+			    	      .style("font-size", function(d) { return (d.size>12  ? d.size : 14)+ "px"; })
+			    	      .style("font-family", "Impact")
+			    	      .attr("text-anchor", "middle")
+			    		  .style("fill", function(d, i) { return color(i); })
+			    	      .attr("transform", function(d) {
+			    	        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+			    	      })
+			    	      .text(function(d) { return d.text; });
+			    	}
+			    
+				$(function () {
+					  $('[data-toggle="tooltip"]').tooltip({
+						    'container': 'body',
+						    'placement': 'bottom'
+						})
+					})
+					
+					
+				 $(function(){
+
+			        $(".filter-menu").on('click', 'li a', function(){
+			          $(this).parents('.dropdown').find('.dropdown-toggle').html($(this).text()+"<span class='caret'></span>");
+			          $(this).parents('.dropdown').find('.dropdown-toggle').attr('data-id',$(this).attr('data-id'));
+			          $(this).parents('.dropdown').find('.dropdown-toggle').val($(this).text()+"<span class='caret'></span>");
+			          
+			       	$.ajax({
+			       		type: 'POST',
+			       		url : "/variationpoints/filtered",
+			       		accept: "application/json",
+			       		data: JSON.stringify({ productReleaseId :$("#product-list").find('.dropdown-toggle').attr("data-id"), developerId :$("#developer-list").find('.dropdown-toggle').attr("data-id"), featureName:feature}),
+			       		datatype:"json",
+			       		contentType: "application/json",
+			       		success: function(data) {
+			       			var newList=[]
+			       			data.variationPoints.forEach(function(variationPoint) {
+			       			 fontSize = Math.floor(((variationPoint.linesDeleted+variationPoint.linesAdded)/data.totalLines)*130);
+			 				newList.push({"text":variationPoint.id,"size": fontSize,"coreAssetName":variationPoint.coreAssetName, "coreAssetId":variationPoint.coreAssetId});
+			       			});
+			       			$("#tagcloud").find("svg").remove()
+			       			d3.layout.cloud().size(size)
+				            .words(newList)
+				    		.rotate(0)
+				    		.padding(10)
+				            .fontSize(function(d) { return d.size; })
+				            .on("end", draw)
+				            .start();
+			            }
+			       		
+			       	});
+			        	
+			        });
+
+			    });	
+					
+				
+			</script>
+		</div>
+
+	</section>
+
+</body>
+</html>

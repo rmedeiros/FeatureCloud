@@ -3,19 +3,29 @@ package com.onekin.tagcloud.service;
 import java.util.List;
 
 import com.onekin.tagcloud.model.CoreAsset;
+import com.onekin.tagcloud.model.Developer;
 import com.onekin.tagcloud.model.Feature;
+import com.onekin.tagcloud.model.Filter;
+import com.onekin.tagcloud.model.ProductRelease;
 import com.onekin.tagcloud.model.VariationPoint;
 
 public interface SoftwareProductLineService {
 
-	List<VariationPoint> getAllVariationPoints();
-	
-	List<VariationPoint> getVariationPointsWithFeature();
+
 
 	List<Feature> getFeatures();
 
 	List<VariationPoint> getFeatureVariationPoints(String featureName);
 
 	CoreAsset getCoreAssetContent(Integer coreAssetId);
+
+	Iterable<ProductRelease> getProductRealeses();
+
+	Iterable<Developer> getDevelopers();
+
+
+	List<Feature> getFeaturesFiltered(Filter filter);
+
+	List<VariationPoint> getVariationPointsFiltered(Filter filter);
 
 }
