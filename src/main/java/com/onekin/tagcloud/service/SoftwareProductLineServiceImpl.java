@@ -1,6 +1,8 @@
 package com.onekin.tagcloud.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,6 +94,32 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	public List<VariationPoint> getVariationPointsFiltered(Filter filter) {
 	
 		return variationPointDAO.getVariationPointsFiltered(filter);
+	}
+
+
+
+	@Override
+	public Developer getFilterDeveloper(Iterable<Developer> developers, int developerId) {
+		
+		
+		Optional<Developer> optionalDeveloper = StreamSupport.stream(developers.spliterator(),false).filter(x -> x.getIdDeveloper()==developerId).findFirst();
+		if(optionalDeveloper.isPresent()) {
+			return optionalDeveloper.get();
+		}else {
+			return new Developer(0,"All"); 
+		}
+	}
+
+
+
+	@Override
+	public ProductRelease getFilterProduct(Iterable<ProductRelease> productReleases, int productId) {
+		Optional<ProductRelease> optionalProduct = StreamSupport.stream(productReleases.spliterator(),false).filter(x -> x.getIdProductRelease()==productId).findFirst();
+		if(optionalProduct.isPresent()) {
+			return optionalProduct.get();
+		}else {
+			return new ProductRelease(0,"All");
+		}
 	}
 
 	

@@ -30,6 +30,13 @@ public class ProductRelease {
 		// this.idproduct = id_product;
 	}
 
+	
+	public ProductRelease(int idProductRelease, String name) {
+		super();
+		this.idProductRelease = idProductRelease;
+		this.name = name;
+	}
+
 	public int getIdProductRelease() {
 		return idProductRelease;
 	}

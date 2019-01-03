@@ -18,6 +18,14 @@ public class Developer {
 	
 	public Developer() {}
 	
+	
+	public Developer(int idDeveloper, String name) {
+		super();
+		this.idDeveloper = idDeveloper;
+		this.name = name;
+	}
+
+
 	public int getIdDeveloper() {
 		return idDeveloper;
 	}

@@ -27,7 +27,7 @@
 						<li><a>Product release:</a></li>
 						<li class="dropdown" id="product-list"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false" data-id="0">All <span
+							aria-haspopup="true" aria-expanded="false"  th:data-id="${filterProduct.idProductRelease}" th:inline="text" >[[${filterProduct.name}]] <span
 								class="caret"></span>
 						</a>
 							<ul class="dropdown-menu filter-menu">
@@ -42,7 +42,7 @@
 						<li><a>Developer: </a></li>
 						<li class="dropdown" id="developer-list"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false" data-id="0">All <span
+							aria-haspopup="true" aria-expanded="false" th:data-id="${filterDeveloper.idDeveloper}" th:inline="text" >[[${filterDeveloper.name}]] <span
 								class="caret"></span>
 						</a>
 							<ul class="dropdown-menu filter-menu">

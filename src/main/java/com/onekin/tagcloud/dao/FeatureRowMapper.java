@@ -15,6 +15,7 @@ public class FeatureRowMapper implements RowMapper<Feature> {
 		featureCust.setName(resultSet.getString(1));
 		featureCust.setLinesAdded(resultSet.getInt(2));
 		featureCust.setLinesDeleted(resultSet.getInt(3));
+		featureCust.setId(resultSet.getString(4));
 		return featureCust;
 	}
 

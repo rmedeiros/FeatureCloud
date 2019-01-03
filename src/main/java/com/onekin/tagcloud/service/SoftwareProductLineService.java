@@ -28,4 +28,8 @@ public interface SoftwareProductLineService {
 
 	List<VariationPoint> getVariationPointsFiltered(Filter filter);
 
+	Developer getFilterDeveloper(Iterable<Developer> developers, int developerId);
+
+	ProductRelease getFilterProduct(Iterable<ProductRelease> productReleases, int productId);
+
 }

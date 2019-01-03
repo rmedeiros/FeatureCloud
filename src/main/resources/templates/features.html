@@ -29,26 +29,30 @@
 						id="bs-example-navbar-collapse-2">
 						<ul class="nav navbar-nav">
 							<li><a>Product release:</a></li>
-							<li class="dropdown" id="product-list"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown" role="button" aria-haspopup="true"
-								aria-expanded="false" data-id="0">All <span class="caret"></span></a>
-								<ul class="dropdown-menu filter-menu" >
-									<li><a href="#" data-id="0" >All</a></li>
+							<li class="dropdown" id="product-list"><a href="#"
+								class="dropdown-toggle" data-toggle="dropdown" role="button"
+								aria-haspopup="true" aria-expanded="false" data-id="0">All <span
+									class="caret"></span></a>
+								<ul class="dropdown-menu filter-menu">
+									<li><a href="#" data-id="0">All</a></li>
 									<th:block th:each="product : ${products}">
 										<li role="separator" class="divider"></li>
-										<li><a href="#" th:text="${product.name}"  th:data-id="${product.idProductRelease}"></a></li>
+										<li><a href="#" th:text="${product.name}"
+											th:data-id="${product.idProductRelease}"></a></li>
 									</th:block>
 								</ul></li>
 
 							<li><a>Developer: </a></li>
-							<li class="dropdown" id="developer-list"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown" role="button" aria-haspopup="true"
-								aria-expanded="false"  data-id="0">All <span class="caret"></span></a>
-								<ul class="dropdown-menu filter-menu" >
+							<li class="dropdown" id="developer-list"><a href="#"
+								class="dropdown-toggle" data-toggle="dropdown" role="button"
+								aria-haspopup="true" aria-expanded="false" data-id="0">All <span
+									class="caret"></span></a>
+								<ul class="dropdown-menu filter-menu">
 									<li><a href="#" data-id="0">All</a></li>
 									<th:block th:each="developer : ${developers}">
 										<li role="separator" class="divider"></li>
-										<li><a href="#" th:text="${developer.name}" th:data-id="${developer.idDeveloper}"></a></li>
+										<li><a href="#" th:text="${developer.name}"
+											th:data-id="${developer.idDeveloper}"></a></li>
 									</th:block>
 								</ul></li>
 						</ul>
@@ -72,7 +76,7 @@
 			    var fontSize;
 			    /*[# th:each="feature : ${features}"]*/
 			    fontSize = Math.floor([[((${feature.linesDeleted}+${feature.linesAdded})/${totalLines})*130]])
-				frequency_list.push({"text":[[${feature.name}]],"size": fontSize});
+				frequency_list.push({"text":[[${feature.name}]],"size": fontSize, "id":[[${feature.id}]]});
 			    /*[/]*/
 			    
 			
@@ -96,7 +100,8 @@
 			    	      .attr("transform", "translate(" + size[0] / 2 + "," + size[1] /2 + ")")
 			    	    .selectAll("text")
 			    	      .data(words)
-			    	    .enter().append("a").attr("href",function(d) { return "features/"+d.text.toLowerCase(); })
+			    	    .enter().append("a").attr("feature-id",function(d) { return d.id.toLowerCase(); })
+			    	      .attr("href","#")
 			    	      .append("text")
 			    	      .style("font-size", function(d) { return (d.size>12  ? d.size : 14)+ "px"; })
 			    	      .style("font-family", "Impact")
@@ -127,7 +132,7 @@
 			       			var newList=[]
 			       			data.features.forEach(function(feature) {
 			       			 fontSize = Math.floor(((feature.linesDeleted+feature.linesAdded)/data.totalLines)*130);
-			 				newList.push({"text":feature.name,"size": fontSize});
+			 				newList.push({"text":feature.name,"size": fontSize, "id": feature.id});
 			       			});
 			       			$("#tagcloud").find("svg").remove()
 			       			d3.layout.cloud().size(size)
@@ -144,6 +149,11 @@
 			        });
 
 			    });
+			    
+			    
+			    $(function(){   $("#tagcloud").on('click', 'svg g a', function(){
+			    	$(location).attr('href', "features/"+$(this).attr("feature-id")+"?product="+$("#product-list").find('.dropdown-toggle').attr("data-id")+"&developer="+$("#developer-list").find('.dropdown-toggle').attr("data-id"));					
+			    });});
 			</script>
 		</div>
 

@@ -2,6 +2,7 @@ package com.onekin.tagcloud.model;
 
 public class Feature {
 
+	private String id;
 	private String name;
 	private Integer linesDeleted;
 	private Integer linesAdded;
@@ -11,11 +12,20 @@ public class Feature {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Feature(Integer id, String name, Integer linesDeleted, Integer linesAdded) {
+	public Feature(String id, String name, Integer linesDeleted, Integer linesAdded) {
 		super();
 		this.name = name;
 		this.linesDeleted = linesDeleted;
 		this.linesAdded = linesAdded;
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -46,7 +56,7 @@ public class Feature {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -59,18 +69,22 @@ public class Feature {
 		if (getClass() != obj.getClass())
 			return false;
 		Feature other = (Feature) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
 
+
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Feature [name=");
+		builder.append("Feature [id=");
+		builder.append(id);
+		builder.append(", name=");
 		builder.append(name);
 		builder.append(", linesDeleted=");
 		builder.append(linesDeleted);
