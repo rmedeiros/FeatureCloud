@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -47,7 +49,7 @@ public class MainController {
 		return "index";
 	}
 
-	@GetMapping("/features")
+	@GetMapping("/features/")
 	public String getFeatureTagCloud(Model model) {
 		List<Feature> features = softwareProductLineService.getFeatures();
 		int totalLines = features.stream().map(Feature::getLinesDeleted).collect(Collectors.summingInt(i -> i))
@@ -59,7 +61,7 @@ public class MainController {
 		return "features";
 	}
 
-	@GetMapping("/features/{featureName}")
+	@GetMapping("/features/{featureName}/")
 	public String getFeatureVariationPoints(@PathVariable(value = "featureName") String featureName,
 			@RequestParam(required = false, name = "product", defaultValue = "0") Integer productId,
 			@RequestParam(required = false, name = "developer", defaultValue = "0") Integer developerId, Model model) {
@@ -76,17 +78,19 @@ public class MainController {
 
 		Iterable<Developer> developers = softwareProductLineService.getDevelopers();
 		model.addAttribute("developers", developers);
-
+		model.addAttribute("currentFeature", featureName);
 		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));
 		model.addAttribute("filterDeveloper", softwareProductLineService.getFilterDeveloper(developers, developerId));
 
 		return "variation_points";
 	}
 
-	@GetMapping("/asset/{coreAssetId}")
-	public String getCoreAssetContent(@PathVariable(value = "coreAssetId") Integer coreAssetId, Model model) {
+	@GetMapping("/features/{featureName}/asset/{coreAssetId}")
+	public String getCoreAssetContent(@PathVariable(value = "coreAssetId") Integer coreAssetId,
+			@PathVariable(value = "featureName") String featureName, Model model) {
 		CoreAsset coreAsset = softwareProductLineService.getCoreAssetContent(coreAssetId);
 		model.addAttribute("coreAsset", coreAsset);
+		model.addAttribute("currentFeature", featureName);
 		return "core_asset";
 
 	}

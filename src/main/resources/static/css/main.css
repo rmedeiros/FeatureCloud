@@ -42,3 +42,16 @@ pre.code-pre {
 .filters-container {
     padding-left: 15%;
 }
+
+
+
+
+.breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    margin-top:20px;
+    list-style: none;
+    background-color: #0000;
+    border-radius: 4px;
+    padding-left: 50px;
+}

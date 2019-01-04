@@ -7,60 +7,65 @@
 <body>
 	<section layout:fragment="content">
 
-		<header class="navbar navbar-light bg-faded">
 
-			<nav class="navbar navbar-default">
-				<div class="container-fluid filters-container">
-					<!-- Brand and toggle get grouped for better mobile display -->
+		<nav class="navbar navbar-default">
+			<div class="container-fluid filters-container">
+				<!-- Brand and toggle get grouped for better mobile display -->
 
-					<!-- Collect the nav links, forms, and other content for toggling -->
+				<!-- Collect the nav links, forms, and other content for toggling -->
 
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle collapsed"
-							data-toggle="collapse"
-							data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
-							<span class="sr-only">Toggle navigation</span> <span
-								class="icon-bar"></span> <span class="icon-bar"></span> <span
-								class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand">Filters </a>
-					</div>
-					<div class="collapse navbar-collapse"
-						id="bs-example-navbar-collapse-2">
-						<ul class="nav navbar-nav">
-							<li><a>Product release:</a></li>
-							<li class="dropdown" id="product-list"><a href="#"
-								class="dropdown-toggle" data-toggle="dropdown" role="button"
-								aria-haspopup="true" aria-expanded="false" data-id="0">All <span
-									class="caret"></span></a>
-								<ul class="dropdown-menu filter-menu">
-									<li><a href="#" data-id="0">All</a></li>
-									<th:block th:each="product : ${products}">
-										<li role="separator" class="divider"></li>
-										<li><a href="#" th:text="${product.name}"
-											th:data-id="${product.idProductRelease}"></a></li>
-									</th:block>
-								</ul></li>
-
-							<li><a>Developer: </a></li>
-							<li class="dropdown" id="developer-list"><a href="#"
-								class="dropdown-toggle" data-toggle="dropdown" role="button"
-								aria-haspopup="true" aria-expanded="false" data-id="0">All <span
-									class="caret"></span></a>
-								<ul class="dropdown-menu filter-menu">
-									<li><a href="#" data-id="0">All</a></li>
-									<th:block th:each="developer : ${developers}">
-										<li role="separator" class="divider"></li>
-										<li><a href="#" th:text="${developer.name}"
-											th:data-id="${developer.idDeveloper}"></a></li>
-									</th:block>
-								</ul></li>
-						</ul>
-					</div>
-					<!-- /.navbar-collapse -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand">Filters </a>
 				</div>
-			</nav>
-		</header>
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-2">
+					<ul class="nav navbar-nav">
+						<li><a>Product release:</a></li>
+						<li class="dropdown" id="product-list"><a href="#"
+							class="dropdown-toggle" data-toggle="dropdown" role="button"
+							aria-haspopup="true" aria-expanded="false" data-id="0">All <span
+								class="caret"></span></a>
+							<ul class="dropdown-menu filter-menu">
+								<li><a href="#" data-id="0">All</a></li>
+								<th:block th:each="product : ${products}">
+									<li role="separator" class="divider"></li>
+									<li><a href="#" th:text="${product.name}"
+										th:data-id="${product.idProductRelease}"></a></li>
+								</th:block>
+							</ul></li>
+
+						<li><a>Developer: </a></li>
+						<li class="dropdown" id="developer-list"><a href="#"
+							class="dropdown-toggle" data-toggle="dropdown" role="button"
+							aria-haspopup="true" aria-expanded="false" data-id="0">All <span
+								class="caret"></span></a>
+							<ul class="dropdown-menu filter-menu">
+								<li><a href="#" data-id="0">All</a></li>
+								<th:block th:each="developer : ${developers}">
+									<li role="separator" class="divider"></li>
+									<li><a href="#" th:text="${developer.name}"
+										th:data-id="${developer.idDeveloper}"></a></li>
+								</th:block>
+							</ul></li>
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+		</nav>
+		<div th:fragment="breadcrumb">
+			<ol class="breadcrumb breadcrumb-arrow">
+				<li><a href="/">Home</a></li>
+				<li class="active"><span>Features</span></li>
+				<li></li>
+			</ol>
+		</div>
 		<div class="container">
 
 			<div class="row">
@@ -152,7 +157,7 @@
 			    
 			    
 			    $(function(){   $("#tagcloud").on('click', 'svg g a', function(){
-			    	$(location).attr('href', "features/"+$(this).attr("feature-id")+"?product="+$("#product-list").find('.dropdown-toggle').attr("data-id")+"&developer="+$("#developer-list").find('.dropdown-toggle').attr("data-id"));					
+			    	$(location).attr('href', $(this).attr("feature-id")+"/?product="+$("#product-list").find('.dropdown-toggle').attr("data-id")+"&developer="+$("#developer-list").find('.dropdown-toggle').attr("data-id"));					
 			    });});
 			</script>
 		</div>

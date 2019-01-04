@@ -17,16 +17,23 @@
 </th:block>
 </head>
 <body>
+
 	<section layout:fragment="content">
+		<div>
+			<ol class="breadcrumb">
+				<li><a href="/">Home</a></li>
+				<li><a href="/features/">Features</a></li>
+				<li><a th:href="@{/features/}+${currentFeature}+@{/}" th:text="${#strings.capitalize(currentFeature)}"></a></li>
+				<li class="active"><span th:text="${coreAsset.name}"></span></li>
+			</ol>
+		</div>
 		<div class="container">
 			<h2 class="asset-title" th:text="${coreAsset.name}"></h2>
-				<pre class="code-pre"> 
+			<pre class="code-pre"> 
 				<code th:text="${coreAsset.content}"></code>
 			</pre>
 		</div>
 	</section>
-
-
 
 </body>
 </html>

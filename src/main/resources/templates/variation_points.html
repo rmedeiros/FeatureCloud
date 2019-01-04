@@ -27,8 +27,9 @@
 						<li><a>Product release:</a></li>
 						<li class="dropdown" id="product-list"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false"  th:data-id="${filterProduct.idProductRelease}" th:inline="text" >[[${filterProduct.name}]] <span
-								class="caret"></span>
+							aria-haspopup="true" aria-expanded="false"
+							th:data-id="${filterProduct.idProductRelease}" th:inline="text">[[${filterProduct.name}]]
+								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu filter-menu">
 								<li><a href="#" data-id="0">All</a></li>
@@ -42,8 +43,9 @@
 						<li><a>Developer: </a></li>
 						<li class="dropdown" id="developer-list"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false" th:data-id="${filterDeveloper.idDeveloper}" th:inline="text" >[[${filterDeveloper.name}]] <span
-								class="caret"></span>
+							aria-haspopup="true" aria-expanded="false"
+							th:data-id="${filterDeveloper.idDeveloper}" th:inline="text">[[${filterDeveloper.name}]]
+								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu filter-menu">
 								<li><a href="#" data-id="0">All</a></li>
@@ -58,6 +60,14 @@
 				<!-- /.navbar-collapse -->
 			</div>
 		</nav>
+		<div>
+			<ol class="breadcrumb">
+				<li><a href="/">Home</a></li>
+				<li><a href="/features/">Features</a></li>
+				<li class="active"><span th:text=${#strings.capitalize(currentFeature)}></span></li>
+				<li></li>
+			</ol>
+		</div>
 		<div class="container">
 
 
@@ -101,7 +111,7 @@
 			    	    .selectAll("text")
 			    	      .data(words)
 			    	    .enter()
-			    	      .append("a").attr("href",function(d) { return "/asset/"+d.coreAssetId; })
+			    	      .append("a").attr("href",function(d) { return "asset/"+d.coreAssetId; })
 			    	       .attr("data-toggle", "tooltip")
 			    	      .attr("data-placement", "top")
 			    	      .attr("title",function(d) { return d.coreAssetName; })
