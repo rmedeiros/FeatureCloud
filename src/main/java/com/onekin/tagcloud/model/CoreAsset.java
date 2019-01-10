@@ -6,92 +6,88 @@ import javax.persistence.Table;
 
 import com.onekin.tagcloud.utils.Formatting;
 
-
-
 @Entity
-@Table (name="core_asset")
+@Table(name = "core_asset")
 public class CoreAsset {
 
-		@Id int idcoreasset;
-		String name;
-		String path;
-		String content;
-		int size;
-		int isnewasset;
-		int idpackage;
-		
-		public CoreAsset() {}
+	@Id
+	private int idcoreasset;
+	private String name;
+	private String path;
+	private String content;
+	private int size;
+	private int isnewasset;
+	private int idpackage;
 
-		
-		
-		public CoreAsset(String name, String path, String content) {
-			super();
-			this.name = name;
-			this.path = path;
-			this.content = content;
+	public CoreAsset() {
+	}
+
+	public CoreAsset(String name, String path, String content) {
+		super();
+		this.name = name;
+		this.path = path;
+		this.content = content;
+	}
+
+	public int getIdcoreasset() {
+		return idcoreasset;
+	}
+
+	public void setIdcoreasset(int idcoreasset) {
+		this.idcoreasset = idcoreasset;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getContent() {
+		try {
+			return Formatting.decodeFromBase64(content);
+		} catch (Exception e) {
+			return content;
 		}
 
+	}
 
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-		public int getIdcoreasset() {
-			return idcoreasset;
-		}
+	public int getSize() {
+		return size;
+	}
 
-		public void setIdcoreasset(int idcoreasset) {
-			this.idcoreasset = idcoreasset;
-		}
+	public void setSize(int size) {
+		this.size = size;
+	}
 
-		public String getName() {
-			return name;
-		}
+	public int getIsnewasset() {
+		return isnewasset;
+	}
 
-		public void setName(String name) {
-			this.name = name;
-		}
+	public void setIsnewasset(int isnewasset) {
+		this.isnewasset = isnewasset;
+	}
 
-		public String getPath() {
-			return path;
-		}
+	public int getIdpackage() {
+		return idpackage;
+	}
 
-		public void setPath(String path) {
-			this.path = path;
-		}
+	public void setIdpackage(int idpackage) {
+		this.idpackage = idpackage;
+	}
 
-		public String getContent() {
-			try {
-				return Formatting.decodeFromBase64(content);
-			}catch(Exception e) {
-				return content;
-			}
-		
-		}
-
-		public void setContent(String content) {
-			this.content = content;
-		}
-
-		public int getSize() {
-			return size;
-		}
-
-		public void setSize(int size) {
-			this.size = size;
-		}
-
-		public int getIsnewasset() {
-			return isnewasset;
-		}
-
-		public void setIsnewasset(int isnewasset) {
-			this.isnewasset = isnewasset;
-		}
-
-		public int getIdpackage() {
-			return idpackage;
-		}
-
-		public void setIdpackage(int idpackage) {
-			this.idpackage = idpackage;
-		}
-		
 }

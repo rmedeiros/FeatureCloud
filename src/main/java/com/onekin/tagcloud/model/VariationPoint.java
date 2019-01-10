@@ -1,10 +1,13 @@
 package com.onekin.tagcloud.model;
 
+import com.onekin.tagcloud.utils.Formatting;
+
 public class VariationPoint {
 
 	private Integer id;
 	private Integer linesAdded;
 	private Integer linesDeleted;
+	private String expression;
 	private Integer coreAssetId;
 	private String coreAssetName;
 
@@ -13,13 +16,15 @@ public class VariationPoint {
 		// TODO Auto-generated constructor stub
 	}
 
-	public VariationPoint(Integer id, Integer linesAdded, Integer linesDeleted, String coreAssetName, Integer coreAssetId) {
+	public VariationPoint(Integer id, Integer linesAdded, Integer linesDeleted, String coreAssetName,
+			Integer coreAssetId, String expression) {
 		super();
 		this.id = id;
 		this.linesAdded = linesAdded;
 		this.linesDeleted = linesDeleted;
 		this.coreAssetName = coreAssetName;
 		this.coreAssetId = coreAssetId;
+		this.expression = expression;
 	}
 
 	public Integer getId() {
@@ -44,6 +49,34 @@ public class VariationPoint {
 
 	public void setLinesDeleted(Integer linesDeleted) {
 		this.linesDeleted = linesDeleted;
+	}
+
+	public String getCoreAssetName() {
+		return coreAssetName;
+	}
+
+	public void setCoreAssetName(String coreAssetName) {
+		this.coreAssetName = coreAssetName;
+	}
+
+	public Integer getCoreAssetId() {
+		return coreAssetId;
+	}
+
+	public void setCoreAssetId(Integer coreAssetId) {
+		this.coreAssetId = coreAssetId;
+	}
+
+	public String getExpression() {
+		try {
+			return Formatting.decodeFromBase64(expression);
+		} catch (Exception e) {
+			return expression;
+		}
+	}
+
+	public void setExpression(String expression) {
+		this.expression = expression;
 	}
 
 	@Override
@@ -80,24 +113,14 @@ public class VariationPoint {
 		builder.append(linesAdded);
 		builder.append(", linesDeleted=");
 		builder.append(linesDeleted);
+		builder.append(", expression=");
+		builder.append(expression);
+		builder.append(", coreAssetId=");
+		builder.append(coreAssetId);
+		builder.append(", coreAssetName=");
+		builder.append(coreAssetName);
 		builder.append("]");
 		return builder.toString();
-	}
-
-	public String getCoreAssetName() {
-		return coreAssetName;
-	}
-
-	public void setCoreAssetName(String coreAssetName) {
-		this.coreAssetName = coreAssetName;
-	}
-
-	public Integer getCoreAssetId() {
-		return coreAssetId;
-	}
-
-	public void setCoreAssetId(Integer coreAssetId) {
-		this.coreAssetId = coreAssetId;
 	}
 
 }
