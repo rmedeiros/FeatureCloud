@@ -30,8 +30,10 @@
 						<li><a>Product release:</a></li>
 						<li class="dropdown" id="product-list"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false" data-id="0">All <span
-								class="caret"></span></a>
+							aria-haspopup="true" aria-expanded="false"
+							th:data-id="${filterProduct.idProductRelease}" th:inline="text">[[${filterProduct.name}]]
+								<span class="caret"></span>
+						</a>
 							<ul class="dropdown-menu filter-menu">
 								<li><a href="#" data-id="0">All</a></li>
 								<th:block th:each="product : ${products}">
@@ -44,8 +46,10 @@
 						<li><a>Developer: </a></li>
 						<li class="dropdown" id="developer-list"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false" data-id="0">All <span
-								class="caret"></span></a>
+							aria-haspopup="true" aria-expanded="false"
+							th:data-id="${filterDeveloper.idDeveloper}" th:inline="text">[[${filterDeveloper.name}]]
+								<span class="caret"></span>
+						</a>
 							<ul class="dropdown-menu filter-menu">
 								<li><a href="#" data-id="0">All</a></li>
 								<th:block th:each="developer : ${developers}">
@@ -155,6 +159,12 @@
 	 				newList.push({"text":feature.name,"size": fontSize, "id": feature.id});
 	       			});
 	       			$("#tagcloud").find("svg").remove()
+	       			  var xScale =  d3.scale.linear()
+			           .domain([0, d3.max(newList, function(d) {
+			              return d.size;
+			            })
+			           ])
+			           .range([14,90]);
 	       		  d3.layout.cloud().size([width, height])
 		              .timeInterval(20)
 		              .words(newList)

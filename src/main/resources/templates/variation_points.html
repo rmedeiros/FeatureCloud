@@ -63,154 +63,169 @@
 		<div>
 			<ol class="breadcrumb">
 				<li><a href="/">Home</a></li>
-				<li><a href="/features/">Features</a></li>
-				<li class="active"><span th:text=${#strings.capitalize(currentFeature)}></span></li>
+				<li><a href="#" class="breadcrumb-link">Features</a></li>
+				<li class="active"><span
+					th:text=${#strings.capitalize(currentFeature)}></span></li>
 				<li></li>
 			</ol>
 		</div>
 
 
-				<div class="col-md-6" id="tagcloud"></div>
+		<div class="col-md-6" id="tagcloud"></div>
 
 
-			<script th:inline="javascript">
-				var feature = window.location.pathname.split('/');
-				feature = feature[feature.length-1];
+		<script th:inline="javascript">
+				var feature = [[${currentFeature}]];
 			    var frequency_list = [    	  	
 			    ];
 			    /*[# th:each="variationPoint : ${variationPoints}"]*/
 				frequency_list.push({"text":[[${variationPoint.expression}]],"size": [[${variationPoint.linesDeleted}+${variationPoint.linesAdded}]], "coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.coreAssetId}]]"});
 			    /*[/]*/
-			    
-						            var svg_location = "#tagcloud";
-        var width = $(document).width();
-        var height = 700;
-			drawWordCloud(frequency_list);
-	 	function drawWordCloud(frequency_list) {
-
+		        var svg_location = "#tagcloud";
+		        var width = $(document).width();
+		        var height = 700;
+				drawWordCloud(frequency_list);
+					
+			 	function drawWordCloud(frequency_list) {
+		
+						
+					var fill = d3.scale.linear()
+						.domain([0, 1, 2, 3, 4, 5, 6, 10, 15, 20, 100])
+						.range(["#ccccff", "#b2b2ff", "#9999ff", "#7f7fff", "#6666ff", "#4c4cff", "#3232ff", "#1919ff", "#0000ff", "#0000cc", "#0000e5", "#0000ff"]);
 				
-			var fill = d3.scale.linear()
-				.domain([0, 1, 2, 3, 4, 5, 6, 10, 15, 20, 100])
-				.range(["#ccccff", "#b2b2ff", "#9999ff", "#7f7fff", "#6666ff", "#4c4cff", "#3232ff", "#1919ff", "#0000ff", "#0000cc", "#0000e5", "#0000ff"]);
-		
-		
-			var xScale = d3.scale.linear()
-				.domain([0, d3.max(frequency_list, function (d) {
-					return d.size;
-				})])
-				.range([12, 70]);
-		
-			d3.layout.cloud().size([width, height])
-				.timeInterval(20)
-				.words(frequency_list)
-				.fontSize(function (d) {
-					return xScale(+d.size);
-				})
-				.text(function (d) {
-					return d.text;
-				})
-				.rotate(0)
-				.font("Impact")
-				.on("end", draw)
-				.start();
-			
-		
-			function draw(words) {
-				d3.selectAll(svg_location).append("svg")
-					.attr("width", width)
-					.attr("height", height)
-					.append("g")
-					.attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
-					.selectAll("text")
-					.data(words)
-					.enter()
-					.append("a").attr("href", function (d) {
-						return "asset/" + d.coreAssetId;
-					})
-					.attr("data-toggle", "tooltip")
-					.attr("data-placement", "top")
-					.attr("title", function (d) {
-						return d.coreAssetName;
-					})
-					.append("text")
-					.style("font-size", function (d) {
-						return d.size  + "px";
-					})
-					.style("font-family", "Impact")
-					.attr("text-anchor", "middle")
-					.style("fill", function (d, i) {
-						return fill(i);
-					})
-					.attr("transform", function (d) {
-						return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-					})
-					.text(function (d) {
-						return d.text;
-					});
-			}
-		
-		
-		
-			$(function () {
-		
-				$(".filter-menu").on('click', 'li a', function () {
-					$(this).parents('.dropdown').find('.dropdown-toggle').html($(this).text() + "<span class='caret'></span>");
-					$(this).parents('.dropdown').find('.dropdown-toggle').attr('data-id', $(this).attr('data-id'));
-					$(this).parents('.dropdown').find('.dropdown-toggle').val($(this).text() + "<span class='caret'></span>");
-		
-					$.ajax({
-						type: 'POST',
-						url: "/variationpoints/filtered",
-						accept: "application/json",
-						data: JSON.stringify({
-							productReleaseId: $("#product-list").find('.dropdown-toggle').attr("data-id"),
-							developerId: $("#developer-list").find('.dropdown-toggle').attr("data-id"),
-							featureName: feature
-						}),
-						datatype: "json",
-						contentType: "application/json",
-						success: function (data) {
-							var newList = []
-							data.variationPoints.forEach(function (variationPoint) {
-								fontSize = Math.floor(((variationPoint.linesDeleted + variationPoint.linesAdded) / data.totalLines) * 130);
-								newList.push({
-									"text": variationPoint.id,
-									"size": fontSize,
-									"coreAssetName": variationPoint.coreAssetName,
-									"coreAssetId": variationPoint.coreAssetId
-								});
+				
+					var xScale = d3.scale.linear()
+						.domain([0, d3.max(frequency_list, function (d) {
+							return d.size;
+						})])
+						.range([12, 55]);
+				
+					d3.layout.cloud().size([width, height])
+						.timeInterval(20)
+						.words(frequency_list)
+						.fontSize(function (d) {
+							return xScale(+d.size);
+						})
+						.text(function (d) {
+							return d.text;
+						})
+						.rotate(0)
+						.font("Impact")
+						.on("end", draw)
+						.start();
+					
+				
+					function draw(words) {
+						d3.selectAll(svg_location).append("svg")
+							.attr("width", width)
+							.attr("height", height)
+							.append("g")
+							.attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
+							.selectAll("text")
+							.data(words)
+							.enter()
+							.append("a").attr("href", function (d) {
+								return "asset/" + d.coreAssetId;
+							})
+							.attr("data-toggle", "tooltip")
+							.attr("data-placement", "top")
+							.attr("title", function (d) {
+								return d.coreAssetName;
+							})
+							.append("text")
+							.style("font-size", function (d) {
+								return d.size  + "px";
+							})
+							.style("font-family", "Impact")
+							.attr("text-anchor", "middle")
+							.style("fill", function (d, i) {
+								return fill(i);
+							})
+							.attr("transform", function (d) {
+								return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+							})
+							.text(function (d) {
+								return d.text;
 							});
-							$("#tagcloud").find("svg").remove()
-							d3.layout.cloud().size([width, height])
-								.timeInterval(20)
-								.words(newList)
-								.fontSize(function (d) {
-									return xScale(+d.size);
-								})
-								.text(function (d) {
-									return d.text;
-								})
-								.rotate(0)
-								.font("Impact")
-								.on("end", draw)
-								.start();
-						}
-		
+							setToolTip();
+					}
+				
+				
+				
+					$(function () {
+				
+						$(".filter-menu").on('click', 'li a', function () {
+							$(this).parents('.dropdown').find('.dropdown-toggle').html($(this).text() + "<span class='caret'></span>");
+							$(this).parents('.dropdown').find('.dropdown-toggle').attr('data-id', $(this).attr('data-id'));
+							$(this).parents('.dropdown').find('.dropdown-toggle').val($(this).text() + "<span class='caret'></span>");
+				
+							$.ajax({
+								type: 'POST',
+								url: "/variationpoints/filtered",
+								accept: "application/json",
+								data: JSON.stringify({
+									productReleaseId: $("#product-list").find('.dropdown-toggle').attr("data-id"),
+									developerId: $("#developer-list").find('.dropdown-toggle').attr("data-id"),
+									featureName: feature
+								}),
+								datatype: "json",
+								contentType: "application/json",
+								success: function (data) {
+									var newList = []
+									data.variationPoints.forEach(function (variationPoint) {
+										fontSize = Math.floor(((variationPoint.linesDeleted + variationPoint.linesAdded) / data.totalLines) * 130);
+										newList.push({
+											"text": variationPoint.expression,
+											"size": fontSize,
+											"coreAssetName": variationPoint.coreAssetName,
+											"coreAssetId": variationPoint.coreAssetId
+										});
+									});
+					       			$("#tagcloud").find("svg").remove()
+					       			  var xScale =  d3.scale.linear()
+							           .domain([0, d3.max(newList, function(d) {
+							              return d.size;
+							            })
+							           ])
+								  .range([12, 55]);
+					       		  d3.layout.cloud().size([width, height])
+						              .timeInterval(20)
+						              .words(newList)
+						              .fontSize(function(d) { return xScale(+d.size); })
+						              .text(function(d) { return d.text; })
+						              .rotate(0)
+						              .font("Impact")
+						              .on("end", draw)
+						              .start();
+									setToolTip();
+								}
+				
+							});
+				
+						});
+				
 					});
-		
-				});
-		
-			});
-		}
+				}
+			 	
+			 	$(".breadcrumb-link").click(function(){
+			 		window.location.href = '/features/?product='+$("#product-list").find('.dropdown-toggle').attr("data-id")+'&developer='+$("#developer-list").find('.dropdown-toggle').attr("data-id");
+			 	});
+			 	
+			 	
+			 	  $(function(){   $("#tagcloud").on('click', 'svg g a', function(){
+				    	$(location).attr('href', $(this).attr('href')+"/?product="+$("#product-list").find('.dropdown-toggle').attr("data-id")+"&developer="+$("#developer-list").find('.dropdown-toggle').attr("data-id"));					
+				        return false;
 
-
-			$('[data-toggle="tooltip"]').tooltip({
-				'container': 'body',
-				'placement': 'bottom'
-			})
+			 	  	});});
 		
-		
-			</script>
+				function setToolTip(){
+					$('[data-toggle="tooltip"]').tooltip({
+						'container': 'body',
+						'placement': 'bottom'
+					})
+				}
+				
+		</script>
 
 	</section>
 
