@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.onekin.tagcloud.model.CoreAsset;
 import com.onekin.tagcloud.model.Developer;
+import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.Filter;
 import com.onekin.tagcloud.model.ProductRelease;
@@ -31,5 +32,7 @@ public interface SoftwareProductLineService {
 	Developer getFilterDeveloper(Iterable<Developer> developers, int developerId);
 
 	ProductRelease getFilterProduct(Iterable<ProductRelease> productReleases, int productId);
+
+	Iterable<DeveloperGroup> getDeveloperGroups();
 
 }

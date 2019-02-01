@@ -10,21 +10,23 @@ public class VariationPoint {
 	private String expression;
 	private Integer coreAssetId;
 	private String coreAssetName;
+	private DeveloperGroupCustInVariationPoint mostImportantDeveloperGroup;
 
 	public VariationPoint() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public VariationPoint(Integer id, Integer linesAdded, Integer linesDeleted, String coreAssetName,
-			Integer coreAssetId, String expression) {
+	public VariationPoint(Integer id, Integer linesAdded, Integer linesDeleted, String expression, Integer coreAssetId,
+			String coreAssetName, DeveloperGroupCustInVariationPoint mostImportantDeveloperGroup) {
 		super();
 		this.id = id;
 		this.linesAdded = linesAdded;
 		this.linesDeleted = linesDeleted;
-		this.coreAssetName = coreAssetName;
-		this.coreAssetId = coreAssetId;
 		this.expression = expression;
+		this.coreAssetId = coreAssetId;
+		this.coreAssetName = coreAssetName;
+		this.mostImportantDeveloperGroup = mostImportantDeveloperGroup;
 	}
 
 	public Integer getId() {
@@ -79,6 +81,14 @@ public class VariationPoint {
 		this.expression = expression;
 	}
 
+	public DeveloperGroupCustInVariationPoint getMostImportantDeveloperGroup() {
+		return mostImportantDeveloperGroup;
+	}
+
+	public void setMostImportantDeveloperGroup(DeveloperGroupCustInVariationPoint mostImportantDeveloperGroup) {
+		this.mostImportantDeveloperGroup = mostImportantDeveloperGroup;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -102,25 +112,6 @@ public class VariationPoint {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("VariationPoint [id=");
-		builder.append(id);
-		builder.append(", linesAdded=");
-		builder.append(linesAdded);
-		builder.append(", linesDeleted=");
-		builder.append(linesDeleted);
-		builder.append(", expression=");
-		builder.append(expression);
-		builder.append(", coreAssetId=");
-		builder.append(coreAssetId);
-		builder.append(", coreAssetName=");
-		builder.append(coreAssetName);
-		builder.append("]");
-		return builder.toString();
 	}
 
 }

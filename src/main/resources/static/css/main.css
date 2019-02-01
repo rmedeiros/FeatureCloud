@@ -33,25 +33,34 @@ pre.code-pre {
 	overflow: auto;
 }
 
-
 .navbar {
 	margin-bottom: 0px;
 }
 
-
 .filters-container {
-    padding-left: 15%;
+	padding-left: 15%;
 }
 
-
-
-
 .breadcrumb {
-    padding: 8px 15px;
-    margin-bottom: 20px;
-    margin-top:20px;
-    list-style: none;
-    background-color: #0000;
-    border-radius: 4px;
-    padding-left: 50px;
+	padding: 8px 15px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	list-style: none;
+	background-color: #0000;
+	border-radius: 4px;
+	padding-left: 50px;
+}
+
+.badge {
+	min-width: 15px;
+	min-height: 15px;
+}
+
+ul.legend {
+	display: inline-flex;
+	list-style-type: none;
+}
+
+.legend>li {
+    margin-left: 8vh;
 }

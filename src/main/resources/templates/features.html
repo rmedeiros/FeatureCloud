@@ -70,18 +70,39 @@
 				<li></li>
 			</ol>
 		</div>
-
+		<div class="container">
+			<ul class="legend"></ul>
+		</div>
 		<div id="tagcloud"></div>
-
-
 		<script th:inline="javascript">
 
+		
+				var used_colors=[]
+				var devgroup_colors ={};
+				var developerGroups = [[${developerGroups}]];
+				var color;
+				developerGroups.forEach(function(elem){
+					color = randomProperty($.Color.names);
+					while(used_colors.includes(color)){
+						color = randomProperty($.Color.names);
+					}
+					used_colors.push(color);
+					devgroup_colors[elem["idDeveloperGroup"]]=color;
+				});
 
 			    var frequency_list = [    	  	
 			    ];
+
+			    for(var key in devgroup_colors){
+			    	$(".legend").append('<li> Dev Group '+key+' <span class="badge" style="background-color:'+devgroup_colors[key]+'"> </span></li>')
+			    }
 			    /*[# th:each="feature : ${features}"]*/
-				frequency_list.push({"text":[[${feature.name}]],"size": [[${feature.linesDeleted}+${feature.linesAdded}]], "id":[[${feature.id}]]});
+			    var idGroup = [[${feature.mostImportantDeveloperGroup.devGroup.idDeveloperGroup}]];
+				frequency_list.push({"text":[[${feature.name}]],"size": [[${feature.linesDeleted+feature.linesAdded}]],
+					"id":[[${feature.id}]],"color":devgroup_colors[idGroup]+colorGraduation([[${feature.linesDeleted+feature.linesAdded}]],[[${feature.mostImportantDeveloperGroup.modifiedLines}]])});
 			    /*[/]*/
+
+			    
 			            var svg_location = "#tagcloud";
         var width = $(document).width();
         var height = 700;
@@ -90,11 +111,6 @@
 
       function drawWordCloud(frequency_list){
       
-
-
-        var fill =  d3.scale.linear()
-        .domain([0,1,2,3,4,5,6,10,15,20,100])
-        .range(["#ccccff","#b2b2ff","#9999ff", "#7f7fff", "#6666ff", "#4c4cff", "#3232ff","#1919ff","#0000ff","#0000cc","#0000e5","#0000ff"]);
 
 
         var xScale =  d3.scale.linear()
@@ -128,7 +144,7 @@
     	      .style("font-size", function(d) { return  d.size+ "px"; })
     	      .style("font-family", "Impact")
     	      .attr("text-anchor", "middle")
-    		  .style("fill", function(d, i) { return fill(i); })
+    		  .style("fill", function(d) { return d.color ; })
     	      .attr("transform", function(d) {
     	        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
     	      })

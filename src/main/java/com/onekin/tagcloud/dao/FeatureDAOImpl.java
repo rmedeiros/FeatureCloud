@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Service;
 
+import com.onekin.tagcloud.model.DeveloperGroupCustInFeature;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.Filter;
 
@@ -26,6 +27,8 @@ public class FeatureDAOImpl implements FeatureDAO {
 
 	private static final String GET_FEATURES_FILTERED_BY_DEVELOPER = "get.features.filtered.developer";
 
+	private static final String GET_GROUPS_BY_FEATURE = "get.features.by.devgroup";
+
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -34,8 +37,14 @@ public class FeatureDAOImpl implements FeatureDAO {
 
 	@Override
 	public List<Feature> getFeatures() {
-		return jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURES), new FeatureRowMapper());
-
+		List<Feature> features = jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURES), new FeatureRowMapper());
+		List<DeveloperGroupCustInFeature> developerGroups = jdbcTemplate
+				.query(sqlQueries.getProperty(GET_GROUPS_BY_FEATURE), new DeveloperGroupCustInFeatureMapper());
+		for (Feature feature : features) {
+			feature.setMostImportantDeveloperGroup(developerGroups.stream()
+					.filter(group -> group.getFeatureId().equals(feature.getId())).findFirst().get());
+		}
+		return features;
 	}
 
 	@Override

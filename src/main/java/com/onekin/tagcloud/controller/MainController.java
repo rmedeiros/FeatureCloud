@@ -1,11 +1,7 @@
 package com.onekin.tagcloud.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -54,6 +50,7 @@ public class MainController {
 		model.addAttribute("developers", developers);
 		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));
 		model.addAttribute("filterDeveloper", softwareProductLineService.getFilterDeveloper(developers, developerId));
+		model.addAttribute("developerGroups",softwareProductLineService.getDeveloperGroups());
 		return "features";
 	}
 
@@ -77,7 +74,9 @@ public class MainController {
 		model.addAttribute("currentFeature", featureName);
 		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));
 		model.addAttribute("filterDeveloper", softwareProductLineService.getFilterDeveloper(developers, developerId));
+		model.addAttribute("developerGroups",softwareProductLineService.getDeveloperGroups());
 
+		
 		return "variation_points";
 	}
 

@@ -70,29 +70,52 @@
 			</ol>
 		</div>
 
-
-		<div class="col-md-6" id="tagcloud"></div>
+		<div class="container">
+			<ul class="legend"></ul>
+		</div>
+		<div id="tagcloud"></div>
 
 
 		<script th:inline="javascript">
+				var used_colors=[]
+				var devgroup_colors ={};
+				var developerGroups = [[${developerGroups}]];
+				var color;
+				developerGroups.forEach(function(elem){
+					color = randomProperty($.Color.names);
+					while(used_colors.includes(color)){
+						color = randomProperty($.Color.names);
+					}
+					used_colors.push(color);
+					devgroup_colors[elem["idDeveloperGroup"]]=color;
+				});
+		
+			    var frequency_list = [    	  	
+			    ];
+		
+
+				
 				var feature = [[${currentFeature}]];
 			    var frequency_list = [    	  	
 			    ];
+			    var groupSet = new Set();
+			    var idGroup;
 			    /*[# th:each="variationPoint : ${variationPoints}"]*/
-				frequency_list.push({"text":[[${variationPoint.expression}]],"size": [[${variationPoint.linesDeleted}+${variationPoint.linesAdded}]], "coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.coreAssetId}]]"});
+			    idGroup = [[${variationPoint.mostImportantDeveloperGroup.devGroup.idDeveloperGroup}]];
+			    groupSet.add(idGroup);
+				frequency_list.push({"text":[[${variationPoint.expression}]],"size": [[${variationPoint.linesDeleted}+${variationPoint.linesAdded}]],
+					"coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.coreAssetId}]]","color":devgroup_colors[ [[${variationPoint.mostImportantDeveloperGroup.devGroup.idDeveloperGroup}]] ]+colorGraduation([[${variationPoint.linesDeleted+variationPoint.linesAdded}]],[[${variationPoint.mostImportantDeveloperGroup.modifiedLines}]])});
 			    /*[/]*/
-		        var svg_location = "#tagcloud";
+			    
+			    Array.from(groupSet).sort().forEach(function(element){
+			    	$(".legend").append('<li> Dev Group '+element+' <span class="badge" style="background-color:'+devgroup_colors[element]+'"> </span></li>')
+			    });		       
+			    var svg_location = "#tagcloud";
 		        var width = $(document).width();
 		        var height = 700;
 				drawWordCloud(frequency_list);
 					
 			 	function drawWordCloud(frequency_list) {
-		
-						
-					var fill = d3.scale.linear()
-						.domain([0, 1, 2, 3, 4, 5, 6, 10, 15, 20, 100])
-						.range(["#ccccff", "#b2b2ff", "#9999ff", "#7f7fff", "#6666ff", "#4c4cff", "#3232ff", "#1919ff", "#0000ff", "#0000cc", "#0000e5", "#0000ff"]);
-				
 				
 					var xScale = d3.scale.linear()
 						.domain([0, d3.max(frequency_list, function (d) {
@@ -139,7 +162,7 @@
 							.style("font-family", "Impact")
 							.attr("text-anchor", "middle")
 							.style("fill", function (d, i) {
-								return fill(i);
+								return d.color ;
 							})
 							.attr("transform", function (d) {
 								return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";

@@ -7,20 +7,18 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
+import com.onekin.tagcloud.model.DeveloperGroupCustInVariationPoint;
 import com.onekin.tagcloud.model.Filter;
 import com.onekin.tagcloud.model.VariationPoint;
 
 @Component
 public class VariationPointDAOImpl implements VariationPointDAO {
 
-	private static final Log LOG = LogFactory.getLog(VariationPointDAOImpl.class);
 
 	private static final String GET_FEATURE_VARIATION_POINTS = "get.feature.variation.points";
 	
@@ -29,6 +27,9 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 	private static final String GET_FEATURE_VARIATION_POINTS_BY_PRODUCT = "get.feature.variation.points.product";
 
 	private static final String GET_FEATURE_VARIATION_POINTS_BY_DEVELOPER = "get.feature.variation.points.developer";
+	
+	private static final String GET_GROUPS_BY_VP = "get.vp.by.devgroup";
+
 
 
 	@Autowired
@@ -39,14 +40,28 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 
 
 	@Override
-	public List<VariationPoint> getFeatureVariationPoints(String featureName) {
-		return jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURE_VARIATION_POINTS), new PreparedStatementSetter() {
+	public List<VariationPoint> getFeatureVariationPoints(String featureId) {
+		List<VariationPoint> variationPoints =  jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURE_VARIATION_POINTS), new PreparedStatementSetter() {
 
 			public void setValues(PreparedStatement preparedStatement) throws SQLException {
-				preparedStatement.setString(1, featureName);
+				preparedStatement.setString(1, featureId);
 			}
 		}, new VariationPointRowMapper());
 
+		List<DeveloperGroupCustInVariationPoint> developerGroups = jdbcTemplate
+				.query(sqlQueries.getProperty(GET_GROUPS_BY_VP), new PreparedStatementSetter() {
+
+					public void setValues(PreparedStatement preparedStatement) throws SQLException {
+						preparedStatement.setString(1, featureId);
+					}
+				}, new DeveloperGroupCustInVariationPointRowMapper());
+		for (VariationPoint variationPoint : variationPoints) {
+			System.out.println("ID VP: "+ variationPoint.getId());
+			variationPoint.setMostImportantDeveloperGroup(developerGroups.stream()
+					.filter(group -> group.getIdVariationPoint()==variationPoint.getId()).findFirst().get());
+		}
+		
+		return variationPoints;
 	}
 
 	@Override

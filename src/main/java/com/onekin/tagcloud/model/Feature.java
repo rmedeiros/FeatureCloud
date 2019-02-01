@@ -1,23 +1,28 @@
 package com.onekin.tagcloud.model;
 
+import java.util.List;
+
 public class Feature {
 
 	private String id;
 	private String name;
 	private Integer linesDeleted;
 	private Integer linesAdded;
+	private DeveloperGroupCustInFeature mostImportantDeveloperGroup;
 
 	public Feature() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Feature(String id, String name, Integer linesDeleted, Integer linesAdded) {
+	public Feature(String id, String name, Integer linesDeleted, Integer linesAdded,
+			DeveloperGroupCustInFeature mostImportantDeveloperGroup) {
 		super();
 		this.name = name;
 		this.linesDeleted = linesDeleted;
 		this.linesAdded = linesAdded;
 		this.id = id;
+		this.mostImportantDeveloperGroup = mostImportantDeveloperGroup;
 	}
 
 	public String getId() {
@@ -52,6 +57,14 @@ public class Feature {
 		this.linesAdded = linesAdded;
 	}
 
+	public DeveloperGroupCustInFeature getMostImportantDeveloperGroup() {
+		return mostImportantDeveloperGroup;
+	}
+
+	public void setMostImportantDeveloperGroup(DeveloperGroupCustInFeature mostImportantDeveloperGroup) {
+		this.mostImportantDeveloperGroup = mostImportantDeveloperGroup;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -77,8 +90,6 @@ public class Feature {
 		return true;
 	}
 
-
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -90,6 +101,8 @@ public class Feature {
 		builder.append(linesDeleted);
 		builder.append(", linesAdded=");
 		builder.append(linesAdded);
+		builder.append(", mostImportantDeveloperGroup=");
+		builder.append(mostImportantDeveloperGroup);
 		builder.append("]");
 		return builder.toString();
 	}
