@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onekin.tagcloud.model.CoreAsset;
 import com.onekin.tagcloud.model.Developer;
+import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.FeaturesResponse;
 import com.onekin.tagcloud.model.Filter;
@@ -39,6 +41,7 @@ public class MainController {
 	public String getFeatureTagCloud(Model model,
 			@RequestParam(required = false, name = "product", defaultValue = "0") Integer productId,
 			@RequestParam(required = false, name = "developer", defaultValue = "0") Integer developerId) {
+		
 		List<Feature> features = softwareProductLineService.getFeaturesFiltered(new Filter(productId, developerId));
 		int totalLines = features.stream().map(Feature::getLinesDeleted).collect(Collectors.summingInt(i -> i))
 				+ features.stream().map(Feature::getLinesAdded).collect(Collectors.summingInt(i -> i));
@@ -46,11 +49,10 @@ public class MainController {
 		model.addAttribute("totalLines", totalLines);
 		Iterable<ProductRelease> productReleases = softwareProductLineService.getProductRealeses();
 		model.addAttribute("products", productReleases);
-		Iterable<Developer> developers = softwareProductLineService.getDevelopers();
+		Iterable<DeveloperGroup> developers = softwareProductLineService.getDeveloperGroups();
 		model.addAttribute("developers", developers);
 		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));
 		model.addAttribute("filterDeveloper", softwareProductLineService.getFilterDeveloper(developers, developerId));
-		model.addAttribute("developerGroups",softwareProductLineService.getDeveloperGroups());
 		return "features";
 	}
 
@@ -69,24 +71,36 @@ public class MainController {
 		model.addAttribute("totalLines", totalLines);
 		Iterable<ProductRelease> productReleases = softwareProductLineService.getProductRealeses();
 		model.addAttribute("products", productReleases);
-		Iterable<Developer> developers = softwareProductLineService.getDevelopers();
-		model.addAttribute("developers", developers);
+		Iterable<DeveloperGroup> developerGroups = softwareProductLineService.getDeveloperGroups();
+		model.addAttribute("developers", developerGroups);
 		model.addAttribute("currentFeature", featureName);
 		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));
-		model.addAttribute("filterDeveloper", softwareProductLineService.getFilterDeveloper(developers, developerId));
-		model.addAttribute("developerGroups",softwareProductLineService.getDeveloperGroups());
-
-		
+		model.addAttribute("filterDeveloper", softwareProductLineService.getFilterDeveloper(developerGroups, developerId));
 		return "variation_points";
 	}
 
-	@GetMapping("/features/{featureName}/asset/{coreAssetId}")
+	/*@GetMapping("/features/{featureName}/asset/{coreAssetId}")
 	public String getCoreAssetContent(@PathVariable(value = "coreAssetId") Integer coreAssetId,
 			@PathVariable(value = "featureName") String featureName,
 			@RequestParam(required = false, name = "product", defaultValue = "0") Integer productId,
 			@RequestParam(required = false, name = "developer", defaultValue = "0") Integer developerId, Model model) {
 		CoreAsset coreAsset = softwareProductLineService.getCoreAssetContent(coreAssetId);
 		model.addAttribute("coreAsset", coreAsset);
+		model.addAttribute("product",productId);
+		model.addAttribute("developer",developerId);
+		model.addAttribute("currentFeature", featureName);
+		return "core_asset";
+
+	}*/
+	
+	
+	@GetMapping("/features/{featureName}/asset/{variationPointId}/")
+	public String getCoreAssetContent(@PathVariable(value = "variationPointId") Integer variationPointId,
+			@PathVariable(value = "featureName") String featureName,
+			@RequestParam(required = false, name = "product", defaultValue = "0") Integer productId,
+			@RequestParam(required = false, name = "developer", defaultValue = "0") Integer developerId, Model model) {
+		List<Pair<String,String>> diffValues = softwareProductLineService.getDiffValues(variationPointId);
+		model.addAttribute("diffValues",diffValues);
 		model.addAttribute("product",productId);
 		model.addAttribute("developer",developerId);
 		model.addAttribute("currentFeature", featureName);

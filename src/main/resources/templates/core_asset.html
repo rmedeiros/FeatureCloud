@@ -7,8 +7,13 @@
 <th:block layout:fragment="script">
 
 	<link rel="stylesheet" href="/css/highlight/github.css">
+	<link rel="stylesheet" href="/css/diff2html.min.css">
+
 	<script src="/js/highlight/highlight.pack.js"></script>
 	<script src="/js/highlight/highlightjs-line-numbers.min.js"></script>
+	<script src="/js/diff2html.min.js"></script>
+	<script src="/js/diff2html-ui.min.js"></script>
+
 
 	<script>
 		hljs.initHighlightingOnLoad();
@@ -22,18 +27,72 @@
 		<div>
 			<ol class="breadcrumb">
 				<li><a href="/">Home</a></li>
-				<li><a th:href="@{/features/?product=}+${product}+@{&developer=}+${developer}">Features</a></li>
-				<li><a th:href="@{/features/}+${currentFeature}+@{/?product=}+${product}+@{&developer=}+${developer}" th:text="${#strings.capitalize(currentFeature)}"></a></li>
-				<li class="active"><span th:text="${coreAsset.name}"></span></li>
+				<li><a
+					th:href="@{/features/?product=}+${product}+@{&developer=}+${developer}">Features</a></li>
+				<li><a
+					th:href="@{/features/}+${currentFeature}+@{/?product=}+${product}+@{&developer=}+${developer}"
+					th:text="${#strings.capitalize(currentFeature)}"></a></li>
+				<!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
 			</ol>
 		</div>
 		<div class="container">
-			<h2 class="asset-title" th:text="${coreAsset.name}"></h2>
+			<!-- <h2 class="asset-title" th:text="${coreAsset.name}"></h2>
 			<pre class="code-pre"> 
 				<code th:text="${coreAsset.content}"></code>
-			</pre>
-		</div>
+			</pre> -->
+			<div id="accordion">
+				<div class="card" th:each="diffValue,iter : ${diffValues}">
+					<div class="card-header" th:id="'heading'+${iter.index}">
+						<h5 class="mb-0">
+							<button class="btn btn-link" data-toggle="collapse"
+								th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
+								th:aria-controls="'collapse'+${iter.index}" th:inline="text">Product
+								[[${#strings.capitalize(diffValue.second)}]]'s custom diff value</button>
+						</h5>
+					</div>
+
+					<div th:id="'collapse'+${iter.index}" class="collapse"
+						th:aria-labelledby="'heading'+${iter.index}" data-parent="#accordion">
+						<div class="card-body diffview" th:id="'diffview'+${iter.index}"></div>
+					</div>
+				</div>
+
+			</div>
+			<script th:inline="javascript">
+			/*<![CDATA[*/
+
+				function getMetaContentByName(name, content) {
+					var content = (content == null) ? 'content' : content;
+					return document.querySelector("meta[name='" + name + "']")
+							.getAttribute(content);
+				}
+				$(document).ready(function() {
+					/** For the diff view **/
+					var diffValues = /*[[${diffValues}]]*/;
+					diffValues.forEach(function(diffvalue,i){
+						if (diffvalue.first == null)
+							diffvalue.first="Could not obtain diff value";
+						console.log("diffvalue:\n" + diffvalue.first);
+						var diff2htmlUi = new Diff2HtmlUI({
+							diff : diffvalue.first
+						});
+						console.log(diff2htmlUi);
+						diff2htmlUi.draw('#diffview'+i, {
+							inputFormat : 'json',
+							showFiles : true,
+							matching : 'lines'
+						});
+						diff2htmlUi.highlightCode('#diffview'+i);
+					});
+
+					/*double*/
+
+				});//end of on document load
+				
+				/*]]>*/
+			</script>
 	</section>
+
 
 </body>
 </html>

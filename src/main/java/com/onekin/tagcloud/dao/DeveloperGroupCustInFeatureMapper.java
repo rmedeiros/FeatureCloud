@@ -17,6 +17,7 @@ public class DeveloperGroupCustInFeatureMapper implements  RowMapper<DeveloperGr
 		group.setDevGroup(new DeveloperGroup());
 		group.getDevGroup().setIdDeveloperGroup(rs.getInt(2));
 		group.setModifiedLines(rs.getInt(3));
+		group.getDevGroup().setColor(rs.getString(4));
 		return group;
 
 	}

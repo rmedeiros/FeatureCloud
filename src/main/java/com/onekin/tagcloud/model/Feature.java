@@ -1,7 +1,5 @@
 package com.onekin.tagcloud.model;
 
-import java.util.List;
-
 public class Feature {
 
 	private String id;

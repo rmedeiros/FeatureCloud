@@ -13,18 +13,26 @@ public class DeveloperGroup {
 
 	@Id
 	private Integer idDeveloperGroup;
+	private String color;
 	@Transient
 	private List<Developer> developers;
+	private String name;
 
-	public DeveloperGroup(Integer idDeveloperGroup, List<Developer> developers) {
+	public DeveloperGroup(Integer idDeveloperGroup, List<Developer> developers, String color) {
 		super();
 		this.idDeveloperGroup = idDeveloperGroup;
 		this.developers = developers;
+		this.color = color;
 	}
 
 	public DeveloperGroup() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public DeveloperGroup(int id, String name) {
+		this.idDeveloperGroup = id;
+		this.setName(name);
 	}
 
 	public Integer getIdDeveloperGroup() {
@@ -41,6 +49,22 @@ public class DeveloperGroup {
 
 	public void setDevelopers(List<Developer> developers) {
 		this.developers = developers;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -73,8 +97,12 @@ public class DeveloperGroup {
 		StringBuilder builder = new StringBuilder();
 		builder.append("DeveloperGroup [idDeveloperGroup=");
 		builder.append(idDeveloperGroup);
+		builder.append(", color=");
+		builder.append(color);
 		builder.append(", developers=");
 		builder.append(developers);
+		builder.append(", name=");
+		builder.append(name);
 		builder.append("]");
 		return builder.toString();
 	}

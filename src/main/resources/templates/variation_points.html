@@ -44,7 +44,7 @@
 						<li class="dropdown" id="developer-list"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
 							aria-haspopup="true" aria-expanded="false"
-							th:data-id="${filterDeveloper.idDeveloper}" th:inline="text">[[${filterDeveloper.name}]]
+							th:data-id="${filterDeveloper.idDeveloperGroup}" th:inline="text">[[${filterDeveloper.name}]]
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu filter-menu">
@@ -52,7 +52,7 @@
 								<th:block th:each="developer : ${developers}">
 									<li role="separator" class="divider"></li>
 									<li><a href="#" th:text="${developer.name}"
-										th:data-id="${developer.idDeveloper}"></a></li>
+										th:data-id="${developer.idDeveloperGroup}"></a></li>
 								</th:block>
 							</ul></li>
 					</ul>
@@ -77,42 +77,64 @@
 
 
 		<script th:inline="javascript">
-				var used_colors=[]
-				var devgroup_colors ={};
-				var developerGroups = [[${developerGroups}]];
-				var color;
-				developerGroups.forEach(function(elem){
-					color = randomProperty($.Color.names);
-					while(used_colors.includes(color)){
-						color = randomProperty($.Color.names);
-					}
-					used_colors.push(color);
-					devgroup_colors[elem["idDeveloperGroup"]]=color;
-				});
 		
 			    var frequency_list = [    	  	
 			    ];
-		
-
 				
 				var feature = [[${currentFeature}]];
 			    var frequency_list = [    	  	
 			    ];
-			    var groupSet = new Set();
-			    var idGroup;
+			    var groupSet = new Array();
+			    var devGroup;
 			    /*[# th:each="variationPoint : ${variationPoints}"]*/
-			    idGroup = [[${variationPoint.mostImportantDeveloperGroup.devGroup.idDeveloperGroup}]];
-			    groupSet.add(idGroup);
+			    devGroup = [[${variationPoint.mostImportantDeveloperGroup.devGroup}]];
+			    addUniqueGroup(devGroup, groupSet);
 				frequency_list.push({"text":[[${variationPoint.expression}]],"size": [[${variationPoint.linesDeleted}+${variationPoint.linesAdded}]],
-					"coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.coreAssetId}]]","color":devgroup_colors[ [[${variationPoint.mostImportantDeveloperGroup.devGroup.idDeveloperGroup}]] ]+colorGraduation([[${variationPoint.linesDeleted+variationPoint.linesAdded}]],[[${variationPoint.mostImportantDeveloperGroup.modifiedLines}]])});
+					"coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.id}]]","color": [[${variationPoint.mostImportantDeveloperGroup.devGroup.color}]] +colorGraduation([[${variationPoint.linesDeleted+variationPoint.linesAdded}]],[[${variationPoint.mostImportantDeveloperGroup.modifiedLines}]])});
 			    /*[/]*/
 			    
-			    Array.from(groupSet).sort().forEach(function(element){
-			    	$(".legend").append('<li> Dev Group '+element+' <span class="badge" style="background-color:'+devgroup_colors[element]+'"> </span></li>')
+			    groupSet.sort(compareDevGroups).forEach(function(element){
+			    	$(".legend").append('<li> Dev Group '+element.idDeveloperGroup+' <span class="badge" style="background-color:'+element.color+'"> </span></li>')
 			    });		       
 			    var svg_location = "#tagcloud";
 		        var width = $(document).width();
-		        var height = 700;
+		        var height = 620;
+
+				function draw(words) {
+					d3.selectAll(svg_location).append("svg")
+						.attr("width", width)
+						.attr("height", height)
+						.append("g")
+						.attr("transform", "translate(" + [width >> 1, height/3*2] + ")")
+						.selectAll("text")
+						.data(words)
+						.enter()
+						.append("a").attr("href", function (d) {
+							return "asset/" + d.coreAssetId;
+						})
+						.attr("data-toggle", "tooltip")
+						.attr("data-placement", "top")
+						.attr("title", function (d) {
+							return d.coreAssetName;
+						})
+						.append("text")
+						.style("font-size", function (d) {
+							return d.size  + "px";
+						})
+						.style("font-family", "Impact")
+						.attr("text-anchor", "middle")
+						.style("fill", function (d, i) {
+							return d.color ;
+						})
+						.attr("transform", function (d) {
+							return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+						})
+						.text(function (d) {
+							return d.text;
+						});
+						setToolTip();
+				}
+		        
 				drawWordCloud(frequency_list);
 					
 			 	function drawWordCloud(frequency_list) {
@@ -138,40 +160,6 @@
 						.start();
 					
 				
-					function draw(words) {
-						d3.selectAll(svg_location).append("svg")
-							.attr("width", width)
-							.attr("height", height)
-							.append("g")
-							.attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
-							.selectAll("text")
-							.data(words)
-							.enter()
-							.append("a").attr("href", function (d) {
-								return "asset/" + d.coreAssetId;
-							})
-							.attr("data-toggle", "tooltip")
-							.attr("data-placement", "top")
-							.attr("title", function (d) {
-								return d.coreAssetName;
-							})
-							.append("text")
-							.style("font-size", function (d) {
-								return d.size  + "px";
-							})
-							.style("font-family", "Impact")
-							.attr("text-anchor", "middle")
-							.style("fill", function (d, i) {
-								return d.color ;
-							})
-							.attr("transform", function (d) {
-								return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-							})
-							.text(function (d) {
-								return d.text;
-							});
-							setToolTip();
-					}
 				
 				
 				
@@ -195,15 +183,23 @@
 								contentType: "application/json",
 								success: function (data) {
 									var newList = []
+									groupSet = new Array();
 									data.variationPoints.forEach(function (variationPoint) {
-										fontSize = Math.floor(((variationPoint.linesDeleted + variationPoint.linesAdded) / data.totalLines) * 130);
+										fontSize = variationPoint.linesDeleted + variationPoint.linesAdded;
+										 devGroup = variationPoint.mostImportantDeveloperGroup.devGroup;
+										 addUniqueGroup(devGroup, groupSet);
 										newList.push({
 											"text": variationPoint.expression,
 											"size": fontSize,
 											"coreAssetName": variationPoint.coreAssetName,
-											"coreAssetId": variationPoint.coreAssetId
+											"coreAssetId": variationPoint.coreAssetId,
+										    "color" : variationPoint.mostImportantDeveloperGroup.devGroup.color+colorGraduation(fontSize,variationPoint.mostImportantDeveloperGroup.modifiedLines)
 										});
 									});
+									$(".legend").empty();
+								    groupSet.sort(compareDevGroups).forEach(function(element){
+								    	$(".legend").append('<li> Dev Group '+element.idDeveloperGroup+' <span class="badge" style="background-color:'+element.color+'"> </span></li>')
+								    });	
 					       			$("#tagcloud").find("svg").remove()
 					       			  var xScale =  d3.scale.linear()
 							           .domain([0, d3.max(newList, function(d) {

@@ -2,6 +2,8 @@ package com.onekin.tagcloud.service;
 
 import java.util.List;
 
+import org.springframework.data.util.Pair;
+
 import com.onekin.tagcloud.model.CoreAsset;
 import com.onekin.tagcloud.model.Developer;
 import com.onekin.tagcloud.model.DeveloperGroup;
@@ -29,10 +31,12 @@ public interface SoftwareProductLineService {
 
 	List<VariationPoint> getVariationPointsFiltered(Filter filter);
 
-	Developer getFilterDeveloper(Iterable<Developer> developers, int developerId);
+	DeveloperGroup getFilterDeveloper(Iterable<DeveloperGroup> developerGroups, int developerId);
 
 	ProductRelease getFilterProduct(Iterable<ProductRelease> productReleases, int productId);
 
 	Iterable<DeveloperGroup> getDeveloperGroups();
+
+	List<Pair<String, String>> getDiffValues(Integer variationPointId);
 
 }

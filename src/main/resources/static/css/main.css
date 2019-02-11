@@ -1,8 +1,27 @@
-.footer {
+/* .footer {
 	margin-top: 20px;
 	bottom: 0;
 	width: 100%;
 	position: absolute;
+} */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin: 0 0 100px;
+    /* bottom = footer height */
+}
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+    overflow:hidden;
+    padding-top: 20px;
+
 }
 
 td.hljs-ln-code {
@@ -62,5 +81,44 @@ ul.legend {
 }
 
 .legend>li {
-    margin-left: 8vh;
+	margin-left: 8vh;
+}
+
+div.verticalScroll {
+	height: 56vh;
+	overflow-y: scroll;
+}
+
+.card {
+	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	min-width: 0;
+	word-wrap: break-word;
+	background-color: #f9f9f9; background-clip : border-box;
+	border: 1px solid rgba(0, 0, 0, .125);
+	border-radius: .25rem;
+	background-clip: border-box;
+}
+
+.card-header:first-child {
+	border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+}
+
+.card-header {
+	padding: .75rem 1.25rem;
+	margin-bottom: 0;
+	background-color: rgba(0, 0, 0, .03);
+	border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+.btn-link {
+	font-weight: 400;
+	color: #007bff;
+	background-color: transparent;
 }

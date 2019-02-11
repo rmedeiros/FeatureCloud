@@ -1,8 +1,8 @@
 package com.onekin.tagcloud.utils;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class  Formatting {
 
@@ -101,7 +101,7 @@ public class  Formatting {
 
 	public static String decodeFromBase64(String encoded){
 
-	byte[] valueDecoded= Base64.decode(encoded);
+	byte[] valueDecoded= Base64.getDecoder().decode(encoded);;
 	//	System.out.println("Decoded value is: " + new String(valueDecoded));
 		
 		return new String(valueDecoded);

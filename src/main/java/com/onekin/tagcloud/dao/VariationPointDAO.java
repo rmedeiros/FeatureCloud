@@ -2,6 +2,8 @@ package com.onekin.tagcloud.dao;
 
 import java.util.List;
 
+import org.springframework.data.util.Pair;
+
 import com.onekin.tagcloud.model.Filter;
 import com.onekin.tagcloud.model.VariationPoint;
 
@@ -12,4 +14,6 @@ public interface VariationPointDAO {
 	List<VariationPoint> getFeatureVariationPoints(String featureName);
 
 	List<VariationPoint> getVariationPointsFiltered(Filter filter);
+
+	List<Pair<String, String>> getDiffValues(Integer variationPointId);
 }

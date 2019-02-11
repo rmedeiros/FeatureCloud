@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import com.onekin.tagcloud.dao.FeatureDAO;
@@ -82,14 +83,14 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	}
 
 	@Override
-	public Developer getFilterDeveloper(Iterable<Developer> developers, int developerId) {
+	public DeveloperGroup getFilterDeveloper(Iterable<DeveloperGroup> developers, int developerId) {
 
-		Optional<Developer> optionalDeveloper = StreamSupport.stream(developers.spliterator(), false)
-				.filter(x -> x.getIdDeveloper() == developerId).findFirst();
+		Optional<DeveloperGroup> optionalDeveloper = StreamSupport.stream(developers.spliterator(), false)
+				.filter(x -> x.getIdDeveloperGroup()== developerId).findFirst();
 		if (optionalDeveloper.isPresent()) {
 			return optionalDeveloper.get();
 		} else {
-			return new Developer(0, "All");
+			return new DeveloperGroup(0, "All");
 		}
 	}
 
@@ -107,6 +108,11 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	@Override
 	public Iterable<DeveloperGroup> getDeveloperGroups() {
 		return developerGroupRepo.findAll();
+	}
+
+	@Override
+	public List<Pair<String,String>> getDiffValues(Integer variationPointId) {
+		return variationPointDAO.getDiffValues(variationPointId);
 	}
 
 }
