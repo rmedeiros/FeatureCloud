@@ -23,4 +23,11 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+.pydevproject
 
+#my
+exportCSV.csv
+.springBeans
+temp.txt.liddell.nexus
+temp.txt.oddsratio.nexus
+python
