@@ -166,6 +166,26 @@
 					SELECT custom_diff, name FROM customization_fact natural join product_release where idvariationpoint=?;					
 					]]>
 				</prop>
+				<prop key="get.tangling">
+					<![CDATA[
+							SELECT 
+							    A.ID_FEATURE, B.ID_FEATURE
+							FROM
+							    FEATURE_BRIDGE A
+							        LEFT JOIN
+							    FEATURE_BRIDGE B ON B.ID_FEATURE_GROUP = A.ID_FEATURE_GROUP
+							WHERE
+							    A.ID_FEATURE IN (:ids) AND  B.ID_FEATURE IN (:ids);
+    					]]>
+				</prop>
+				
+				<prop key="get.scattering">
+					<![CDATA[
+					    SELECT ID_FEATURE, COUNT(ID_FEATURE) FROM FEATURE_BRIDGE WHERE
+							    ID_FEATURE IN (:ids) GROUP BY ID_FEATURE;
+    					]]>
+				</prop>
+				
 
 			</props>
 

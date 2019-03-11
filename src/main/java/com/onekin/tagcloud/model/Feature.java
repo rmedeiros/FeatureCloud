@@ -7,6 +7,7 @@ public class Feature {
 	private Integer linesDeleted;
 	private Integer linesAdded;
 	private DeveloperGroupCustInFeature mostImportantDeveloperGroup;
+	private Integer featureScattering;
 
 	public Feature() {
 		super();
@@ -88,6 +89,15 @@ public class Feature {
 		return true;
 	}
 
+
+	public Integer getFeatureScattering() {
+		return featureScattering;
+	}
+
+	public void setFeatureScattering(Integer featureScattering) {
+		this.featureScattering = featureScattering;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -101,8 +111,12 @@ public class Feature {
 		builder.append(linesAdded);
 		builder.append(", mostImportantDeveloperGroup=");
 		builder.append(mostImportantDeveloperGroup);
+		builder.append(", featureScattering=");
+		builder.append(featureScattering);
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 
 }

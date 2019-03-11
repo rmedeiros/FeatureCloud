@@ -3,13 +3,17 @@ package com.onekin.tagcloud.dao;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.onekin.tagcloud.model.DeveloperGroupCustInFeature;
@@ -24,8 +28,17 @@ public class FeatureDAOImpl implements FeatureDAO {
 
 	private static final String GET_GROUPS_BY_FEATURE = "get.features.by.devgroup";
 
+	private static final String GET_TANGLING = "get.tangling";
+	
+	private static final String GET_SCATTERING = "get.scattering";
+
+
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private NamedParameterJdbcTemplate namedJdbcTemplate;
+
 
 	@Resource(name = "queries")
 	private Properties sqlQueries;
@@ -96,14 +109,26 @@ public class FeatureDAOImpl implements FeatureDAO {
 						}
 					}, new DeveloperGroupCustInFeatureMapper());
 		}
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		List<String> featureIds = features.stream().map(Feature::getId).collect(Collectors.toList());
+		parameters.addValue("ids", featureIds);
+	 	Map<String,Integer> featuresScatteringMap=namedJdbcTemplate.query(sqlQueries.getProperty(GET_SCATTERING), parameters, new FeatureScatteringExtractor());
 
 		for (Feature feature : features) {
 			feature.setMostImportantDeveloperGroup(developerGroups.stream()
 					.filter(group -> group.getFeatureId().equals(feature.getId())).findFirst().get());
+			feature.setFeatureScattering(featuresScatteringMap.get(feature.getId()));
 		}
 
 		return features;
 
+	}
+
+	@Override
+	public String getTanglingFeatureList(List<String> featureIdList) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		parameters.addValue("ids", featureIdList);
+		return 	namedJdbcTemplate.query(sqlQueries.getProperty(GET_TANGLING), parameters, new FeatureTanglingExtractor());
 	}
 
 }
