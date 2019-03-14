@@ -39,4 +39,6 @@ public interface SoftwareProductLineService {
 
 	List<Pair<String, String>> getDiffValues(Integer variationPointId);
 
+	String getNewickTree(List<String> collect);
+
 }

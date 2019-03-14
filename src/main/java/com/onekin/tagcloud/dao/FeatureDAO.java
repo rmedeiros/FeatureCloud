@@ -11,4 +11,6 @@ public interface FeatureDAO {
 
 	List<Feature> getFeaturesFiltered(Filter filter);
 
+	String getTanglingFeatureList(List<String> featureIdList);
+
 }

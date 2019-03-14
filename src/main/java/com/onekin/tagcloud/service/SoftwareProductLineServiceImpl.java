@@ -21,6 +21,7 @@ import com.onekin.tagcloud.repository.CoreAssetRepository;
 import com.onekin.tagcloud.repository.DeveloperGroupRepository;
 import com.onekin.tagcloud.repository.DeveloperRepository;
 import com.onekin.tagcloud.repository.ProductReleaseRepository;
+import com.onekin.tagcloud.utils.NewickTreeFormat;
 
 @Service
 public class SoftwareProductLineServiceImpl implements SoftwareProductLineService {
@@ -113,6 +114,12 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	@Override
 	public List<Pair<String,String>> getDiffValues(Integer variationPointId) {
 		return variationPointDAO.getDiffValues(variationPointId);
+	}
+
+	@Override
+	public String getNewickTree(List<String> featureIdList) {
+		String tanglingFeatureList = featureDAO.getTanglingFeatureList(featureIdList);
+		return NewickTreeFormat.getNewickFormatString(tanglingFeatureList);
 	}
 
 }

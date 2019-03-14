@@ -69,10 +69,6 @@
 				<li></li>
 			</ol>
 		</div>
-
-		<div class="container">
-			<ul class="legend"></ul>
-		</div>
 		<div id="tagcloud"></div>
 
 
@@ -143,7 +139,7 @@
 						.domain([0, d3.max(frequency_list, function (d) {
 							return d.size;
 						})])
-						.range([12, 55]);
+						.range([12, 45]);
 				
 					d3.layout.cloud().size([width, height])
 						.timeInterval(20)

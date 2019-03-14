@@ -1,5 +1,7 @@
 package com.onekin.tagcloud.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onekin.tagcloud.model.CoreAsset;
-import com.onekin.tagcloud.model.Developer;
 import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.FeaturesResponse;
@@ -41,18 +41,29 @@ public class MainController {
 	public String getFeatureTagCloud(Model model,
 			@RequestParam(required = false, name = "product", defaultValue = "0") Integer productId,
 			@RequestParam(required = false, name = "developer", defaultValue = "0") Integer developerId) {
-		
+		//TODO delete developer filter
 		List<Feature> features = softwareProductLineService.getFeaturesFiltered(new Filter(productId, developerId));
-		int totalLines = features.stream().map(Feature::getLinesDeleted).collect(Collectors.summingInt(i -> i))
-				+ features.stream().map(Feature::getLinesAdded).collect(Collectors.summingInt(i -> i));
+		List<Integer> modifiedLinesList = new ArrayList<>();
+		List<Integer> scatteringLevel = new ArrayList<>();
+		for(Feature feature: features) {
+			modifiedLinesList.add(feature.getLinesAdded()+feature.getLinesDeleted());
+			scatteringLevel.add(feature.getFeatureScattering());
+		}
+		int maxModifiedLines = Collections.max(modifiedLinesList);
+		String newickString = softwareProductLineService.getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
+		model.addAttribute("newickString", newickString);
 		model.addAttribute("features", features);
-		model.addAttribute("totalLines", totalLines);
+		model.addAttribute("maxModifiedLines", maxModifiedLines);
+		model.addAttribute("maxScattering", Collections.max(scatteringLevel));
+		model.addAttribute("minScattering", Collections.min(scatteringLevel));
+
 		Iterable<ProductRelease> productReleases = softwareProductLineService.getProductRealeses();
 		model.addAttribute("products", productReleases);
 		Iterable<DeveloperGroup> developers = softwareProductLineService.getDeveloperGroups();
 		model.addAttribute("developers", developers);
 		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));
 		model.addAttribute("filterDeveloper", softwareProductLineService.getFilterDeveloper(developers, developerId));
+		
 		return "features";
 	}
 

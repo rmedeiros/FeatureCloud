@@ -42,22 +42,6 @@
 										th:data-id="${product.idProductRelease}"></a></li>
 								</th:block>
 							</ul></li>
-
-						<li><a>Developer: </a></li>
-						<li class="dropdown" id="developer-list"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false"
-							th:data-id="${filterDeveloper.idDeveloperGroup}" th:inline="text">[[${filterDeveloper.name}]]
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu filter-menu">
-								<li><a href="#" data-id="0">All</a></li>
-								<th:block th:each="developer : ${developers}">
-									<li role="separator" class="divider"></li>
-									<li><a href="#" th:text="${developer.name}"
-										th:data-id="${developer.idDeveloperGroup}"></a></li>
-								</th:block>
-							</ul></li>
 					</ul>
 				</div>
 				<!-- /.navbar-collapse -->
@@ -70,17 +54,24 @@
 				<li></li>
 			</ol>
 		</div>
-		<div class="container">
-			<ul class="legend"></ul>
-		</div>
-		<div id="tagcloud"></div>
-		<script th:inline="javascript">
+	<div id="tp"></div>		
+	<script th:inline="javascript">
 
+				
+				var xScale = d3.scale.linear()
+				.domain([0, [[${maxModifiedLines}]] ])
+				.range([70, 255]);
+				var xScaleScattering = d3.scale.linear()
+				.domain([ [[${minScattering}]], [[${maxScattering}]] ])
+				.range([0.8, 5]);
+				
 		
 			    var frequency_list = [    	  	
 			    ];
-
-
+				options.treestring=[[${newickString}]];
+			    options.labelcolors= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]]+":#0000ff"+ Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
+			    options.labelscales= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]]+":"+ Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
+				 
 			    var groupSet = new Array();
 			    var devGroup;
 			    /*[# th:each="feature : ${features}"]*/
@@ -89,63 +80,8 @@
 				frequency_list.push({"text":[[${feature.name}]],"size": [[${feature.linesDeleted+feature.linesAdded}]],
 					"id":[[${feature.id}]],"color":[[${feature.mostImportantDeveloperGroup.devGroup.color}]]+colorGraduation([[${feature.linesDeleted+feature.linesAdded}]],[[${feature.mostImportantDeveloperGroup.modifiedLines}]])});
 			    /*[/]*/
-			    Array.from(groupSet).sort(compareDevGroups).forEach(function(element){
-			    	$(".legend").append('<li> Dev Group '+element.idDeveloperGroup+' <span class="badge" style="background-color:'+element.color+'"> </span></li>')
-			    });	
-			    
-			    var svg_location = "#tagcloud";
-		        var width = $(document).width();
-		        var height = 620;
-		        
-		        function draw(words) {
-			          d3.select(svg_location).append("svg")
-			              .attr("width", width)
-			              .attr("height", height)
-			            .append("g")
-			              .attr("transform", "translate(" + [width >> 1, height/3*2] + ")")
-			            .selectAll("text")
-			              .data(words)
-			              .enter().append("a").attr("feature-id",function(d) { return d.id.toLowerCase(); })
-			    	      .attr("href","#")
-			    	      .append("text")
-			    	      .style("font-size", function(d) { return  d.size+ "px"; })
-			    	      .style("font-family", "Impact")
-			    	      .attr("text-anchor", "middle")
-			    		  .style("fill", function(d) { return d.color ; })
-			    	      .attr("transform", function(d) {
-			    	        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-			    	      })
-			    	      .text(function(d) { return d.text; });
-			        }
-		        
-				drawWordCloud(frequency_list);
-			    
 
-      			function drawWordCloud(frequency_list){
-			        var xScale =  d3.scale.linear()
-			           .domain([0, d3.max(frequency_list, function(d) {
-			              return d.size;
-			            })
-			           ])
-			           .range([14,90]);
-			
-			        d3.layout.cloud().size([width, height])
-			          .timeInterval(20)
-			          .words(frequency_list)
-			          .fontSize(function(d) { return xScale(+d.size); })
-			          .text(function(d) { return d.text; })
-			          .rotate(0)
-			          .font("Impact")
-			          .on("end", draw)
-			          .start();
-			
-			    
-			
-			        d3.layout.cloud().stop();
-        
-
-	    
-	    		}        
+      
       		    $(function(){
 
       		        $(".filter-menu").on('click', 'li a', function(){
@@ -161,34 +97,6 @@
       		       		datatype:"json",
       		       		contentType: "application/json",
       		       		success: function(data) {
-      		       			var newList=[]
-      						groupSet = new Array();
-      		       			data.features.forEach(function(feature) {
-      							devGroup = feature.mostImportantDeveloperGroup.devGroup;
-      						    addUniqueGroup(devGroup, groupSet);
-      			       			fontSize = feature.linesDeleted+feature.linesAdded;
-      			 				newList.push({"text":feature.name,"size": fontSize, "id": feature.id, "color" : feature.mostImportantDeveloperGroup.devGroup.color+colorGraduation(feature.linesDeleted+feature.linesAdded,feature.mostImportantDeveloperGroup.modifiedLines)});
-      		       			});
-      						$(".legend").empty();
-      					    groupSet.sort(compareDevGroups).forEach(function(element){
-      					    	$(".legend").append('<li> Dev Group '+element.idDeveloperGroup+' <span class="badge" style="background-color:'+element.color+'"> </span></li>')
-      					    });	
-      		       			$("#tagcloud").find("svg").remove()
-      		       			  var xScale =  d3.scale.linear()
-      				           .domain([0, d3.max(newList, function(d) {
-      				              return d.size;
-      				            })
-      				           ])
-      				           .range([14,90]);
-      		       		  d3.layout.cloud().size([width, height])
-      			              .timeInterval(20)
-      			              .words(newList)
-      			              .fontSize(function(d) { return xScale(+d.size); })
-      			              .text(function(d) { return d.text; })
-      			              .rotate(0)
-      			              .font("Impact")
-      			              .on("end", draw)
-      			              .start();
       		            }
       		       		
       		       	});
