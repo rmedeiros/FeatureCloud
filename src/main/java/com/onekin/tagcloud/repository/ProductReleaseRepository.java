@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.onekin.tagcloud.model.ProductRelease;
 
 @Repository
-public interface ProductReleaseRepository extends CrudRepository<ProductRelease, Long>{
+public interface ProductReleaseRepository extends CrudRepository<ProductRelease, String>{
 
 	Iterable<ProductRelease> getProductReleaseByName(String name);
 

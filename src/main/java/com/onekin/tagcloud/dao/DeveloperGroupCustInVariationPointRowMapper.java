@@ -18,7 +18,6 @@ public class DeveloperGroupCustInVariationPointRowMapper implements RowMapper<De
 		group.getDevGroup().setIdDeveloperGroup(rs.getInt(1));
 		group.setModifiedLines(rs.getInt(2));
 		group.setIdVariationPoint(rs.getInt(3));
-		group.getDevGroup().setColor(rs.getString(4));
 		return group;
 	}
 

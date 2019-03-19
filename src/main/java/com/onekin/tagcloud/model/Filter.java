@@ -7,10 +7,10 @@ public class Filter {
 	@JsonProperty("developerId")
 	private int developerId;
 	@JsonProperty("productReleaseId")
-	private int productReleaseId;
+	private String productReleaseId;
 	private String featureName;
 
-	public Filter(int developerId, int productReleaseId, String featureName) {
+	public Filter(int developerId, String productReleaseId, String featureName) {
 		super();
 		this.developerId = developerId;
 		this.productReleaseId = productReleaseId;
@@ -21,7 +21,7 @@ public class Filter {
 		super();
 	}
 
-	public Filter(Integer productId, Integer developerId) {
+	public Filter(String productId, Integer developerId) {
 		this.productReleaseId = productId;
 		this.developerId = developerId;
 	}
@@ -34,11 +34,11 @@ public class Filter {
 		this.developerId = developerId;
 	}
 
-	public int getProductReleaseId() {
+	public String getProductReleaseId() {
 		return productReleaseId;
 	}
 
-	public void setProductReleaseId(int productReleaseId) {
+	public void setProductReleaseId(String productReleaseId) {
 		this.productReleaseId = productReleaseId;
 	}
 

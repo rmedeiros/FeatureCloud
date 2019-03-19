@@ -33,7 +33,7 @@ public interface SoftwareProductLineService {
 
 	DeveloperGroup getFilterDeveloper(Iterable<DeveloperGroup> developerGroups, int developerId);
 
-	ProductRelease getFilterProduct(Iterable<ProductRelease> productReleases, int productId);
+	ProductRelease getFilterProduct(Iterable<ProductRelease> productReleases, String productId);
 
 	Iterable<DeveloperGroup> getDeveloperGroups();
 

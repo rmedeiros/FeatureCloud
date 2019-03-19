@@ -13,7 +13,7 @@ public class ProductRelease {
 
 	@Id
 	@Column(name="idproductrelease")
-	int idProductRelease;
+	String idProductRelease;
 	String name;// tag
 	Date date;
 	String commits_set;
@@ -21,7 +21,7 @@ public class ProductRelease {
 	public ProductRelease() {
 	}
 
-	public ProductRelease(int idProductRelease, String name, Date date, String commits_set) {
+	public ProductRelease(String idProductRelease, String name, Date date, String commits_set) {
 		super();
 		this.idProductRelease = idProductRelease;
 		this.name = name;
@@ -31,17 +31,17 @@ public class ProductRelease {
 	}
 
 	
-	public ProductRelease(int idProductRelease, String name) {
+	public ProductRelease(String idProductRelease, String name) {
 		super();
 		this.idProductRelease = idProductRelease;
 		this.name = name;
 	}
 
-	public int getIdProductRelease() {
+	public String getIdProductRelease() {
 		return idProductRelease;
 	}
 
-	public void setIdProductRelease(int idProductRelease) {
+	public void setIdProductRelease(String idProductRelease) {
 		this.idProductRelease = idProductRelease;
 	}
 

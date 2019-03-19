@@ -28,9 +28,9 @@
 			<ol class="breadcrumb">
 				<li><a href="/">Home</a></li>
 				<li><a
-					th:href="@{/features/?product=}+${product}+@{&developer=}+${developer}">Features</a></li>
+					th:href="@{/features/?product=}+${product}">Features</a></li>
 				<li><a
-					th:href="@{/features/}+${currentFeature}+@{/?product=}+${product}+@{&developer=}+${developer}"
+					th:href="@{/features/}+${currentFeature}+@{/?product=}"
 					th:text="${#strings.capitalize(currentFeature)}"></a></li>
 				<!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
 			</ol>

@@ -63,23 +63,13 @@
 				.range([70, 255]);
 				var xScaleScattering = d3.scale.linear()
 				.domain([ [[${minScattering}]], [[${maxScattering}]] ])
-				.range([0.8, 5]);
+				.range([0.7, 4]);
 				
 		
-			    var frequency_list = [    	  	
-			    ];
 				options.treestring=[[${newickString}]];
-			    options.labelcolors= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]]+":#0000ff"+ Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
-			    options.labelscales= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]]+":"+ Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
+			    options.labelcolors= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]]+":#0000ff"+ Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
+			    options.labelscales= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]]+":"+ Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
 				 
-			    var groupSet = new Array();
-			    var devGroup;
-			    /*[# th:each="feature : ${features}"]*/
-			    devGroup = [[${feature.mostImportantDeveloperGroup.devGroup}]];
-			    addUniqueGroup(devGroup, groupSet);
-				frequency_list.push({"text":[[${feature.name}]],"size": [[${feature.linesDeleted+feature.linesAdded}]],
-					"id":[[${feature.id}]],"color":[[${feature.mostImportantDeveloperGroup.devGroup.color}]]+colorGraduation([[${feature.linesDeleted+feature.linesAdded}]],[[${feature.mostImportantDeveloperGroup.modifiedLines}]])});
-			    /*[/]*/
 
       
       		    $(function(){
@@ -104,10 +94,7 @@
       		        });
 
       		    });
-      		    $(function(){   $("#tagcloud").on('click', 'svg g a', function(){
-      		    	$(location).attr('href', $(this).attr("feature-id")+"/?product="+$("#product-list").find('.dropdown-toggle').attr("data-id")+"&developer="+$("#developer-list").find('.dropdown-toggle').attr("data-id"));					
-      		    });});	    
-			 
+
 			</script>
 
 	</section>

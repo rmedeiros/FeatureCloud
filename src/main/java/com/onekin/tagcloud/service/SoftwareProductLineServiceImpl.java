@@ -96,13 +96,13 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	}
 
 	@Override
-	public ProductRelease getFilterProduct(Iterable<ProductRelease> productReleases, int productId) {
+	public ProductRelease getFilterProduct(Iterable<ProductRelease> productReleases, String productId) {
 		Optional<ProductRelease> optionalProduct = StreamSupport.stream(productReleases.spliterator(), false)
-				.filter(x -> x.getIdProductRelease() == productId).findFirst();
+				.filter(x -> x.getIdProductRelease().equals(productId)).findFirst();
 		if (optionalProduct.isPresent()) {
 			return optionalProduct.get();
 		} else {
-			return new ProductRelease(0, "All");
+			return new ProductRelease("0", "All");
 		}
 	}
 

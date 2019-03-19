@@ -1,79 +1,72 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	layout:decorator="layout/template">
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"></link>
+<link rel="stylesheet" type="text/css" href="/css/main.css"></link>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+	crossorigin="anonymous">
+</head>
 <body>
-	<section layout:fragment="content">
-		<div class="container">
-
-
-			<div class="row">
-				<div class="col-md-6" id="tagcloud"></div>
-				<div class="col-md-6"></div>
+	<header th:fragment="navbar" class="navbar navbar-light bg-faded">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">Feamulus</a>
+				</div>
 			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</header>
+	<div
+		class="feamulus-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+		<h1 class="display-4">Welcome to Feamulus</h1>
+		<p class="lead">Feamulus (FEAture and cuMULUS) is a tag based visualization tool used to improve comprehensibility and maintenance of preprocessor-based SPL code.</p>
+	</div>
+	<div class="vertical-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-2 col-md-2"></div>
 
-
-			<script th:inline="javascript">
-
-			    var frequency_list = [    	  	
-			    ];
-			    var fontSize;
-			    /*[# th:each="variationPoint : ${variationPoints}"]*/
-			    fontSize = Math.floor([[${variationPoint.linesDeleted}+${variationPoint.linesAdded}/${totalLines}*100*${#lists.size(variationPoints)}]])
-				frequency_list.push({"text":"[[${variationPoint.id}]]","size": fontSize, "coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.coreAssetId}]]"});
-			    /*[/]*/
-			    
-			
-				var color = d3.scale.linear()
-			            .domain([0,1,2,3,4,5,6,10,15,20,100])
-			            .range(["#ccccff","#b2b2ff","#9999ff", "#7f7fff", "#6666ff", "#4c4cff", "#3232ff","#1919ff","#0000ff","#0000cc","#0000e5","#0000ff"]);
-			
-			 
-			    var size = [800, 450]
-			    d3.layout.cloud().size(size)
-			            .words(frequency_list)
-			    		.rotate(0)
-			    		.padding(5)
-			            .fontSize(function(d) { return d.size; })
-			            .on("end", draw)
-			            .start();
-			    function draw(words) {
-			    	  d3.selectAll("#tagcloud").append("svg")
-			    	      .attr("width", size[0])
-			    	      .attr("height", size[1])
-			    	    .append("g")
-			    	      .attr("transform", "translate(" + size[0]/2 + "," + size[1]/2+ ")")
-			    	    .selectAll("text")
-			    	      .data(words)
-			    	    .enter()
-			    	      .append("a").attr("href",function(d) { return "/asset/"+d.coreAssetId; })
-			    	       .attr("data-toggle", "tooltip")
-			    	      .attr("data-placement", "top")
-			    	      .attr("title",function(d) { return d.coreAssetName; })
-			    	      .append("text")
-			    	      .style("font-size", function(d) { return (d.size>12  ? d.size : 14)+ "px"; })
-			    	      .style("font-family", "Impact")
-			    	      .attr("text-anchor", "middle")
-			    		  .style("fill", function(d, i) { return color(i); })
-			    	      .attr("transform", function(d) {
-			    	        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-			    	      })
-			    	      .text(function(d) { return d.text; });
-			    	}
-			    
-				$(function () {
-					  $('[data-toggle="tooltip"]').tooltip({
-						    'container': 'body',
-						    'placement': 'bottom'
-						})
-					})
-					
-				
-			</script>
+				<div class="col-sm-4 col-md-4">
+					<a href="features/">
+						<div class="thumbnail">
+							<i class="fas fa-chart-line" style="font-size: 120px;"></i>
+							<div class="caption">
+								<h3 class="main-menu">Delta Analysis</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-sm-4 col-md-4">
+					<div class="thumbnail">
+						<i class="fas fa-cogs" style="font-size: 120px;"></i>
+						<div class="caption">
+							<h3 class="main-menu">Release Snapshot Analysis</h3>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-
-	</section>
-
+	</div>
+	<footer th:fragment="footer" class="footer">
+		<div class="container">
+			<span class="text-muted"> <img src="/images/onekinLogo.png"
+				alt="Logo" style="width: 150px; height: 70px;"> </img>
+			</span>
+		</div>
+	</footer>
 </body>
 </html>

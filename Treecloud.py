@@ -61,8 +61,7 @@ if not(args.has_key("step")):
 step=int(args["step"]);
 
 
-theformula="liddell";
-#theformula="oddsratio";
+theformula="oddsratio";
 
 
 if not(args.has_key("unit")):
@@ -194,7 +193,6 @@ def buildTreeCloud(thefile,minnb,nbwords,winSize,step,formula,normat,unit,color,
         #------------------------------
         # transform distance matrix into CSV File:
         #------------------------------
-        exportToNexus(distance,keptWords,thefile+"."+formula,unit)
 
         fileName = exportToCsv(distance,keptWords)
         pdm = dendropy.PhylogeneticDistanceMatrix.from_csv(
@@ -202,6 +200,7 @@ def buildTreeCloud(thefile,minnb,nbwords,winSize,step,formula,normat,unit,color,
             delimiter=";")
         nj_tree = pdm.nj_tree()
         print(nj_tree.as_string("newick"))
+        os.remove(fileName)            
 
 
 

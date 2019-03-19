@@ -45,15 +45,23 @@ public class FeatureDAOImpl implements FeatureDAO {
 
 	@Override
 	public List<Feature> getFeatures() {
+		List<Feature> features =jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURES), new FeatureRowMapper());
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		List<String> featureIds = features.stream().map(Feature::getId).collect(Collectors.toList());
+		parameters.addValue("ids", featureIds);
+	 	Map<String,Integer> featuresScatteringMap=namedJdbcTemplate.query(sqlQueries.getProperty(GET_SCATTERING), parameters, new FeatureScatteringExtractor());
 
-		return jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURES), new FeatureRowMapper());
+		for (Feature feature : features) {
+			feature.setFeatureScattering(featuresScatteringMap.get(feature.getId()));
+		}
+		return features;
 	}
 
 	@Override
 	public List<Feature> getFeaturesFiltered(Filter filter) {
 		List<Feature> features;
 		List<DeveloperGroupCustInFeature> developerGroups;
-		if (filter.getDeveloperId() == 0 && filter.getProductReleaseId() == 0) {
+		if (filter.getDeveloperId() == 0 && filter.getProductReleaseId().equals("0")) {
 			features = getFeatures();
 			developerGroups = jdbcTemplate.query(sqlQueries.getProperty(GET_GROUPS_BY_FEATURE),
 					new DeveloperGroupCustInFeatureMapper());
@@ -74,7 +82,7 @@ public class FeatureDAOImpl implements FeatureDAO {
 							preparedStatement.setObject(1, filter.getProductReleaseId());
 						}
 					}, new DeveloperGroupCustInFeatureMapper());
-		} else if (filter.getProductReleaseId() == 0) {
+		} else if (filter.getProductReleaseId().equals("0")) {
 			features = jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURES + QueriesConstants.FILTER_DEVELOPER),
 					new PreparedStatementSetter() {
 

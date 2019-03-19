@@ -50,7 +50,7 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 	public List<VariationPoint> getVariationPointsFiltered(Filter filter) {
 		List<DeveloperGroupCustInVariationPoint> developerGroups;
 		List<VariationPoint> variationPoints;
-		if (filter.getDeveloperId() == 0 && filter.getProductReleaseId() == 0) {
+		if (filter.getDeveloperId() == 0 && filter.getProductReleaseId().equals("0")) {
 			variationPoints = getFeatureVariationPoints(filter.getFeatureName());
 			developerGroups = jdbcTemplate.query(sqlQueries.getProperty(GET_GROUPS_BY_VP),
 					new PreparedStatementSetter() {
@@ -80,7 +80,7 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 
 						}
 					}, new DeveloperGroupCustInVariationPointRowMapper());
-		} else if (filter.getProductReleaseId() == 0) {
+		} else if (filter.getProductReleaseId().equals("0")) {
 			variationPoints = jdbcTemplate.query(
 					sqlQueries.getProperty(GET_FEATURE_VARIATION_POINTS + QueriesConstants.FILTER_DEVELOPER),
 					new PreparedStatementSetter() {
@@ -108,7 +108,7 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 						public void setValues(PreparedStatement preparedStatement) throws SQLException {
 							preparedStatement.setString(1, filter.getFeatureName());
 							preparedStatement.setInt(2, filter.getDeveloperId());
-							preparedStatement.setInt(3, filter.getProductReleaseId());
+							preparedStatement.setString(3, filter.getProductReleaseId());
 						}
 					}, new VariationPointRowMapper());
 			developerGroups = jdbcTemplate.query(
@@ -118,7 +118,7 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 						public void setValues(PreparedStatement preparedStatement) throws SQLException {
 							preparedStatement.setString(1, filter.getFeatureName());
 							preparedStatement.setInt(2, filter.getDeveloperId());
-							preparedStatement.setInt(3, filter.getProductReleaseId());
+							preparedStatement.setString(3, filter.getProductReleaseId());
 
 						}
 					}, new DeveloperGroupCustInVariationPointRowMapper());

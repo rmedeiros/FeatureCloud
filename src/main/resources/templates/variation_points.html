@@ -39,22 +39,6 @@
 										th:data-id="${product.idProductRelease}"></a></li>
 								</th:block>
 							</ul></li>
-
-						<li><a>Developer: </a></li>
-						<li class="dropdown" id="developer-list"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false"
-							th:data-id="${filterDeveloper.idDeveloperGroup}" th:inline="text">[[${filterDeveloper.name}]]
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu filter-menu">
-								<li><a href="#" data-id="0">All</a></li>
-								<th:block th:each="developer : ${developers}">
-									<li role="separator" class="divider"></li>
-									<li><a href="#" th:text="${developer.name}"
-										th:data-id="${developer.idDeveloperGroup}"></a></li>
-								</th:block>
-							</ul></li>
 					</ul>
 				</div>
 				<!-- /.navbar-collapse -->
@@ -86,12 +70,10 @@
 			    devGroup = [[${variationPoint.mostImportantDeveloperGroup.devGroup}]];
 			    addUniqueGroup(devGroup, groupSet);
 				frequency_list.push({"text":[[${variationPoint.expression}]],"size": [[${variationPoint.linesDeleted}+${variationPoint.linesAdded}]],
-					"coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.id}]]","color": [[${variationPoint.mostImportantDeveloperGroup.devGroup.color}]] +colorGraduation([[${variationPoint.linesDeleted+variationPoint.linesAdded}]],[[${variationPoint.mostImportantDeveloperGroup.modifiedLines}]])});
+					"coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.id}]]"});
 			    /*[/]*/
 			    
-			    groupSet.sort(compareDevGroups).forEach(function(element){
-			    	$(".legend").append('<li> Dev Group '+element.idDeveloperGroup+' <span class="badge" style="background-color:'+element.color+'"> </span></li>')
-			    });		       
+	    
 			    var svg_location = "#tagcloud";
 		        var width = $(document).width();
 		        var height = 620;
@@ -120,7 +102,7 @@
 						.style("font-family", "Impact")
 						.attr("text-anchor", "middle")
 						.style("fill", function (d, i) {
-							return d.color ;
+							return '#0000ff' ;
 						})
 						.attr("transform", function (d) {
 							return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
