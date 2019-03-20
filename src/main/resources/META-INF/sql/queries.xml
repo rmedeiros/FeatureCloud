@@ -163,8 +163,51 @@
 
 				<prop key="get.diffvalues">
 					<![CDATA[
-					SELECT custom_diff, name FROM customization_fact natural join product_release where idvariationpoint=?;					
+					SELECT custom_diff, type FROM customization_fact natural join product_release where idvariationpoint=?;					
 					]]>
+				</prop>
+				<prop key="get.tangling.delta">
+					<![CDATA[
+							SELECT 
+							    A.ID_FEATURE, B.ID_FEATURE
+							FROM
+							    FEATURE_BRIDGE A
+							        LEFT JOIN
+							    FEATURE_BRIDGE B ON B.ID_FEATURE_GROUP = A.ID_FEATURE_GROUP WHERE A.ID_FEATURE in (:ids) ;
+   					]]>
+				</prop>
+
+				<prop key="get.scattering.delta">
+					<![CDATA[
+							SELECT ID_FEATURE, COUNT(ID_FEATURE) FROM FEATURE_BRIDGE WHERE ID_FEATURE in (:ids) GROUP BY ID_FEATURE;
+   					
+			        ]]>
+				</prop>
+
+
+				<!-- RELEASE ANALYSIS QUERIES -->
+
+				<prop key="get.release.features">
+					<![CDATA[
+					SELECT FEATURE_NAME, SUM(LINES_NUMBER), ID_FEATURE
+					  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN VARIATION_POINT ON ID_VARIATIONPOINT=IDVARIATIONPOINT WHERE ID_FEATURE!='NO FEATURE'GROUP BY FEATURE_NAME;
+				  	]]>
+				</prop>
+				<prop key="get.release.feature.variation.points">
+					<![CDATA[
+					  SELECT IDVARIATIONPOINT, LINES_NUMBER, C.IDCOREASSET, NAME, VP.EXPRESSION  
+					  	FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN VARIATION_POINT VP ON ID_VARIATIONPOINT=IDVARIATIONPOINT
+					  	INNER JOIN CORE_ASSET C ON ID_COREASSET=C.IDCOREASSET
+					  	WHERE LOWER(ID_FEATURE)=?;
+				  	]]>
+				</prop>
+				<prop key="get.release.vp.content">
+					<![CDATA[
+						SELECT C.IDCOREASSET, C.NAME, VP.BODY  
+					  	FROM VARIATION_POINT VP 
+					  	INNER JOIN CORE_ASSET C ON VP.IDCOREASSET=C.IDCOREASSET
+					  	WHERE VP.IDVARIATIONPOINT=?;
+				  	]]>
 				</prop>
 				<prop key="get.tangling">
 					<![CDATA[
@@ -176,14 +219,12 @@
 							    FEATURE_BRIDGE B ON B.ID_FEATURE_GROUP = A.ID_FEATURE_GROUP WHERE A.ID_FEATURE!='No feature';
     					]]>
 				</prop>
-				
+
 				<prop key="get.scattering">
 					<![CDATA[
 					    SELECT ID_FEATURE, COUNT(ID_FEATURE) FROM FEATURE_BRIDGE WHERE ID_FEATURE!='No feature' GROUP BY ID_FEATURE;
     					]]>
 				</prop>
-				
-
 			</props>
 
 		</constructor-arg>

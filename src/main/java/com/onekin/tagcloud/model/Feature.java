@@ -7,7 +7,7 @@ public class Feature {
 	private Integer linesDeleted;
 	private Integer linesAdded;
 	private DeveloperGroupCustInFeature mostImportantDeveloperGroup;
-	private Integer featureScattering;
+	private int featureScattering;
 
 	public Feature() {
 		super();
@@ -90,11 +90,11 @@ public class Feature {
 	}
 
 
-	public Integer getFeatureScattering() {
+	public int getFeatureScattering() {
 		return featureScattering;
 	}
 
-	public void setFeatureScattering(Integer featureScattering) {
+	public void setFeatureScattering(int featureScattering) {
 		this.featureScattering = featureScattering;
 	}
 

@@ -230,7 +230,12 @@
       d = data[di];
       c.save();
       c.font = d.style + " " + d.weight + " " + ~~((d.size + 1) / ratio) + "px " + d.font;
-      var w = c.measureText(d.text + "m").width * ratio,
+      if(d.text.length>90){
+    	  var textWidth = d.text.substring(0,89);
+      }else{
+    	  var textWidth = d.text;
+      }
+      var w = c.measureText(textWidth + "m").width * ratio,
           h = d.size << 1;
       if (d.rotate) {
         var sr = Math.sin(d.rotate * cloudRadians),

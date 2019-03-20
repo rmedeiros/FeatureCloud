@@ -36,6 +36,7 @@ td.hljs-ln-numbers {
 }
 
 h2.asset-title {
+	padding-top: 4vh;
 	margin-bottom: 15px;
 	margin-top: 0px;
 }
@@ -51,7 +52,7 @@ table.hljs-ln>tbody>tr {
 pre.code-pre {
 	padding-bottom: 0px;
 	padding-top: 0px;
-	height: 70vh;
+	height: 100%;
 	overflow: auto;
 }
 
@@ -71,20 +72,23 @@ pre.code-pre {
 	background-color: #0000;
 	border-radius: 4px;
 	padding-left: 50px;
+	float: left;
 }
 
 .badge {
 	min-width: 15px;
 	min-height: 15px;
+	margin-left: 1vh;
 }
 
 ul.legend {
 	display: inline-flex;
 	list-style-type: none;
+	padding-top: 1vh;
 }
 
 .legend>li {
-	margin-left: 8vh;
+	margin-right: 10vh;
 }
 
 div.verticalScroll {
@@ -93,13 +97,14 @@ div.verticalScroll {
 }
 
 .vertical-center {
-    min-height: 100%;
-    /* min-height: 100vh; */
-    display: flex;
-    align-items: center;
-    padding-top: 20%;
-    padding-top: 20vh;
+	min-height: 100%;
+	/* min-height: 100vh; */
+	display: flex;
+	align-items: center;
+	padding-top: 20%;
+	padding-top: 20vh;
 }
+
 .thumbnail i {
 	top: 50%;
 	left: 32%;
@@ -114,42 +119,98 @@ h3.main-menu {
 	padding-top
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	:
 	
+	
+	
+	
+	
 	 
+	
+	
+	
+	
 	
 	3
 	rem
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	!
 	important
+	
+	
+	
+	
+	
+	
+	
+	
 	;
-	
-	
-
-
 }
 
 @media ( min-width : 768px) .pb-md-4 , . py-md-4 {
 	padding-bottom
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	:
 	
+	
+	
+	
+	
 	 
+	
+	
+	
+	
 	
 	1
 	.5rem
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	!
 	important
+	
+	
+	
+	
+	
+	
+	
+	
 	;
-	
-	
-
-
 }
 
 .ml-auto, .mx-auto {
@@ -189,4 +250,19 @@ h3.main-menu {
 
 .feamulus-header {
 	max-width: 700px;
+}
+
+h2.analisy-mode {
+	float: left;
+	padding-left: 63vh;
+}
+
+h2.analisy-mode-vp {
+	float: left;
+	padding-left: 40vh;
+}
+
+.title-container {
+	display: table;
+	margin-bottom: 6vh;
 }

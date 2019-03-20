@@ -6,10 +6,10 @@
       labelscales: "",
       equallength: true,
       "default": {
-        label_fontsize: 2,
+        label_fontsize: 1,
         label_color: "#484848",
         label_offset: 1.2,
-        edge_width: 0.3,
+        edge_width: 0.08,
         edge_color: "#fec44f",
         edge_scale: 1
       } 
@@ -56,7 +56,7 @@
       if (options.equallength) {
         tree = equal_angle(options.treestring, 8 * edge_scale, true);
       } else {
-        tree = equal_angle(options.treestring, 100 * edge_scale, false);
+        tree = equal_angle(options.treestring, 20 * edge_scale, false);
       }
       nl = tree.postToList();
       labelcolors = parse_labelcolors(options.labelcolors);
@@ -202,7 +202,7 @@
       pad = 5;
       bbox = svg[0][0].getBBox();
       x = bbox.x, y = bbox.y, width = bbox.width, height = bbox.height;
-      svg.selectAll("g").attr("transform", "translate(" + (pad - x) + "," + (pad - y) + ")");
+      svg.selectAll("g").attr("transform", "translate(" + (pad - x-4) + "," + (pad - y-4) + ")");
       outwidth = $("#tp").parent().width() * 0.95;
       outheight = outwidth / width * height;
       svg.attr("viewBox", "0 0 " + (width + 2 * pad) + " " + (height + 2 * pad));
@@ -215,10 +215,10 @@
       options.equallength = false;
       try {
         options_string = {
-        		"label_fontsize": 2,
+        		"label_fontsize": 1,
         		"label_color": "#484848",
         		"label_offset": 1.2,
-        		"edge_width": 0.3,
+        		"edge_width": 0.08,
         		"edge_color": "#fec44f",
         		"edge_scale": 1
         	};

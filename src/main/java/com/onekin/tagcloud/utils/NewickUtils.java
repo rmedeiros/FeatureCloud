@@ -4,9 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class NewickTreeFormat {
+public class NewickUtils {
 
 	public static String getNewickFormatString(String featureList)  {
+		System.out.println(featureList);
 		Process p;
 		try {
 			p = Runtime.getRuntime().exec("python Treecloud.py \""+ featureList+"\"");

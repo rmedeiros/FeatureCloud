@@ -8,6 +8,10 @@
 
 	<link rel="stylesheet" href="/css/highlight/github.css">
 	<link rel="stylesheet" href="/css/diff2html.min.css">
+	<link rel="stylesheet"
+		href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+		integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+		crossorigin="anonymous">
 
 	<script src="/js/highlight/highlight.pack.js"></script>
 	<script src="/js/highlight/highlightjs-line-numbers.min.js"></script>
@@ -19,48 +23,50 @@
 		hljs.initHighlightingOnLoad();
 		hljs.initLineNumbersOnLoad();
 	</script>
+
 </th:block>
 </head>
 <body>
 
 	<section layout:fragment="content">
-		<div>
+
+		<div class="title-container">
 			<ol class="breadcrumb">
 				<li><a href="/">Home</a></li>
-				<li><a
-					th:href="@{/features/?product=}+${product}">Features</a></li>
-				<li><a
-					th:href="@{/features/}+${currentFeature}+@{/?product=}"
+				<li><a th:href="@{/features/?product=}+${product}">Features</a></li>
+				<li><a th:href="@{/features/}+${currentFeature}+@{/?product=}"
 					th:text="${#strings.capitalize(currentFeature)}"></a></li>
 				<!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
 			</ol>
+			<h2 class="analisy-mode-vp display-4">Variation points diff
+				analysis</h2>
+
 		</div>
 		<div class="container">
-			<!-- <h2 class="asset-title" th:text="${coreAsset.name}"></h2>
-			<pre class="code-pre"> 
-				<code th:text="${coreAsset.content}"></code>
-			</pre> -->
+
 			<div id="accordion">
 				<div class="card" th:each="diffValue,iter : ${diffValues}">
 					<div class="card-header" th:id="'heading'+${iter.index}">
 						<h5 class="mb-0">
 							<button class="btn btn-link" data-toggle="collapse"
 								th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
-								th:aria-controls="'collapse'+${iter.index}" th:inline="text">Product
-								[[${#strings.capitalize(diffValue.second)}]]'s custom diff value</button>
+								th:aria-controls="'collapse'+${iter.index}" th:inline="text">
+								TYPE: [[${#strings.capitalize(diffValue.second)}]]    <i
+									class="fas fa-caret-down"></i>
+							</button>
 						</h5>
 					</div>
 
 					<div th:id="'collapse'+${iter.index}" class="collapse"
-						th:aria-labelledby="'heading'+${iter.index}" data-parent="#accordion">
+						th:aria-labelledby="'heading'+${iter.index}"
+						data-parent="#accordion">
 						<div class="card-body diffview" th:id="'diffview'+${iter.index}"></div>
 					</div>
 				</div>
-
 			</div>
-			<script th:inline="javascript">
+		</div>
+		<script th:inline="javascript">
 			/*<![CDATA[*/
-
 				function getMetaContentByName(name, content) {
 					var content = (content == null) ? 'content' : content;
 					return document.querySelector("meta[name='" + name + "']")
@@ -84,9 +90,7 @@
 						});
 						diff2htmlUi.highlightCode('#diffview'+i);
 					});
-
 					/*double*/
-
 				});//end of on document load
 				
 				/*]]>*/

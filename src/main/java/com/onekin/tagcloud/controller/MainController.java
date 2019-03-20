@@ -116,7 +116,6 @@ public class MainController {
 			@RequestParam(required = false, name = "product", defaultValue = "0") Integer productId, Model model) {
 		List<Pair<String, String>> diffValues = softwareProductLineService.getDiffValues(variationPointId);
 		model.addAttribute("diffValues", diffValues);
-		model.addAttribute("product", productId);
 		model.addAttribute("currentFeature", featureName);
 		return "core_asset";
 

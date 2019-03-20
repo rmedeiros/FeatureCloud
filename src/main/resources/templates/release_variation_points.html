@@ -9,7 +9,7 @@
 			<div class="container-fluid filters-container">
 				<!-- Brand and toggle get grouped for better mobile display -->
 
-		<!-- Collect the nav links, forms, and other content for toggling 
+				<!-- Collect the nav links, forms, and other content for toggling 
 
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed"
@@ -27,34 +27,23 @@
 						<li><a>Product release:</a></li>
 						<li class="dropdown" id="product-list"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false"
-							th:data-id="${filterProduct.idProductRelease}" th:inline="text">[[${filterProduct.name}]]
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu filter-menu">
-								<li><a href="#" data-id="0">All</a></li>
-								<th:block th:each="product : ${products}">
-									<li role="separator" class="divider"></li>
-									<li><a href="#" th:text="${product.name}"
-										th:data-id="${product.idProductRelease}"></a></li>
-								</th:block>
-							</ul></li>
+							aria-haspopup="true" aria-expanded="false"></a>
 					</ul>
 				</div>
-				<!-- /.navbar-collapse 
-		</div>
+				 /.navbar-collapse 
+			</div>
 		</nav>-->
+		
 		<div class="title-container">
 			<ol class="breadcrumb">
 				<li><a href="/">Home</a></li>
-				<li><a href="/features/" class="breadcrumb-link">Features</a></li>
+				<li><a href="/release/features/" class="breadcrumb-link">Features</a></li>
 				<li class="active"><span
 					th:text=${#strings.capitalize(currentFeature)}></span></li>
 				<li></li>
 			</ol>
-			<h2 class="analisy-mode-vp display-4">Variation points delta
-				analysis</h2>
-
+						<h2 class="analisy-mode-vp display-4">Variation points analysis</h2>
+		
 		</div>
 		<div id="tagcloud"></div>
 
@@ -67,12 +56,8 @@
 				var feature = [[${currentFeature}]];
 			    var frequency_list = [    	  	
 			    ];
-			    var groupSet = new Array();
-			    var devGroup;
 			    /*[# th:each="variationPoint : ${variationPoints}"]*/
-			    devGroup = [[${variationPoint.mostImportantDeveloperGroup.devGroup}]];
-			    addUniqueGroup(devGroup, groupSet);
-				frequency_list.push({"text":[[${variationPoint.expression}]],"size": [[${variationPoint.linesDeleted}+${variationPoint.linesAdded}]],
+				frequency_list.push({"text":[[${variationPoint.expression}]],"size": [[${variationPoint.linesAdded}]],
 					"coreAssetName":[[${variationPoint.coreAssetName}]], "coreAssetId":"[[${variationPoint.id}]]"});
 			    /*[/]*/
 			    
@@ -111,9 +96,7 @@
 							return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
 						})
 						.html(function (d) {
-					
 							return d.text;
-							
 						});
 						setToolTip();
 				}
@@ -126,7 +109,7 @@
 						.domain([0, d3.max(frequency_list, function (d) {
 							return d.size;
 						})])
-						.range([12, 45]);
+						.range([14, 45]);
 				
 					d3.layout.cloud().size([width, height])
 						.timeInterval(20)
@@ -137,10 +120,9 @@
 						})
 						.text(function (d) {
 							if(d.text.length>90){
-								return  "<tspan x='0'>"+(d.text.substring(0,d.text.length/2)+"</tspan><tspan x='0'  dy='1.2em'>"+d.text.substring(d.text.length/2,d.text.length)).trim()+"</tspan>";
+								return  "<tspan x='0'>"+(d.text.substring(0,d.text.length/2)+"</tspan><tspan x='0' dy='1.2em'>"+d.text.substring(d.text.length/2,d.text.length)).trim()+"</tspan>";
 							}else{
-							return d.text;}
-						})
+							return d.text;}						})
 						.rotate(0)
 						.font("Impact")
 						.on("end", draw)
@@ -170,23 +152,17 @@
 								contentType: "application/json",
 								success: function (data) {
 									var newList = []
-									groupSet = new Array();
 									data.variationPoints.forEach(function (variationPoint) {
 										fontSize = variationPoint.linesDeleted + variationPoint.linesAdded;
-										 devGroup = variationPoint.mostImportantDeveloperGroup.devGroup;
-										 addUniqueGroup(devGroup, groupSet);
 										newList.push({
 											"text": variationPoint.expression,
 											"size": fontSize,
 											"coreAssetName": variationPoint.coreAssetName,
-											"coreAssetId": variationPoint.coreAssetId,
-										    "color" : variationPoint.mostImportantDeveloperGroup.devGroup.color+colorGraduation(fontSize,variationPoint.mostImportantDeveloperGroup.modifiedLines)
+											"coreAssetId": variationPoint.coreAssetId
 										});
 									});
 									$(".legend").empty();
-								    groupSet.sort(compareDevGroups).forEach(function(element){
-								    	$(".legend").append('<li> Dev Group '+element.idDeveloperGroup+' <span class="badge" style="background-color:'+element.color+'"> </span></li>')
-								    });	
+								  
 					       			$("#tagcloud").find("svg").remove()
 					       			  var xScale =  d3.scale.linear()
 							           .domain([0, d3.max(newList, function(d) {
@@ -212,10 +188,6 @@
 				
 					});
 				}
-			 	
-			 	$(".breadcrumb-link").click(function(){
-			 		window.location.href = '/features/?product='+$("#product-list").find('.dropdown-toggle').attr("data-id")+'&developer='+$("#developer-list").find('.dropdown-toggle').attr("data-id");
-			 	});
 			 	
 		
 				function setToolTip(){

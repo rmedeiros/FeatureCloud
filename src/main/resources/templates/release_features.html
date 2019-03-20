@@ -1,0 +1,118 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout/template">
+
+<body>
+	<section layout:fragment="content">
+
+
+		<!--  <nav class="navbar navbar-default">
+			<div class="container-fluid filters-container">
+				<!-- Brand and toggle get grouped for better mobile display -->
+
+		<!-- Collect the nav links, forms, and other content for toggling 
+
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand">Filters </a>
+				</div>
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-2">
+					<ul class="nav navbar-nav">
+						<li><a>Package Component:</a></li>
+					</ul>
+				</div>
+				<!-- /.navbar-collapse 
+			</div>
+		</nav>-->
+		<div class="title-container">
+			<ol class="breadcrumb breadcrumb-arrow">
+				<li><a href="/">Home</a></li>
+				<li class="active"><span>Features</span></li>
+				<li></li>
+			</ol>
+			<h2 class="analisy-mode display-4">Feature analysis</h2>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2">
+					<h4>Scattering legend:</h4>
+				</div>
+				<div class="col-md-10">
+
+					<ul class="legend">
+						<li>1<span class="badge" style="background-color: #7CFC00">
+						</span></li>
+						<li>2-4<span class="badge" style="background-color: #e5e500">
+						</span></li>
+						<li>4-7<span class="badge" style="background-color: #FFA500">
+						</span></li>
+						<li>+7<span class="badge" style="background-color: #FF0000">
+						</span></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="tp"></div>
+		<script th:inline="javascript">
+
+				
+				/*var xScale = d3.scale.linear()
+				.domain([0, [[${maxModifiedLines}]] ])
+				.range([70, 255]);*/
+				
+				var color = d3.scale.linear()
+		            .domain([1,2,4,5,7,8])
+		            .range(["#7CFC00", "#e5e500","#e5e500", "#FFA500","#FFA500", "#FF0000"]);
+				var xScale = d3.scale.linear()
+				.domain([ 0, [[${maxModifiedLines}]] ])
+				.range([0.4, 1.5]);
+				
+		
+				options.treestring=[[${newickString}]];
+			    options.labelcolors= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]]+":"+ color([[${feature.featureScattering}]])/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
+			    options.labelscales= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]]+":"+ Math.floor(xScale([[${feature.linesAdded}]])*100)/100/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
+
+
+      
+      		    $(function(){
+
+      		        $(".filter-menu").on('click', 'li a', function(){
+      		          $(this).parents('.dropdown').find('.dropdown-toggle').html($(this).text()+"<span class='caret'></span>");
+      		          $(this).parents('.dropdown').find('.dropdown-toggle').attr('data-id',$(this).attr('data-id'));
+      		          $(this).parents('.dropdown').find('.dropdown-toggle').val($(this).text()+"<span class='caret'></span>");
+      		          
+      		       	$.ajax({
+      		       		type: 'POST',
+      		       		url : "/features/filtered",
+      		       		accept: "application/json",
+      		       		data: JSON.stringify({ productReleaseId :$("#product-list").find('.dropdown-toggle').attr("data-id"), developerId :$("#developer-list").find('.dropdown-toggle').attr("data-id")}),
+      		       		datatype:"json",
+      		       		contentType: "application/json",
+      		       		success: function(data) {
+      		            }
+      		       		
+      		       	});
+      		        	
+      		        });
+
+      		    });
+
+			</script>
+
+	</section>
+
+
+
+</body>
+</html>
+

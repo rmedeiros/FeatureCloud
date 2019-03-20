@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
+import com.onekin.tagcloud.dao.rowmapper.CoreAssetRowMapper;
+import com.onekin.tagcloud.model.CoreAsset;
 import com.onekin.tagcloud.model.DeveloperGroupCustInVariationPoint;
 import com.onekin.tagcloud.model.Filter;
 import com.onekin.tagcloud.model.VariationPoint;
@@ -24,9 +26,12 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 	private static final String GET_FEATURE_VARIATION_POINTS = "get.feature.variation.points";
 
 	private static final String GET_GROUPS_BY_VP = "get.vp.by.devgroup";
-	
+
 	private static final String GET_DIFFVALUES = "get.diffvalues";
 
+	private static final String GET_RELEASE_FEATURE_VARIATION_POINTS = "get.release.feature.variation.points";
+
+	private static final String GET_RELEASE_VP_CONTENT = "get.release.vp.content";
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -111,8 +116,7 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 							preparedStatement.setString(3, filter.getProductReleaseId());
 						}
 					}, new VariationPointRowMapper());
-			developerGroups = jdbcTemplate.query(
-					sqlQueries.getProperty(GET_GROUPS_BY_VP + QueriesConstants.FILTER_ALL),
+			developerGroups = jdbcTemplate.query(sqlQueries.getProperty(GET_GROUPS_BY_VP + QueriesConstants.FILTER_ALL),
 					new PreparedStatementSetter() {
 
 						public void setValues(PreparedStatement preparedStatement) throws SQLException {
@@ -133,17 +137,30 @@ public class VariationPointDAOImpl implements VariationPointDAO {
 	}
 
 	@Override
-	public List<Pair<String,String>> getDiffValues(Integer variationPointId) {
-		List<Pair<String,String>> data = jdbcTemplate.query(sqlQueries.getProperty(GET_DIFFVALUES),
-				
-				new PreparedStatementSetter() {
-
-			public void setValues(PreparedStatement preparedStatement) throws SQLException {
-				preparedStatement.setInt(1, variationPointId);
-
-
-			}
-		},new PairRowMapper());
+	public List<Pair<String, String>> getDiffValues(Integer variationPointId) {
+		List<Pair<String, String>> data = jdbcTemplate.query(sqlQueries.getProperty(GET_DIFFVALUES),
+				new Object[] { variationPointId }, new PairRowMapper());
 		return data;
+	}
+
+	@Override
+	public List<VariationPoint> getReleaseVariationPoints(String featureName) {
+		List<VariationPoint> variationPoints = jdbcTemplate
+				.query(sqlQueries.getProperty(GET_RELEASE_FEATURE_VARIATION_POINTS), new PreparedStatementSetter() {
+
+					public void setValues(PreparedStatement preparedStatement) throws SQLException {
+						preparedStatement.setString(1, featureName);
+					}
+				}, new VariationPointRowMapper());
+
+		return variationPoints;
+	}
+
+	@Override
+	public CoreAsset getVPContentAndAsset(Integer variationPointId) {
+		CoreAsset coreAsset = jdbcTemplate.queryForObject(sqlQueries.getProperty(GET_RELEASE_VP_CONTENT),
+				new Object[] { variationPointId }, new CoreAssetRowMapper());
+
+		return coreAsset;
 	}
 }
