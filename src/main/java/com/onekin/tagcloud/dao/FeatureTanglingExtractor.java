@@ -14,6 +14,7 @@ public class FeatureTanglingExtractor implements ResultSetExtractor<String> {
 	public String extractData(ResultSet rs) throws SQLException, DataAccessException {
 		String featureTanglingList = "";
 		List<String> repeated = new ArrayList<String>();
+
 		while (rs.next()) {
 			if (!repeated.contains(rs.getString(1) + ' ' + rs.getString(2))) {
 				if (rs.isLast()) {

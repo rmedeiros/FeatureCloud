@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
+import com.onekin.tagcloud.model.FeatureSibling;
 import com.onekin.tagcloud.model.FeaturesResponse;
 import com.onekin.tagcloud.model.Filter;
 import com.onekin.tagcloud.model.ProductRelease;
@@ -27,7 +28,7 @@ import com.onekin.tagcloud.model.VariationPointsResponse;
 import com.onekin.tagcloud.service.SoftwareProductLineService;
 
 @Controller
-public class MainController {
+public class ReleaseDeltaController {
 
 	@Autowired
 	private SoftwareProductLineService softwareProductLineService;
@@ -57,36 +58,25 @@ public class MainController {
 		model.addAttribute("maxScattering", Collections.max(scatteringLevel));
 		model.addAttribute("minScattering", Collections.min(scatteringLevel));
 
-		Iterable<ProductRelease> productReleases = softwareProductLineService.getProductRealeses();
+		/*Iterable<ProductRelease> productReleases = softwareProductLineService.getProductRealeses();
 		model.addAttribute("products", productReleases);
 		Iterable<DeveloperGroup> developers = softwareProductLineService.getDeveloperGroups();
 		model.addAttribute("developers", developers);
-		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));
+		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));*/
 
 		return "features";
 	}
 
 	@GetMapping("/features/{featureName}/")
 	public String getFeatureVariationPoints(@PathVariable(value = "featureName") String featureName,
-			@RequestParam(required = false, name = "product", defaultValue = "0") String productId,
-			@RequestParam(required = false, name = "developer", defaultValue = "0") Integer developerId, Model model) {
+			Model model) {
 
-		Filter filter = new Filter(developerId, productId, featureName);
-		List<VariationPoint> variationPoints = softwareProductLineService.getVariationPointsFiltered(filter);
-		int totalLines = variationPoints.stream().map(VariationPoint::getLinesAdded)
+		List<FeatureSibling> featureSiblings = softwareProductLineService.getModifiedFeaturesiblings();
+		int totalLines = featureSiblings.stream().map(FeatureSibling::getModifiedLines)
 				.collect(Collectors.summingInt(i -> i));
-		totalLines += variationPoints.stream().map(VariationPoint::getLinesDeleted)
-				.collect(Collectors.summingInt(i -> i));
-		model.addAttribute("variationPoints", variationPoints);
+
 		model.addAttribute("totalLines", totalLines);
-		Iterable<ProductRelease> productReleases = softwareProductLineService.getProductRealeses();
-		model.addAttribute("products", productReleases);
-		Iterable<DeveloperGroup> developerGroups = softwareProductLineService.getDeveloperGroups();
-		model.addAttribute("developers", developerGroups);
 		model.addAttribute("currentFeature", featureName);
-		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));
-		model.addAttribute("filterDeveloper",
-				softwareProductLineService.getFilterDeveloper(developerGroups, developerId));
 		return "variation_points";
 	}
 
@@ -132,16 +122,6 @@ public class MainController {
 
 	}
 
-	@ResponseBody
-	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE }, path = "/variationpoints/filtered")
-	public VariationPointsResponse getVariationPointsFiltered(@RequestBody Filter filter) {
-		List<VariationPoint> variationPoints = softwareProductLineService.getVariationPointsFiltered(filter);
-		int totalLines = variationPoints.stream().map(VariationPoint::getLinesAdded)
-				.collect(Collectors.summingInt(i -> i))
-				+ variationPoints.stream().map(VariationPoint::getLinesDeleted).collect(Collectors.summingInt(i -> i));
-		return new VariationPointsResponse(variationPoints, totalLines);
 
-	}
 
 }
