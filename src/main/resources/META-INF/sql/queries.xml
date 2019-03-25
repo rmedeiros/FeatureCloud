@@ -173,7 +173,7 @@
 							FROM
 							    FEATURE_BRIDGE A
 							        LEFT JOIN
-							    FEATURE_BRIDGE B ON B.ID_FEATURE_GROUP = A.ID_FEATURE_GROUP WHERE A.ID_FEATURE in (:ids) ;
+							    FEATURE_BRIDGE B ON B.ID_FEATURE_GROUP = A.ID_FEATURE_GROUP WHERE A.ID_FEATURE in (:ids) and B.ID_FEATURE in (:ids) ;
    					]]>
 				</prop>
 

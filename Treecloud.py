@@ -37,8 +37,10 @@ import dendropy
 #------------------------------
 args={}
 i=1;
+word_file=open("temp2.txt","r")
+wordlist = word_file.readlines()[0]
+word_file.close()
 thefile="temp.txt";
-wordlist = sys.argv[1]
 text_file=open(thefile,"w")
 text_file.write(wordlist);
 text_file.close()
