@@ -50,7 +50,8 @@
 				<div class="col-md-10">
 
 					<ul class="legend">
-						<li>1<span class="badge" style="background-color: #008000"></span></li>
+						<li>1<span class="badge" style="background-color: #008000">
+						</span></li>
 						<li>2-4<span class="badge" style="background-color: #FFA500">
 						</span></li>
 						<li>+4<span class="badge" style="background-color: #FF0000">
@@ -68,8 +69,8 @@
 				.range([70, 255]);*/
 				
 				var color = d3.scale.linear()
-		            .domain([1,2,4,5,7,8])
-		            .range(["#008000", "#e5e500","#e5e500", "#FFA500","#FFA500", "#FF0000"]);
+		        .domain([1,2,4,5])
+		        .range(["#008000",  "#FFA500","#FFA500", "#FF0000"]);
 				var xScale = d3.scale.linear()
 				.domain([ 0, [[${maxModifiedLines}]] ])
 				.range([0.4, 1.5]);
