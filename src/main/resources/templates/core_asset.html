@@ -6,24 +6,17 @@
 <head>
 <th:block layout:fragment="script">
 
-	<link rel="stylesheet" href="/css/highlight/github.css">
 	<link rel="stylesheet" href="/css/diff2html.min.css">
 	<link rel="stylesheet"
 		href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
 		integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
 		crossorigin="anonymous">
 
-	<script src="/js/highlight/highlight.pack.js"></script>
-	<script src="/js/highlight/highlightjs-line-numbers.min.js"></script>
 	<script src="/js/diff2html.min.js"></script>
 	<script src="/js/diff2html-ui.min.js"></script>
-
-
-	<script>
-		hljs.initHighlightingOnLoad();
-		hljs.initLineNumbersOnLoad();
-	</script>
-
+	
+	
+	
 </th:block>
 </head>
 <body>
@@ -33,7 +26,7 @@
 		<div class="title-container">
 			<ol class="breadcrumb">
 				<li><a href="/">Home</a></li>
-				<li><a th:href="@{/features/?product=}+${product}">Features</a></li>
+				<li><a th:href="@{/features/?product=}+${product}">FeatureCloud 20f6a45 - 0640bd0</a></li>
 				<li><a th:href="@{/features/}+${currentFeature}+@{/?product=}"
 					th:text="${#strings.capitalize(currentFeature)}"></a></li>
 				<!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
@@ -42,17 +35,32 @@
 				analysis</h2>
 
 		</div>
+
 		<div class="container">
 
 			<div id="accordion">
 				<div class="card" th:each="diffValue,iter : ${diffValues}">
-						<h5 class="mb-0"th:inline="text">
-								TYPE: [[${#strings.capitalize(diffValue.second)}]]
+					<div class="card-header" th:id="'heading'+${iter.index}">
+						<h5 class="mb-0">
+							<button class="btn btn-link" data-toggle="collapse"
+								th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
+								th:aria-controls="'collapse'+${iter.index}" th:inline="text">
+								FILE: [[${#strings.capitalize(diffValue.path)}]]  -  TYPE:
+								[[${#strings.capitalize(diffValue.type)}]] <i
+									class="fas fa-caret-down"></i>
+							</button>
 						</h5>
+					</div>
+
+					<div th:id="'collapse'+${iter.index}" class="collapse"
+						th:aria-labelledby="'heading'+${iter.index}"
+						data-parent="#accordion">
 						<div class="card-body diffview" th:id="'diffview'+${iter.index}"></div>
+					</div>
 				</div>
 			</div>
 		</div>
+		
 		<script th:inline="javascript">
 			/*<![CDATA[*/
 				function getMetaContentByName(name, content) {
@@ -66,9 +74,9 @@
 					diffValues.forEach(function(diffvalue,i){
 						if (diffvalue.first == null)
 							diffvalue.first="Could not obtain diff value";
-						console.log("diffvalue:\n" + diffvalue.first);
+						console.log("diffvalue:\n" + diffvalue.content);
 						var diff2htmlUi = new Diff2HtmlUI({
-							diff : diffvalue.first
+							diff : diffvalue.content
 						});
 						console.log(diff2htmlUi);
 						diff2htmlUi.draw('#diffview'+i, {
@@ -76,7 +84,6 @@
 							showFiles : true,
 							matching : 'lines'
 						});
-						diff2htmlUi.highlightCode('#diffview'+i);
 					});
 					/*double*/
 				});//end of on document load

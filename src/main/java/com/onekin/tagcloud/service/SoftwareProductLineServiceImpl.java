@@ -12,6 +12,7 @@ import com.onekin.tagcloud.dao.FeatureDAO;
 import com.onekin.tagcloud.dao.FeatureSiblingDAO;
 import com.onekin.tagcloud.dao.VariationPointDAO;
 import com.onekin.tagcloud.model.CoreAsset;
+import com.onekin.tagcloud.model.CustomDiff;
 import com.onekin.tagcloud.model.Developer;
 import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
@@ -74,15 +75,15 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	}
 
 	@Override
-	public List<FeatureSibling> getModifiedFeaturesiblings() {
-		return featureSiblingDAO.getModifiedFeaturesiblings();
+	public List<FeatureSibling> getModifiedFeaturesiblings(String idFeature) {
+		return featureSiblingDAO.getModifiedFeaturesiblings(idFeature);
 	}
 
 
 
 
 	@Override
-	public List<Pair<String, String>> getDiffValues(Integer variationPointId) {
+	public List<CustomDiff> getDiffValues(Integer variationPointId) {
 		return variationPointDAO.getDiffValues(variationPointId);
 	}
 }

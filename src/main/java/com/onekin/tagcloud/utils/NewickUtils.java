@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 public class NewickUtils {
 
 	public static String getNewickFormatString(String featureList)  {
-		System.out.println(featureList);
 		Process p;
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter("temp2.txt"));

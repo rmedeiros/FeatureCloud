@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import com.onekin.tagcloud.dao.rowmapper.FeatureScatteringExtractor;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.Filter;
 

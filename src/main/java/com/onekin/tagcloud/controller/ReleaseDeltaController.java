@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onekin.tagcloud.model.CustomDiff;
 import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.FeatureSibling;
@@ -71,13 +72,14 @@ public class ReleaseDeltaController {
 	public String getFeatureVariationPoints(@PathVariable(value = "featureName") String featureName,
 			Model model) {
 
-		List<FeatureSibling> featureSiblings = softwareProductLineService.getModifiedFeaturesiblings();
+		List<FeatureSibling> featureSiblings = softwareProductLineService.getModifiedFeaturesiblings(featureName);
 		int totalLines = featureSiblings.stream().map(FeatureSibling::getModifiedLines)
 				.collect(Collectors.summingInt(i -> i));
 
+		model.addAttribute("featureSiblings",featureSiblings);
 		model.addAttribute("totalLines", totalLines);
 		model.addAttribute("currentFeature", featureName);
-		return "variation_points";
+		return "feature_siblings";
 	}
 
 	/*
@@ -104,7 +106,7 @@ public class ReleaseDeltaController {
 	public String getCoreAssetContent(@PathVariable(value = "variationPointId") Integer variationPointId,
 			@PathVariable(value = "featureName") String featureName,
 			@RequestParam(required = false, name = "product", defaultValue = "0") Integer productId, Model model) {
-		List<Pair<String, String>> diffValues = softwareProductLineService.getDiffValues(variationPointId);
+		List<CustomDiff> diffValues = softwareProductLineService.getDiffValues(variationPointId);
 		model.addAttribute("diffValues", diffValues);
 		model.addAttribute("currentFeature", featureName);
 		return "core_asset";

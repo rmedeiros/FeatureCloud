@@ -50,7 +50,7 @@ public class FeatureSibling {
 
 
 	public String getFeatureExpression() {
-		return String.join(" - ", features);
+		return featureExpression;
 	}
 
 	public void setFeatureExpression(String featureExpression) {

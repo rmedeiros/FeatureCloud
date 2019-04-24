@@ -10,9 +10,9 @@
 
 				<prop key="get.features">
 			  		<![CDATA[
-					  SELECT FEATURE_NAME,SUM(LINES_ADDED),SUM(LINES_DELETED), ID_FEATURE 
-					  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT
-					  WHERE ID_FEATURE!='NO FEATURE' GROUP BY FEATURE_NAME;
+						  SELECT FEATURE_NAME,SUM(LINES_ADDED),SUM(LINES_DELETED), ID_FEATURE 
+						  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT
+						  WHERE ID_FEATURE!='NO FEATURE' GROUP BY FEATURE_NAME;
 					]]>
 				</prop>
 				<prop key="get.feature.variation.points">
@@ -117,8 +117,8 @@
 
 				<prop key="get.diffvalues">
 					<![CDATA[
-					SELECT custom_diff, type FROM customization_fact natural join product_release where idvariationpoint=?;					
-					]]>
+					SELECT custom_diff, type, path FROM customization_fact  natural join variation_point natural join core_asset natural join feature_group where id_feature_group=?;	
+				]]>
 				</prop>
 				<prop key="get.tangling.delta">
 					<![CDATA[
@@ -135,16 +135,21 @@
 
 				<prop key="get.scattering.delta">
 					<![CDATA[
-                        SELECT ID_FEATURE, COUNT(ID_FEATURE) FROM FEATURE_BRIDGE WHERE ID_FEATURE_GROUP IN (
-							SELECT ID_FEATURE_GROUP 
-								FROM CUSTOMIZATION_FACT C INNER JOIN VARIATION_POINT V ON C.IDVARIATIONPOINT=V.IDVARIATIONPOINT
-							    WHERE ID_FEATURE_GROUP!=0) 
+					SELECT ID_FEATURE, COUNT(DISTINCT(ID_COREASSET)) FROM  features_in_variationpoints INNER JOIN  core_asset ON ID_COREASSET=IDCOREASSET 
+                            WHERE ID_VARIATIONPOINT IN (SELECT C.IDVARIATIONPOINT 
+								FROM CUSTOMIZATION_FACT C ) AND ID_FEATURE!='No feature'
 					    GROUP BY ID_FEATURE;
    					
 			        ]]>
 				</prop>
-
-
+				<prop key="get.featuresibling.delta">
+					<![CDATA[
+                        SELECT id_feature_group, sum(lines_added), sum(lines_deleted), feature_expression 
+                        from features_in_variationpoints inner join customization_fact on id_variationpoint= idvariationpoint natural join feature_group fg  
+                        where id_feature=? group by id_feature_group; 
+   					
+			        ]]>
+				</prop>
 				<!-- RELEASE ANALYSIS QUERIES -->
 
 				<prop key="get.release.features">

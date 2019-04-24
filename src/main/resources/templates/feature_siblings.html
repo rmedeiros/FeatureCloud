@@ -1,0 +1,126 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout/template">
+<body>
+	<section layout:fragment="content">
+		<div class="title-container">
+			<ol class="breadcrumb">
+				<li><a href="/">Home</a></li>
+				<li><a href="/features/" class="breadcrumb-link">FeatureCloud 20f6a45 - 0640bd0</a></li>
+				<li class="active"><span
+					th:text=${#strings.capitalize(currentFeature)}></span></li>
+				<li></li>
+			</ol>
+			<h2 class="analisy-mode-vp display-4">Variation points delta
+				analysis</h2>
+
+		</div>
+		<div id="tagcloud"></div>
+
+
+		<script th:inline="javascript">
+		
+			    var frequency_list = [    	  	
+			    ];
+				
+				var feature = [[${currentFeature}]];
+			    var frequency_list = [    	  	
+			    ];
+			    /*[# th:each="featureSibling : ${featureSiblings}"]*/
+			    var t= [[${featureSibling}]];
+				frequency_list.push({"text":[[${featureSibling.featureExpression}]],"size": [[${featureSibling.modifiedLines}]],
+				 "coreAssetId":"[[${featureSibling.id}]]"});
+			    /*[/]*/
+			    
+	    
+			    var svg_location = "#tagcloud";
+		        var width = $(document).width();
+		        var height = 620;
+
+				function draw(words) {
+					d3.selectAll(svg_location).append("svg")
+						.attr("width", width)
+						.attr("height", height)
+						.append("g")
+						.attr("transform", "translate(" + [width >> 1, height/3*2] + ")")
+						.selectAll("text")
+						.data(words)
+						.enter()
+						.append("a").attr("href", function (d) {
+							return "asset/" + d.coreAssetId+"/";
+						})
+						.append("text")
+						.style("font-size", function (d) {
+							return d.size  + "px";
+						})
+						.style("font-family", "Impact")
+						.attr("text-anchor", "middle")
+						.style("fill", function (d, i) {
+							return '#0000ff' ;
+						})
+						.attr("transform", function (d) {
+							return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+						})
+						.html(function (d) {
+					
+							return d.text;
+							
+						});
+				}
+		        
+				drawWordCloud(frequency_list);
+					
+			 	function drawWordCloud(frequency_list) {
+				
+					var xScale = d3.scale.linear()
+						.domain([0, d3.max(frequency_list, function (d) {
+							return d.size;
+						})])
+						.range([12, 45]);
+				
+					d3.layout.cloud().size([width, height])
+						.timeInterval(20)
+						.words(frequency_list)
+						 .padding(3)
+						.fontSize(function (d) {
+							return xScale(+d.size);
+						})
+						.text(function (d) {
+							if(d.text.length>90){
+								return  "<tspan x='0'>"+(d.text.substring(0,d.text.length/2)+"</tspan><tspan x='0'  dy='1.2em'>"+d.text.substring(d.text.length/2,d.text.length)).trim()+"</tspan>";
+							}else{
+							return d.text;}
+						})
+						.rotate(0)
+						.font("Impact")
+						.on("end", draw)
+						.start();
+					
+				
+				
+				
+				
+				
+						
+				}
+			 	
+			 	$(".breadcrumb-link").click(function(){
+			 		window.location.href = '/features/?product='+$("#product-list").find('.dropdown-toggle').attr("data-id")+'&developer='+$("#developer-list").find('.dropdown-toggle').attr("data-id");
+			 	});
+			 	
+		
+				function setToolTip(){
+					$('[data-toggle="tooltip"]').tooltip({
+						'container': 'body',
+						'placement': 'bottom'
+					})
+				}
+				
+		</script>
+
+	</section>
+
+</body>
+</html>

@@ -202,7 +202,7 @@
       pad = 5;
       bbox = svg[0][0].getBBox();
       x = bbox.x, y = bbox.y, width = bbox.width, height = bbox.height;
-      svg.selectAll("g").attr("transform", "translate(" + (pad - x) + "," + (pad - y) + ")");
+      svg.selectAll("g").attr("transform", "translate(" + (pad - x+3) + "," + (pad - y-2) + ")");
       outwidth = $("#tp").parent().width() * 0.95;
       outheight = outwidth / width * height;
       svg.attr("viewBox", "0 0 " + (width + 2 * pad) + " " + (height + 2 * pad));
@@ -227,7 +227,6 @@
     };
     doplot = function() {
       var error;
-      $("#tp").html("");
       try {
         load_options();
         plotPhylogeny(options);

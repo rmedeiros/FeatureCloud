@@ -6,6 +6,6 @@ import com.onekin.tagcloud.model.FeatureSibling;
 
 public interface FeatureSiblingDAO {
 
-	List<FeatureSibling> getModifiedFeaturesiblings();
+	List<FeatureSibling> getModifiedFeaturesiblings(String id_feature);
 
 }

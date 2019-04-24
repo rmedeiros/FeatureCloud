@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.util.Pair;
 
 import com.onekin.tagcloud.model.CoreAsset;
+import com.onekin.tagcloud.model.CustomDiff;
 import com.onekin.tagcloud.model.Developer;
 import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
@@ -21,10 +22,10 @@ public interface SoftwareProductLineService {
 
 	List<Feature> getFeaturesFiltered(Filter filter);
 
-	List<Pair<String, String>> getDiffValues(Integer variationPointId);
+	List<CustomDiff> getDiffValues(Integer variationPointId);
 
 	String getNewickTree(List<String> collect);
 
-	List<FeatureSibling> getModifiedFeaturesiblings();
+	List<FeatureSibling> getModifiedFeaturesiblings(String idFeature);
 
 }

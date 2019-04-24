@@ -1,4 +1,4 @@
-package com.onekin.tagcloud.dao;
+package com.onekin.tagcloud.dao.rowmapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

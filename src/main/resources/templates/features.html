@@ -3,93 +3,289 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	layout:decorator="layout/template">
+<head>
+<th:block layout:fragment="script">
+	<link rel="stylesheet"
+		href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+		integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+		crossorigin="anonymous">
+	<link rel="stylesheet"
+		href="/css/bootstrap-datepicker3.standalone.min.css">
 
+
+	<script src="/js/bootstrap-datepicker.min.js"></script>
+</head>
 <body>
 	<section layout:fragment="content">
-
-
-		<!-- <nav class="navbar navbar-default">
-			<div class="container-fluid filters-container">
-				<!-- Brand and toggle get grouped for better mobile display -->
-
-		<!-- Collect the nav links, forms, and other content for toggling 
-
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
-						aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand">Filters </a>
-				</div>
-			<div class="collapse navbar-collapse"
-					id="bs-example-navbar-collapse-2">
-					<ul class="nav navbar-nav">
-						<li><a>Product release:</a></li>
-						<li class="dropdown" id="product-list"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown" role="button"
-							aria-haspopup="true" aria-expanded="false"
-							th:data-id="${filterProduct.idProductRelease}" th:inline="text">[[${filterProduct.name}]]
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu filter-menu">
-								<li><a href="#" data-id="0">All</a></li>
-								<th:block th:each="product : ${products}">
-									<li role="separator" class="divider"></li>
-									<li><a href="#" th:text="${product.name}"
-										th:data-id="${product.idProductRelease}"></a></li>
-								</th:block>
-							</ul></li>
-					</ul>
-				</div> -->
-		<!-- /.navbar-collapse -->
-		</div>
-		</nav>
 		<div class="title-container">
 			<ol class="breadcrumb breadcrumb-arrow">
 				<li><a href="/">Home</a></li>
-				<li class="active"><span>Features</span></li>
+				<li class="active"><span>FeatureCloud 20f6a45 - 0640bd0</span></li>
 				<li></li>
 			</ol>
-			<h2 class="analisy-mode display-4">Feature delta analysis</h2>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-2">
-					<h4>Scattering legend:</h4>
+			<div class="analisy-mode right">
+				<div class="filter-buttons">
+					<button id="dateCollapseButton" class="btn btn-primary"
+						type="button" data-toggle="collapse" data-target="#dateCollapse"
+						aria-expanded="true" aria-controls="dateCollapse">
+						Time Window<i class="fas fa-chevron-down"></i>
+					</button>
+					<div class="dropdown">
+						<button class="btn btn-primary dropdown-button">
+							Feature configuration: All<i class="fas fa-chevron-down"></i>
+						</button>
+						<div id="myDropdown" class="dropdown-content">
+							<i class="fas fa-search"></i> <input type="text"
+								placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+							<a href="#" class="prod-config">adafruit</a><a href="#"
+								class="prod-config">BQ</a><a href="#" class="prod-config">Creality</a>
+							<a href="#" class="prod-config">Cartesio</a> <a href="#"
+								class="prod-config">Malyan</a> <a href="#" class="prod-config">Micromake</a><a
+								href="#" class="prod-config">RigidBot</a> <a href="#"
+								class="prod-config">Felix</a>
+						</div>
+					</div>
 				</div>
-				<div class="col-md-10">
+				<div class="collapse" id="dateCollapse">
+					<div class="container date-filter">
+						<div class="row commit-filter">
+							<div class="col-sm-5">
+								<div class="form-group">
+									<label> From :</label>
+									<div class="input-group date" id="datetimepicker1">
+										<input type="text" class="form-control"> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2"></div>
+							<div class="col-sm-5">
+								<div class="form-group">
+									<label> To :</label>
+									<div class="input-group date" id="datetimepicker2">
+										<input type="text" class="form-control"> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<div id="myCarousel2" class="carousel slide"
+									data-ride="carousel">
 
-					<ul class="legend">
-						<li>1<span class="badge" style="background-color: #008000">
-						</span></li>
-						<li>2-4<span class="badge" style="background-color: #FFA500">
-						</span></li>
-						<li>+4<span class="badge" style="background-color: #FF0000">
-						</span></li>
-					</ul>
+									<!-- Wrapper for slides -->
+									<div class="carousel-inner">
+										<div class="item active">
+											<ul class="list-inline carousel-list">
+												<li><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">2aaf66b</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+												<li><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">e0dba46</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+												<li class="active"><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">20f6a45</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+												<li><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">6f40d57</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+												<li><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">b567790</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+											</ul>
+										</div>
+									</div>
+									<!-- Left and right controls -->
+									<a class="left carousel-control commit" href="#myCarousel"
+										data-slide="prev"> <span
+										class="glyphicon glyphicon-chevron-left"></span> <span
+										class="sr-only">Previous</span>
+									</a> <a class="right carousel-control commit" href="#myCarousel"
+										data-slide="next"> <span
+										class="glyphicon glyphicon-chevron-right"></span> <span
+										class="sr-only">Next</span>
+									</a>
+								</div>
+							</div>
+							<div class="col-md-2"></div>
+							<div class="col-md-5">
+								<div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+									<!-- Wrapper for slides -->
+									<div class="carousel-inner">
+										<div class="item active">
+											<ul class="list-inline carousel-list">
+												<li><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">dcd4052</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+												<li><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">21ba70d</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+												<li class="active"><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">0640bd0</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+												<li><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">decf844</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+												<li><div class="thumbnail carousel">
+														<p class="main-menu">HASH</p>
+														<p class="main-menu">9491912</p>
+														<i class="fas fa-info-circle"></i>
+													</div></li>
+											</ul>
+
+										</div>
+									</div>
+
+									<!-- Left and right controls -->
+									<a class="left carousel-control commit" href="#myCarousel"
+										data-slide="prev"> <span
+										class="glyphicon glyphicon-chevron-left"></span> <span
+										class="sr-only">Previous</span>
+									</a> <a class="right carousel-control commit" href="#myCarousel"
+										data-slide="next"> <span
+										class="glyphicon glyphicon-chevron-right"></span> <span
+										class="sr-only">Next</span>
+									</a>
+
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+
 				</div>
+
 			</div>
 		</div>
-		<div id="tp"></div>
-		<script th:inline="javascript">
+		<hr />
 
-			
-				var color = d3.scale.linear()
-			        .domain([1,2,4,5])
-			        .range(["#008000",  "#FFA500","#FFA500", "#FF0000"]);
+		<div id="tp">
+			<div class="thumbnail tree-info" style="">
+				<h4>Delta metadata</h4>
+				<hr>
+				<p class="c6 c12">
+					<span class="c0">FROM:&nbsp;</span><span class="c20">(21 Dec 2017)</span><span
+						class="c25">&nbsp;</span><span class="c0">- TO:&nbsp;</span><span
+						class="c20">(31 Dec 2017)</span>
+				</p>
+
+				<p class="c6 c12">
+					<span class="c0">HASHES: &nbsp;</span><span class="c6 c12">20f6a45</span><span
+						class="c6 c12">&nbsp;- 0640bd0 </span>
+				</p>
+				<p class="c6 c12">
+					<span class="c0">TAGS: </span><span class="c6 c12">1.1.7 </span><span
+						class="c6 c12">&nbsp;- 1.1.8 </span>
+				</p>
+				<p class="c6 c12">
+					<span class="c0">Total code churn: &nbsp;</span><span class="c9">'694'
+						insertions, '223' deletions</span>
+				</p>
+				<p class="c6 c12">
+					<span class="c0">#ifdefs modified:</span><span class="c9">&nbsp;228</span>
+				</p>
+			</div>
+		</div>
+		<script th:inline="javascript">
+		
+		
+				$(".prod-config").click(function(){
+					$(this).parent().siblings("button").text("Feature configuration: "+$(this).text());
+				});
+				$(".dropdown-button").click(function(){
+					if($(this).siblings(".dropdown-content").hasClass("show")){
+						$(this).siblings(".dropdown-content").removeClass("show");
+					}else{ 
+						$(this).siblings(".dropdown-content").addClass("show");
+					}
+				});
+				$('body').click(function(e){
+					if (!$(".dropdown").is(e.target) && $(".dropdown").has(e.target).length === 0  ) {
+						$(".dropdown-content").removeClass("show")
+					}
+					;})	
+	
+				function filterFunction() {
+				  var input, filter, ul, li, a, i;
+				  input = document.getElementById("myInput");
+				  filter = input.value.toUpperCase();
+				  div = document.getElementById("myDropdown");
+				  a = div.getElementsByTagName("a");
+				  for (i = 0; i < a.length; i++) {
+				    txtValue = a[i].textContent || a[i].innerText;
+				    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				      a[i].style.display = "";
+				    } else {
+				      a[i].style.display = "none";
+				    }
+				  }
+				}
+				$('.carousel').carousel({
+				    interval: false
+				});
+			   $(function () {
+	               $('#datetimepicker1').datepicker();
+	               $('#datetimepicker2').datepicker();
+
+	           });
+			   
+			   $('.collapse').on('hide.bs.collapse', function () {
+				   $("#"+$(this).attr('id')+"Button").find("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+			   })
+			   
+			   $('.collapse').on('show.bs.collapse', function () {
+				   if($(this).attr('id')=="configurationCollapse"){
+					   $("#dateCollapse").collapse("hide")
+				   }else{
+					   $("#configurationCollapse").collapse("hide")
+				   }
+
+				   $("#"+$(this).attr('id')+"Button").find("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+			   })
+			   
+			   
 				var xScale = d3.scale.linear()
-					.domain([ 0, [[${maxModifiedLines}]] ])
-					.range([0.4, 1.5]);
-				
+				.domain([0, [[${maxModifiedLines}]] ])
+				.range([100, 255]);
+				var xScaleScattering = d3.scale.linear()
+				.domain([ 1,3,5,6,7,8,9,10,11,12,14,15,100000 ])
+				.range([0.4,0.6,0.8,0.8,0.9,0.9,1,1,1.2,1.2,1.4, 1.5,1.5]);
 				
 		
+			    var frequency_list = [    	  	
+			    ];
 				options.treestring=[[${newickString}]];
-				options.labelcolors= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]]+":"+ color([[${feature.featureScattering}]])/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
-			    options.labelscales= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]]+":"+ Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])*100)/100/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
-
+			    options.labelcolors= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]]+":#0000ff"+ Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
+			    options.labelscales= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]]+":"+ Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
+				 
+				
+				
       
       		    $(function(){
 
@@ -115,7 +311,6 @@
       		    });
 
 			</script>
-
 	</section>
 
 
