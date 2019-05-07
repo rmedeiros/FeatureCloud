@@ -2,17 +2,12 @@ package com.onekin.tagcloud.service;
 
 import java.util.List;
 
-import org.springframework.data.util.Pair;
-
 import com.onekin.tagcloud.model.CoreAsset;
 import com.onekin.tagcloud.model.CustomDiff;
-import com.onekin.tagcloud.model.Developer;
-import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.FeatureSibling;
 import com.onekin.tagcloud.model.Filter;
-import com.onekin.tagcloud.model.ProductRelease;
-import com.onekin.tagcloud.model.VariationPoint;
+import com.onekin.tagcloud.model.Product;
 
 public interface SoftwareProductLineService {
 
@@ -27,5 +22,12 @@ public interface SoftwareProductLineService {
 	String getNewickTree(List<String> collect);
 
 	List<FeatureSibling> getModifiedFeaturesiblings(String idFeature);
+
+	Iterable<Product> getProductIds();
+
+
+	List<Feature> getFeaturesFilteredByProduct(String productId);
+
+	String getNewickTreeByProduct(List<String> collect);
 
 }

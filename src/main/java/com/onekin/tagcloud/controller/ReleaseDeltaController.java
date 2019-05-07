@@ -6,26 +6,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onekin.tagcloud.model.CustomDiff;
-import com.onekin.tagcloud.model.DeveloperGroup;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.FeatureSibling;
 import com.onekin.tagcloud.model.FeaturesResponse;
-import com.onekin.tagcloud.model.Filter;
-import com.onekin.tagcloud.model.ProductRelease;
-import com.onekin.tagcloud.model.VariationPoint;
-import com.onekin.tagcloud.model.VariationPointsResponse;
+import com.onekin.tagcloud.model.Product;
 import com.onekin.tagcloud.service.SoftwareProductLineService;
 
 @Controller
@@ -45,38 +38,29 @@ public class ReleaseDeltaController {
 		// TODO delete developer filter
 		List<Feature> features = softwareProductLineService.getFeatures();
 		List<Integer> modifiedLinesList = new ArrayList<>();
-		List<Integer> scatteringLevel = new ArrayList<>();
 		for (Feature feature : features) {
 			modifiedLinesList.add(feature.getLinesAdded() + feature.getLinesDeleted());
-			scatteringLevel.add(feature.getFeatureScattering());
 		}
 		int maxModifiedLines = Collections.max(modifiedLinesList);
 		String newickString = softwareProductLineService
 				.getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
+		Iterable<Product> products = softwareProductLineService.getProductIds();
+		model.addAttribute("products", products);
 		model.addAttribute("newickString", newickString);
 		model.addAttribute("features", features);
 		model.addAttribute("maxModifiedLines", maxModifiedLines);
-		model.addAttribute("maxScattering", Collections.max(scatteringLevel));
-		model.addAttribute("minScattering", Collections.min(scatteringLevel));
-
-		/*Iterable<ProductRelease> productReleases = softwareProductLineService.getProductRealeses();
-		model.addAttribute("products", productReleases);
-		Iterable<DeveloperGroup> developers = softwareProductLineService.getDeveloperGroups();
-		model.addAttribute("developers", developers);
-		model.addAttribute("filterProduct", softwareProductLineService.getFilterProduct(productReleases, productId));*/
 
 		return "features";
 	}
 
 	@GetMapping("/features/{featureName}/")
-	public String getFeatureVariationPoints(@PathVariable(value = "featureName") String featureName,
-			Model model) {
+	public String getFeatureVariationPoints(@PathVariable(value = "featureName") String featureName, Model model) {
 
 		List<FeatureSibling> featureSiblings = softwareProductLineService.getModifiedFeaturesiblings(featureName);
 		int totalLines = featureSiblings.stream().map(FeatureSibling::getModifiedLines)
 				.collect(Collectors.summingInt(i -> i));
 
-		model.addAttribute("featureSiblings",featureSiblings);
+		model.addAttribute("featureSiblings", featureSiblings);
 		model.addAttribute("totalLines", totalLines);
 		model.addAttribute("currentFeature", featureName);
 		return "feature_siblings";
@@ -114,16 +98,29 @@ public class ReleaseDeltaController {
 	}
 
 	@ResponseBody
-	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE }, path = "/features/filtered")
-	public FeaturesResponse getFeaturesFiltered(@RequestBody Filter filter) {
-		List<Feature> features = softwareProductLineService.getFeaturesFiltered(filter);
-		int totalLines = features.stream().map(Feature::getLinesAdded).collect(Collectors.summingInt(i -> i))
-				+ features.stream().map(Feature::getLinesDeleted).collect(Collectors.summingInt(i -> i));
-		return new FeaturesResponse(features, totalLines);
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE }, path = "/features/filtered")
+	public FeaturesResponse getFeaturesFiltered(@RequestParam("product") String productId) {
+		List<Feature> features;
+		String newickString;
+		if ("All".equalsIgnoreCase(productId)) {
+			features = softwareProductLineService.getFeatures();
+			
+			newickString = softwareProductLineService
+					.getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
+		} else {
+			features = softwareProductLineService.getFeaturesFilteredByProduct(productId);
+			newickString = softwareProductLineService
+					.getNewickTreeByProduct(features.stream().map(Feature::getId).collect(Collectors.toList()));
+		}
+		List<Integer> modifiedLinesList = new ArrayList<>();
+		modifiedLinesList.add(0);
+		for (Feature feature : features) {
+			modifiedLinesList.add(feature.getLinesAdded() + feature.getLinesDeleted());
+		}
+		int maxModifiedLines = Collections.max(modifiedLinesList);
+
+		return new FeaturesResponse(features, maxModifiedLines, newickString);
 
 	}
-
-
 
 }

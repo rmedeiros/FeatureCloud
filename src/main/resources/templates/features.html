@@ -37,12 +37,9 @@
 						<div id="myDropdown" class="dropdown-content">
 							<i class="fas fa-search"></i> <input type="text"
 								placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-							<a href="#" class="prod-config">adafruit</a><a href="#"
-								class="prod-config">BQ</a><a href="#" class="prod-config">Creality</a>
-							<a href="#" class="prod-config">Cartesio</a> <a href="#"
-								class="prod-config">Malyan</a> <a href="#" class="prod-config">Micromake</a><a
-								href="#" class="prod-config">RigidBot</a> <a href="#"
-								class="prod-config">Felix</a>
+							<a href="#" class="prod-config">All</a> <a
+								th:each="product : ${products}" href="#" class="prod-config"
+								th:text="${product.productId}"></a>
 						</div>
 					</div>
 				</div>
@@ -183,16 +180,16 @@
 
 			</div>
 		</div>
-		<hr />
+		<hr/>
 
 		<div id="tp">
 			<div class="thumbnail tree-info" style="">
 				<h4>Delta metadata</h4>
 				<hr>
 				<p class="c6 c12">
-					<span class="c0">FROM:&nbsp;</span><span class="c20">(21 Dec 2017)</span><span
-						class="c25">&nbsp;</span><span class="c0">- TO:&nbsp;</span><span
-						class="c20">(31 Dec 2017)</span>
+					<span class="c0">FROM:&nbsp;</span><span class="c20">(21 Dec
+						2017)</span><span class="c25">&nbsp;</span><span class="c0">-
+						TO:&nbsp;</span><span class="c20">(31 Dec 2017)</span>
 				</p>
 
 				<p class="c6 c12">
@@ -214,10 +211,7 @@
 		</div>
 		<script th:inline="javascript">
 		
-		
-				$(".prod-config").click(function(){
-					$(this).parent().siblings("button").text("Feature configuration: "+$(this).text());
-				});
+
 				$(".dropdown-button").click(function(){
 					if($(this).siblings(".dropdown-content").hasClass("show")){
 						$(this).siblings(".dropdown-content").removeClass("show");
@@ -277,37 +271,43 @@
 				.domain([ 1,3,5,6,7,8,9,10,11,12,14,15,100000 ])
 				.range([0.4,0.6,0.8,0.8,0.9,0.9,1,1,1.2,1.2,1.4, 1.5,1.5]);
 				
-		
-			    var frequency_list = [    	  	
-			    ];
+
 				options.treestring=[[${newickString}]];
 			    options.labelcolors= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]]+":#0000ff"+ Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
 			    options.labelscales= /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]]+":"+ Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/+","+ /*[/]*//*[/]*/; 
-				 
+
 				
 				
       
-      		    $(function(){
-
-      		        $(".filter-menu").on('click', 'li a', function(){
-      		          $(this).parents('.dropdown').find('.dropdown-toggle').html($(this).text()+"<span class='caret'></span>");
-      		          $(this).parents('.dropdown').find('.dropdown-toggle').attr('data-id',$(this).attr('data-id'));
-      		          $(this).parents('.dropdown').find('.dropdown-toggle').val($(this).text()+"<span class='caret'></span>");
-      		          
+			    $(".prod-config").click(function(e){
+			    	
+			    	console.log(e);
+			    	successHandler = function(data) {
+  		       			var labelcolors="";
+  		       			var labelscales=""
+  		       			data.features.forEach(function(element,index, array){
+  		       				labelcolors+=element.name+":#0000ff"+ Math.floor(xScale(element.linesDeleted+element.linesAdded)).toString(16)
+  		       				labelscales+=element.name+":"+ Math.round(xScaleScattering(element.featureScattering) * 100) / 100
+  		       				if(index<array.length-1){
+      		       				labelcolors+=", "
+  		       					labelcolors+=", "
+  		       				}
+  		       			});
+  		       			options.treestring=data.newickString
+  		       			$("#tp").find("svg").remove();
+  		       			doplot();
+  						$(e.currentTarget).parent().siblings("button").html("Feature configuration: "+e.currentTarget.text+"<i class='fas fa-chevron-down'></i>");   
+		             };
       		       	$.ajax({
-      		       		type: 'POST',
-      		       		url : "/features/filtered",
+      		       		type: 'GET',
+      		       		url : "/features/filtered?product="+e.currentTarget.text,
       		       		accept: "application/json",
-      		       		data: JSON.stringify({ productReleaseId :$("#product-list").find('.dropdown-toggle').attr("data-id"), developerId :$("#developer-list").find('.dropdown-toggle').attr("data-id")}),
-      		       		datatype:"json",
-      		       		contentType: "application/json",
-      		       		success: function(data) {
-      		            }
+      		       		success: successHandler
+
+      		            
       		       		
       		       	});
       		        	
-      		        });
-
       		    });
 
 			</script>

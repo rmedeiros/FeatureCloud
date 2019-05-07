@@ -14,9 +14,10 @@
         edge_scale: 1
       } 
   };
+ var clear, default_options_string, doplot, load_options, plotPhylogeny, reset_options, saveplot;
+
 (function() {
   $(document).ready(function() {
-    var clear, default_options_string, doplot, load_options, plotPhylogeny, reset_options, saveplot;
 
     default_options_string = JSON.stringify(options, null, "\t");
     reset_options = function() {
@@ -225,6 +226,7 @@
         return options["default"] = JSON.parse(options_string);
       } catch (_error) {}
     };
+    
     doplot = function() {
       var error;
       try {
@@ -284,3 +286,4 @@
   });
 
 }).call(this);
+
