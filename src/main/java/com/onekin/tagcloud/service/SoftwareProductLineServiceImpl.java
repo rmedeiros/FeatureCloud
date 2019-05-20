@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 import com.onekin.tagcloud.dao.FeatureDAO;
 import com.onekin.tagcloud.dao.FeatureSiblingDAO;
 import com.onekin.tagcloud.dao.VariationPointDAO;
+import com.onekin.tagcloud.model.ComponentPackage;
 import com.onekin.tagcloud.model.CoreAsset;
 import com.onekin.tagcloud.model.CustomDiff;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.FeatureSibling;
 import com.onekin.tagcloud.model.Filter;
 import com.onekin.tagcloud.model.Product;
+import com.onekin.tagcloud.repository.ComponentPackageRepository;
 import com.onekin.tagcloud.repository.CoreAssetRepository;
 import com.onekin.tagcloud.repository.ProductRepository;
 import com.onekin.tagcloud.utils.NewickUtils;
@@ -38,7 +40,9 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 	@Autowired
 	private ProductRepository productRepo;
 
-
+	@Autowired
+	private ComponentPackageRepository componentPackageRepo;
+	
 	@Override
 	public List<Feature> getFeatures() {
 		return featureDAO.getFeatures();
@@ -101,7 +105,17 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 
 
 	@Override
-	public List<Feature> getFeaturesFilteredByProduct(String productId) {
-		return featureDAO.getFeaturesByProduct(productId);
+	public List<Feature> getFeaturesFilteredByProductAndPackage(String productId, int packageId) {
+		return featureDAO.getFeaturesByProduct(productId, packageId);
 	}
+
+
+
+	@Override
+	public Iterable<ComponentPackage> getComponentPackages() {
+		return componentPackageRepo.findAll();
+	}
+
+
+
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.onekin.tagcloud.model.ComponentPackage;
 import com.onekin.tagcloud.model.CustomDiff;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.FeatureSibling;
@@ -45,7 +46,10 @@ public class ReleaseDeltaController {
 		String newickString = softwareProductLineService
 				.getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
 		Iterable<Product> products = softwareProductLineService.getProductIds();
+		Iterable<ComponentPackage> componentPackages = softwareProductLineService.getComponentPackages();
+
 		model.addAttribute("products", products);
+		model.addAttribute("componentPackages", componentPackages);
 		model.addAttribute("newickString", newickString);
 		model.addAttribute("features", features);
 		model.addAttribute("maxModifiedLines", maxModifiedLines);
@@ -66,26 +70,6 @@ public class ReleaseDeltaController {
 		return "feature_siblings";
 	}
 
-	/*
-	 * @GetMapping("/features/{featureName}/asset/{coreAssetId}") public String
-	 * getCoreAssetContent(@PathVariable(value = "coreAssetId") Integer coreAssetId,
-	 * 
-	 * @PathVariable(value = "featureName") String featureName,
-	 * 
-	 * @RequestParam(required = false, name = "product", defaultValue = "0") Integer
-	 * productId,
-	 * 
-	 * @RequestParam(required = false, name = "developer", defaultValue = "0")
-	 * Integer developerId, Model model) { CoreAsset coreAsset =
-	 * softwareProductLineService.getCoreAssetContent(coreAssetId);
-	 * model.addAttribute("coreAsset", coreAsset);
-	 * model.addAttribute("product",productId);
-	 * model.addAttribute("developer",developerId);
-	 * model.addAttribute("currentFeature", featureName); return "core_asset";
-	 * 
-	 * }
-	 */
-
 	@GetMapping("/features/{featureName}/asset/{variationPointId}/")
 	public String getCoreAssetContent(@PathVariable(value = "variationPointId") Integer variationPointId,
 			@PathVariable(value = "featureName") String featureName,
@@ -99,16 +83,17 @@ public class ReleaseDeltaController {
 
 	@ResponseBody
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE }, path = "/features/filtered")
-	public FeaturesResponse getFeaturesFiltered(@RequestParam("product") String productId) {
+	public FeaturesResponse getFeaturesFiltered(@RequestParam(value="product",defaultValue="All") String productId,
+			@RequestParam(value="packageId", required=false) int packageId) {
 		List<Feature> features;
 		String newickString;
-		if ("All".equalsIgnoreCase(productId)) {
+		if (("All".equalsIgnoreCase(productId) || "".equalsIgnoreCase(productId)) && packageId == 0) {
 			features = softwareProductLineService.getFeatures();
-			
+
 			newickString = softwareProductLineService
 					.getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
 		} else {
-			features = softwareProductLineService.getFeaturesFilteredByProduct(productId);
+			features = softwareProductLineService.getFeaturesFilteredByProductAndPackage(productId,packageId);
 			newickString = softwareProductLineService
 					.getNewickTreeByProduct(features.stream().map(Feature::getId).collect(Collectors.toList()));
 		}

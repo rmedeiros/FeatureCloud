@@ -1,4 +1,4 @@
-package com.onekin.tagcloud.dao;
+package com.onekin.tagcloud.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
+import com.onekin.tagcloud.dao.VariationPointDAO;
 import com.onekin.tagcloud.dao.rowmapper.CoreAssetRowMapper;
 import com.onekin.tagcloud.dao.rowmapper.CustomDiffRowMapper;
 import com.onekin.tagcloud.dao.rowmapper.VariationPointRowMapper;

@@ -1,4 +1,4 @@
-package com.onekin.tagcloud.dao;
+package com.onekin.tagcloud.dao.impl;
 
 import java.util.List;
 import java.util.Properties;
@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import com.onekin.tagcloud.dao.FeatureSiblingDAO;
 import com.onekin.tagcloud.dao.rowmapper.FeatureSiblingRowMapper;
 import com.onekin.tagcloud.model.FeatureSibling;
 

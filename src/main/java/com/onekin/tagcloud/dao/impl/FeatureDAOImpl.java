@@ -1,4 +1,4 @@
-package com.onekin.tagcloud.dao;
+package com.onekin.tagcloud.dao.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,10 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import com.onekin.tagcloud.dao.FeatureDAO;
+import com.onekin.tagcloud.dao.rowmapper.FeatureRowMapper;
 import com.onekin.tagcloud.dao.rowmapper.FeatureScatteringExtractor;
+import com.onekin.tagcloud.dao.rowmapper.FeatureTanglingExtractor;
 import com.onekin.tagcloud.model.Feature;
 import com.onekin.tagcloud.model.Filter;
 
@@ -32,7 +35,6 @@ public class FeatureDAOImpl implements FeatureDAO {
 	private static final String GET_TANGLING_DELTA = "get.tangling.delta";
 	private static final String GET_TANGLING_DELTA_BY_PRODUCT = "get.tangling.delta.by.product";
 
-	private static final String GET_FEATURES_BY_PRODUCT = "get.features.by.product";
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedJdbcTemplate;
@@ -113,10 +115,22 @@ public class FeatureDAOImpl implements FeatureDAO {
 	}
 
 	@Override
-	public List<Feature> getFeaturesByProduct(String productId) {
+	public List<Feature> getFeaturesByProduct(String productId, int packageId) {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		parameters.addValue("productId", productId);
-		List<Feature> features = namedJdbcTemplate.query(sqlQueries.getProperty(GET_FEATURES_BY_PRODUCT), parameters,
+		String query;
+
+		if (productId != null && !("".equals(productId.trim())) && !("All".equals(productId)) && (packageId != 0)) {
+			parameters.addValue("productId", productId);
+			parameters.addValue("idpackage", packageId);
+			query = "get.features.by.all";
+		} else if (packageId != 0) {
+			parameters.addValue("idpackage", packageId);
+			query = "get.features.by.package";
+		} else {
+			parameters.addValue("productId", productId);
+			query = "get.features.by.product";
+		}
+		List<Feature> features = namedJdbcTemplate.query(sqlQueries.getProperty(query), parameters,
 				new FeatureRowMapper());
 		setFeatureScattering(features, GET_SCATTERING_DELTA);
 		return features;

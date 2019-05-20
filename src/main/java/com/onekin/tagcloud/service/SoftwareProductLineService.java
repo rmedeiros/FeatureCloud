@@ -2,6 +2,7 @@ package com.onekin.tagcloud.service;
 
 import java.util.List;
 
+import com.onekin.tagcloud.model.ComponentPackage;
 import com.onekin.tagcloud.model.CoreAsset;
 import com.onekin.tagcloud.model.CustomDiff;
 import com.onekin.tagcloud.model.Feature;
@@ -26,8 +27,10 @@ public interface SoftwareProductLineService {
 	Iterable<Product> getProductIds();
 
 
-	List<Feature> getFeaturesFilteredByProduct(String productId);
+	List<Feature> getFeaturesFilteredByProductAndPackage(String productId, int packageId);
 
 	String getNewickTreeByProduct(List<String> collect);
+
+	Iterable<ComponentPackage> getComponentPackages();
 
 }
