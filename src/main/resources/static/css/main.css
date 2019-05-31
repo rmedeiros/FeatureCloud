@@ -579,3 +579,12 @@ a.navbar-brand {
 div#accordion {
     margin-top: 4vh;
 }
+
+
+.slider-container {
+    width: auto;
+    margin-top: 31vh;
+    margin-left: 10vh;
+    position: absolute;
+    padding: 0;
+}

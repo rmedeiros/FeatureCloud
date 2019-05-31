@@ -33,6 +33,8 @@ public class FeatureDAOImpl implements FeatureDAO {
 	private static final String GET_SCATTERING_DELTA = "get.scattering.delta";
 
 	private static final String GET_TANGLING_DELTA = "get.tangling.delta";
+	private static final String GET_TANGLING_METRIC= "get.tangling.metric";
+
 	private static final String GET_TANGLING_DELTA_BY_PRODUCT = "get.tangling.delta.by.product";
 
 
@@ -46,9 +48,23 @@ public class FeatureDAOImpl implements FeatureDAO {
 	public List<Feature> getFeatures() {
 		List<Feature> features = namedJdbcTemplate.query(sqlQueries.getProperty(GET_FEATURES), new FeatureRowMapper());
 		setFeatureScattering(features, GET_SCATTERING_DELTA);
+		setFeatureTanglingMetric(features);
 		return features;
 	}
 
+	private void setFeatureTanglingMetric(List<Feature> features) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		List<String> featureIds = features.stream().map(Feature::getId).collect(Collectors.toList());
+		parameters.addValue("ids", featureIds);
+		Map<String, Integer> featuresTanglingMap = namedJdbcTemplate.query(sqlQueries.getProperty(GET_TANGLING_METRIC), parameters,
+				new FeatureScatteringExtractor());
+		int tanglingMetric;
+		for (Feature feature : features) {
+			tanglingMetric = featuresTanglingMap.get(feature.getId()) == null ? 0
+					: featuresTanglingMap.get(feature.getId());
+			feature.setTangling(tanglingMetric);
+		}
+	}
 	private void setFeatureScattering(List<Feature> features, String sql) {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
 		List<String> featureIds = features.stream().map(Feature::getId).collect(Collectors.toList());
@@ -72,6 +88,8 @@ public class FeatureDAOImpl implements FeatureDAO {
 		parameters.addValue("ids", featureIds);
 		Map<String, Integer> featuresScatteringMap = namedJdbcTemplate.query(sqlQueries.getProperty(GET_SCATTERING),
 				parameters, new FeatureScatteringExtractor());
+		setFeatureTanglingMetric(features);
+
 		int scatteringDelta;
 		for (Feature feature : features) {
 			scatteringDelta = featuresScatteringMap.get(feature.getId()) == null ? 0
@@ -90,11 +108,7 @@ public class FeatureDAOImpl implements FeatureDAO {
 				new FeatureTanglingExtractor());
 	}
 
-	@Override
-	public String getDeltaTangling() {
 
-		return namedJdbcTemplate.query(sqlQueries.getProperty(GET_TANGLING_DELTA), new FeatureTanglingExtractor());
-	}
 
 	@Override
 	public String getDeltaTanglingByProduct(List<String> featureIdList) {
@@ -111,6 +125,7 @@ public class FeatureDAOImpl implements FeatureDAO {
 		List<Feature> features = namedJdbcTemplate.query(sqlQueries.getProperty(GET_RELEASE_FEATURES),
 				new FeatureRowMapper());
 		setFeatureScattering(features, GET_SCATTERING);
+		setFeatureTanglingMetric(features);
 		return features;
 	}
 
@@ -133,7 +148,16 @@ public class FeatureDAOImpl implements FeatureDAO {
 		List<Feature> features = namedJdbcTemplate.query(sqlQueries.getProperty(query), parameters,
 				new FeatureRowMapper());
 		setFeatureScattering(features, GET_SCATTERING_DELTA);
+		setFeatureTanglingMetric(features);
 		return features;
+	}
+
+	@Override
+	public String getDeltaTangling(List<String> featureIdList) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		parameters.addValue("ids", featureIdList);
+		return namedJdbcTemplate.query(sqlQueries.getProperty(GET_TANGLING_DELTA), parameters,
+				new FeatureTanglingExtractor());
 	}
 
 }
