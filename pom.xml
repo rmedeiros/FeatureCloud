@@ -6,7 +6,7 @@
 
 	<groupId>com.onekin</groupId>
 	<artifactId>spl-tag-cloud</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>war</packaging>
 
 	<name>spl-tag-cloud</name>
