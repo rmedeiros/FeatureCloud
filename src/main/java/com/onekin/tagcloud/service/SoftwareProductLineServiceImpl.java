@@ -66,7 +66,7 @@ public class SoftwareProductLineServiceImpl implements SoftwareProductLineServic
 
 	@Override
 	public String getNewickTree(List<String> featureIdList) {
-		String tanglingFeatureList = featureDAO.getDeltaTangling();
+		String tanglingFeatureList = featureDAO.getDeltaTangling(featureIdList);
 		for(String featureId : featureIdList) {
 			tanglingFeatureList+=" aaaa "+featureId+' '+featureId;
 		}

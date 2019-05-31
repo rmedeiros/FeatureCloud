@@ -8,6 +8,7 @@ public class Feature {
 	private Integer linesAdded;
 	private DeveloperGroupCustInFeature mostImportantDeveloperGroup;
 	private int featureScattering;
+	private int tangling;
 
 	public Feature() {
 		super();
@@ -15,7 +16,7 @@ public class Feature {
 	}
 
 	public Feature(String id, String name, Integer linesDeleted, Integer linesAdded,
-			DeveloperGroupCustInFeature mostImportantDeveloperGroup) {
+			DeveloperGroupCustInFeature mostImportantDeveloperGroup, int tangling) {
 		super();
 		this.name = name;
 		this.linesDeleted = linesDeleted;
@@ -64,6 +65,14 @@ public class Feature {
 		this.mostImportantDeveloperGroup = mostImportantDeveloperGroup;
 	}
 
+	public int getTangling() {
+		return tangling;
+	}
+
+	public void setTangling(int tangling) {
+		this.tangling = tangling;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -89,7 +98,6 @@ public class Feature {
 		return true;
 	}
 
-
 	public int getFeatureScattering() {
 		return featureScattering;
 	}
@@ -100,23 +108,9 @@ public class Feature {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Feature [id=");
-		builder.append(id);
-		builder.append(", name=");
-		builder.append(name);
-		builder.append(", linesDeleted=");
-		builder.append(linesDeleted);
-		builder.append(", linesAdded=");
-		builder.append(linesAdded);
-		builder.append(", mostImportantDeveloperGroup=");
-		builder.append(mostImportantDeveloperGroup);
-		builder.append(", featureScattering=");
-		builder.append(featureScattering);
-		builder.append("]");
-		return builder.toString();
+		return "Feature [id=" + id + ", name=" + name + ", linesDeleted=" + linesDeleted + ", linesAdded=" + linesAdded
+				+ ", mostImportantDeveloperGroup=" + mostImportantDeveloperGroup + ", featureScattering="
+				+ featureScattering + ", tangling=" + tangling + "]";
 	}
-	
-	
 
 }

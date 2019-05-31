@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -83,8 +85,8 @@ public class ReleaseDeltaController {
 
 	@ResponseBody
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE }, path = "/features/filtered")
-	public FeaturesResponse getFeaturesFiltered(@RequestParam(value="product",defaultValue="All") String productId,
-			@RequestParam(value="packageId", required=false) int packageId) {
+	public FeaturesResponse getFeaturesFiltered(@RequestParam(value = "product", defaultValue = "All") String productId,
+			@RequestParam(value = "packageId", required = false) int packageId) {
 		List<Feature> features;
 		String newickString;
 		if (("All".equalsIgnoreCase(productId) || "".equalsIgnoreCase(productId)) && packageId == 0) {
@@ -93,7 +95,7 @@ public class ReleaseDeltaController {
 			newickString = softwareProductLineService
 					.getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
 		} else {
-			features = softwareProductLineService.getFeaturesFilteredByProductAndPackage(productId,packageId);
+			features = softwareProductLineService.getFeaturesFilteredByProductAndPackage(productId, packageId);
 			newickString = softwareProductLineService
 					.getNewickTreeByProduct(features.stream().map(Feature::getId).collect(Collectors.toList()));
 		}
@@ -105,6 +107,15 @@ public class ReleaseDeltaController {
 		int maxModifiedLines = Collections.max(modifiedLinesList);
 
 		return new FeaturesResponse(features, maxModifiedLines, newickString);
+
+	}
+
+	@ResponseBody
+	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
+			MediaType.TEXT_PLAIN_VALUE }, path = "/newick/filtered")
+	public String getNewickStringFiltered(@RequestBody List<String> features) {
+		String newick =  softwareProductLineService.getNewickTree(features);
+		return newick;
 
 	}
 
