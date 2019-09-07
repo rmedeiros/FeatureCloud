@@ -588,3 +588,19 @@ div#accordion {
     position: absolute;
     padding: 0;
 }
+
+.slider-amount{
+	width:10px;
+}
+
+div#slider-scattering {
+    background: #337AB8;
+}
+
+.ui-slider-range.ui-corner-all.ui-widget-header.ui-slider-range-min {
+    background: #337AB8;
+}
+
+div#slider-tangling {
+    background: #337AB8;
+}	 
