@@ -1,11 +1,11 @@
 package com.onekin.tagcloud.dao;
 
-import java.util.List;
-
 import com.onekin.tagcloud.model.FeatureSibling;
+
+import java.util.List;
 
 public interface FeatureSiblingDAO {
 
-	List<FeatureSibling> getModifiedFeaturesiblings(String id_feature);
+    List<FeatureSibling> getModifiedFeaturesiblings(String id_feature);
 
 }

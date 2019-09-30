@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-	<bean id="queries" class="java.util.Properties">
-		<constructor-arg index="0">
-			<props>
+    <bean id="queries" class="java.util.Properties">
+        <constructor-arg index="0">
+            <props>
 
-				<prop key="get.features">
-			  		<![CDATA[
+                <prop key="get.features">
+                    <![CDATA[
 						  SELECT FEATURE_NAME,SUM(LINES_ADDED),SUM(LINES_DELETED), ID_FEATURE 
 						  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT
 						  WHERE ID_FEATURE!='NO FEATURE' GROUP BY FEATURE_NAME;
 					]]>
-				</prop>
-				<prop key="get.features.by.product">
-			  		<![CDATA[
+                </prop>
+                <prop key="get.features.by.product">
+                    <![CDATA[
 						  SELECT FEATURE_NAME,SUM(LINES_ADDED),SUM(LINES_DELETED), ID_FEATURE 
 						  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT INNER JOIN PRODUCT_FEATURES ON ID_FEATURE=FEATURE_ID 
 						  WHERE ID_FEATURE!='NO FEATURE' AND PRODUCT_ID=:productId GROUP BY FEATURE_NAME;
 					]]>
-				</prop>
-				<prop key="get.features.by.package">
-			  		<![CDATA[
+                </prop>
+                <prop key="get.features.by.package">
+                    <![CDATA[
 					SELECT FEATURENAME ,SUM(ADDED),SUM(DELETED), IDFEATURE  FROM CHURN_FEATURES_PACKAGE_ASSETS WHERE IDPACKAGE=:idpackage AND IDFEATURE!='NO FEATURE' GROUP BY IDFEATURE;
 					]]>
-				</prop>
-				<prop key="get.features.by.all">
-			  		<![CDATA[
+                </prop>
+                <prop key="get.features.by.all">
+                    <![CDATA[
 			  			SELECT FEATURENAME ,SUM(ADDED),SUM(DELETED), IDFEATURE 
 			  			FROM CHURN_FEATURES_PACKAGE_ASSETS  INNER JOIN PRODUCT_FEATURES ON IDFEATURE=FEATURE_ID
 			  			WHERE IDPACKAGE=:idpackage AND  PRODUCT_ID=:productId AND IDFEATURE!='NO FEATURE'  GROUP BY IDFEATURE;
 			  		
 					]]>
-				</prop>
+                </prop>
 
-				<prop key="get.feature.variation.points">
-			  		<![CDATA[
+                <prop key="get.feature.variation.points">
+                    <![CDATA[
 					  SELECT IDVARIATIONPOINT,SUM(LINES_ADDED),SUM(LINES_DELETED), IDCOREASSET, NAME, EXPRESSION  
 					  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT
 					  INNER JOIN core_asset ON ID_COREASSET=IDCOREASSET
 					  WHERE LOWER(ID_FEATURE)=? GROUP BY IDVARIATIONPOINT;
 					]]>
-				</prop>
-				<prop key="get.features.by.devgroup">
-					<![CDATA[
+                </prop>
+                <prop key="get.features.by.devgroup">
+                    <![CDATA[
 						 SELECT ID_FEATURE, ID_DEVELOPER_GROUP, MODIFIED_LINES from (
                                  SELECT ID_FEATURE,ID_DEVELOPER_GROUP, sum(LINES_ADDED+LINES_DELETED) as modified_lines
 								  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT NATURAL JOIN DEVELOPER_GROUP
@@ -59,9 +59,9 @@
 																  group by id_feature
 																  HAVING id_feature = a.id_feature);
 					]]>
-				</prop>
-				<prop key="get.features.by.devgroup.filtered.product">
-					<![CDATA[
+                </prop>
+                <prop key="get.features.by.devgroup.filtered.product">
+                    <![CDATA[
 						SELECT ID_FEATURE, ID_DEVELOPER_GROUP, MAX(MODIFIED_LINES) FROM
 							(SELECT ID_FEATURE,ID_DEVELOPER_GROUP, SUM(LINES_ADDED+LINES_DELETED) AS MODIFIED_LINES 
 								  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT NATURAL JOIN DEVELOPER_GROUP
@@ -69,9 +69,9 @@
 						     AS A
 					    GROUP BY ID_FEATURE, ID_DEVELOPER_GROUP;
 					]]>
-				</prop>
-				<prop key="get.features.by.devgroup.filtered.developer">
-					<![CDATA[
+                </prop>
+                <prop key="get.features.by.devgroup.filtered.developer">
+                    <![CDATA[
 						SELECT ID_FEATURE, ID_DEVELOPER_GROUP, MAX(MODIFIED_LINES) FROM
 							(SELECT ID_FEATURE,ID_DEVELOPER_GROUP, SUM(LINES_ADDED+LINES_DELETED) AS MODIFIED_LINES 
 								  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT NATURAL JOIN DEVELOPER_GROUP
@@ -79,9 +79,9 @@
 						     AS A
 					    GROUP BY ID_FEATURE, ID_DEVELOPER_GROUP;
 					]]>
-				</prop>
-				<prop key="get.features.by.devgroup.filtered.all">
-					<![CDATA[
+                </prop>
+                <prop key="get.features.by.devgroup.filtered.all">
+                    <![CDATA[
 						SELECT ID_FEATURE, ID_DEVELOPER_GROUP, MAX(MODIFIED_LINES) FROM
 							(SELECT ID_FEATURE,ID_DEVELOPER_GROUP, SUM(LINES_ADDED+LINES_DELETED) AS MODIFIED_LINES 
 								  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN CUSTOMIZATION_FACT ON ID_VARIATIONPOINT=IDVARIATIONPOINT NATURAL JOIN DEVELOPER_GROUP
@@ -89,14 +89,11 @@
 						     AS A
 					    GROUP BY ID_FEATURE, ID_DEVELOPER_GROUP;
 					]]>
-				</prop>
+                </prop>
 
 
-
-
-
-				<prop key="get.vp.by.devgroup">
-					<![CDATA[
+                <prop key="get.vp.by.devgroup">
+                    <![CDATA[
 						SELECT  ID_DEVELOPER_GROUP, MAX(MODIFIED_LINES), IDVARIATIONPOINT FROM
 							(SELECT  ID_DEVELOPER_GROUP, SUM(LINES_ADDED+LINES_DELETED) AS MODIFIED_LINES , IDVARIATIONPOINT
 								  FROM   CUSTOMIZATION_FACT INNER JOIN features_in_variationpoints ON IDVARIATIONPOINT=ID_VARIATIONPOINT NATURAL JOIN DEVELOPER_GROUP
@@ -104,9 +101,9 @@
 						     AS A
 					    GROUP BY IDVARIATIONPOINT,ID_DEVELOPER_GROUP;	
 					]]>
-				</prop>
-				<prop key="get.vp.by.devgroup.filtered.product">
-					<![CDATA[
+                </prop>
+                <prop key="get.vp.by.devgroup.filtered.product">
+                    <![CDATA[
 						SELECT  ID_DEVELOPER_GROUP, MAX(MODIFIED_LINES), IDVARIATIONPOINT FROM
 							(SELECT  ID_DEVELOPER_GROUP, SUM(LINES_ADDED+LINES_DELETED) AS MODIFIED_LINES , IDVARIATIONPOINT, 
 								  FROM   CUSTOMIZATION_FACT INNER JOIN features_in_variationpoints ON IDVARIATIONPOINT=ID_VARIATIONPOINT NATURAL JOIN DEVELOPER_GROUP
@@ -114,9 +111,9 @@
 						     AS A
 					    GROUP BY IDVARIATIONPOINT,ID_DEVELOPER_GROUP;	
 					]]>
-				</prop>
-				<prop key="get.vp.by.devgroup.filtered.developer">
-					<![CDATA[
+                </prop>
+                <prop key="get.vp.by.devgroup.filtered.developer">
+                    <![CDATA[
 						SELECT  ID_DEVELOPER_GROUP, MAX(MODIFIED_LINES), IDVARIATIONPOINT FROM
 							(SELECT  ID_DEVELOPER_GROUP, SUM(LINES_ADDED+LINES_DELETED) AS MODIFIED_LINES , IDVARIATIONPOINT
 								  FROM   CUSTOMIZATION_FACT INNER JOIN features_in_variationpoints ON IDVARIATIONPOINT=ID_VARIATIONPOINT NATURAL JOIN DEVELOPER_GROUP
@@ -124,9 +121,9 @@
 						     AS A
 					    GROUP BY IDVARIATIONPOINT,ID_DEVELOPER_GROUP;	
 					]]>
-				</prop>
-				<prop key="get.vp.by.devgroup.filtered.all">
-					<![CDATA[
+                </prop>
+                <prop key="get.vp.by.devgroup.filtered.all">
+                    <![CDATA[
 						SELECT  ID_DEVELOPER_GROUP, MAX(MODIFIED_LINES), IDVARIATIONPOINT FROM
 							(SELECT  ID_DEVELOPER_GROUP, SUM(LINES_ADDED+LINES_DELETED) AS MODIFIED_LINES , IDVARIATIONPOINT
 								  FROM   CUSTOMIZATION_FACT INNER JOIN features_in_variationpoints ON IDVARIATIONPOINT=ID_VARIATIONPOINT NATURAL JOIN DEVELOPER_GROUP
@@ -134,15 +131,15 @@
 						     AS A
 					    GROUP BY IDVARIATIONPOINT,ID_DEVELOPER_GROUP;	
 					]]>
-				</prop>
+                </prop>
 
-				<prop key="get.diffvalues">
-					<![CDATA[
+                <prop key="get.diffvalues">
+                    <![CDATA[
 					SELECT custom_diff, type, path FROM customization_fact  natural join variation_point natural join core_asset natural join feature_group where id_feature_group=?;	
 				]]>
-				</prop>
-				<prop key="get.tangling.delta">
-					<![CDATA[
+                </prop>
+                <prop key="get.tangling.delta">
+                    <![CDATA[
 							SELECT 
 							    A.ID_FEATURE, B.ID_FEATURE
 							FROM
@@ -152,17 +149,17 @@
 										SELECT ID_FEATURE_GROUP FROM CUSTOMIZATION_FACT C INNER JOIN VARIATION_POINT V ON C.IDVARIATIONPOINT=V.IDVARIATIONPOINT WHERE ID_FEATURE_GROUP!=0);
 
    					]]>
-				</prop>
-				
-				<prop key="get.tangling.metric">
-					<![CDATA[
+                </prop>
+
+                <prop key="get.tangling.metric">
+                    <![CDATA[
 					SELECT ID_FEATURE, COUNT(DISTINCT(ID_FEATURE_GROUP)) FROM FEATURE_BRIDGE WHERE ID_FEATURE IN (:ids) AND ID_FEATURE_GROUP IN (
 										SELECT ID_FEATURE_GROUP FROM CUSTOMIZATION_FACT C INNER JOIN VARIATION_POINT V ON C.IDVARIATIONPOINT=V.IDVARIATIONPOINT WHERE ID_FEATURE_GROUP!=0) GROUP BY ID_FEATURE;
    					
 			        ]]>
-				</prop>
-				<prop key="get.tangling.delta.by.product">
-					<![CDATA[
+                </prop>
+                <prop key="get.tangling.delta.by.product">
+                    <![CDATA[
 							SELECT 
 							    A.ID_FEATURE, B.ID_FEATURE
 							FROM
@@ -172,52 +169,52 @@
 										SELECT ID_FEATURE_GROUP FROM CUSTOMIZATION_FACT C INNER JOIN VARIATION_POINT V ON C.IDVARIATIONPOINT=V.IDVARIATIONPOINT WHERE ID_FEATURE_GROUP!=0)
 								AND A.ID_FEATURE in (:ids) AND B.ID_FEATURE in (:ids);
    					]]>
-				</prop>
+                </prop>
 
 
-				<prop key="get.scattering.delta">
-					<![CDATA[
+                <prop key="get.scattering.delta">
+                    <![CDATA[
 					SELECT ID_FEATURE, COUNT(DISTINCT(ID_COREASSET)) FROM  features_in_variationpoints INNER JOIN  core_asset ON ID_COREASSET=IDCOREASSET 
                             WHERE ID_VARIATIONPOINT IN (SELECT C.IDVARIATIONPOINT 
 								FROM CUSTOMIZATION_FACT C ) AND ID_FEATURE!='No feature'
 					    GROUP BY ID_FEATURE;
    					
 			        ]]>
-				</prop>
-				<prop key="get.featuresibling.delta">
-					<![CDATA[
+                </prop>
+                <prop key="get.featuresibling.delta">
+                    <![CDATA[
                         SELECT id_feature_group, sum(lines_added), sum(lines_deleted), feature_expression 
                         from features_in_variationpoints inner join customization_fact on id_variationpoint= idvariationpoint natural join feature_group fg  
                         where id_feature=? group by id_feature_group; 
    					
 			        ]]>
-				</prop>
-				<!-- RELEASE ANALYSIS QUERIES -->
+                </prop>
+                <!-- RELEASE ANALYSIS QUERIES -->
 
-				<prop key="get.release.features">
-					<![CDATA[
+                <prop key="get.release.features">
+                    <![CDATA[
 					SELECT FEATURE_NAME, SUM(LINES_NUMBER), ID_FEATURE
 					  FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN VARIATION_POINT ON ID_VARIATIONPOINT=IDVARIATIONPOINT WHERE ID_FEATURE!='NO FEATURE'GROUP BY FEATURE_NAME;
 				  	]]>
-				</prop>
-				<prop key="get.release.feature.variation.points">
-					<![CDATA[
+                </prop>
+                <prop key="get.release.feature.variation.points">
+                    <![CDATA[
 					  SELECT IDVARIATIONPOINT, LINES_NUMBER, C.IDCOREASSET, NAME, VP.EXPRESSION  
 					  	FROM FEATURES_IN_VARIATIONPOINTS INNER JOIN VARIATION_POINT VP ON ID_VARIATIONPOINT=IDVARIATIONPOINT
 					  	INNER JOIN CORE_ASSET C ON ID_COREASSET=C.IDCOREASSET
 					  	WHERE LOWER(ID_FEATURE)=?;
 				  	]]>
-				</prop>
-				<prop key="get.release.vp.content">
-					<![CDATA[
+                </prop>
+                <prop key="get.release.vp.content">
+                    <![CDATA[
 						SELECT C.IDCOREASSET, C.NAME, VP.BODY  
 					  	FROM VARIATION_POINT VP 
 					  	INNER JOIN CORE_ASSET C ON VP.IDCOREASSET=C.IDCOREASSET
 					  	WHERE VP.IDVARIATIONPOINT=?;
 				  	]]>
-				</prop>
-				<prop key="get.tangling">
-					<![CDATA[
+                </prop>
+                <prop key="get.tangling">
+                    <![CDATA[
 							SELECT 
 							    A.ID_FEATURE, B.ID_FEATURE
 							FROM
@@ -225,16 +222,16 @@
 							        LEFT JOIN
 							    FEATURE_BRIDGE B ON B.ID_FEATURE_GROUP = A.ID_FEATURE_GROUP WHERE A.ID_FEATURE!='No feature';
     					]]>
-				</prop>
+                </prop>
 
-				<prop key="get.scattering">
-					<![CDATA[
+                <prop key="get.scattering">
+                    <![CDATA[
 					    SELECT ID_FEATURE, COUNT(ID_FEATURE) FROM FEATURE_BRIDGE WHERE ID_FEATURE!='No feature' GROUP BY ID_FEATURE;
     					]]>
-				</prop>
-			</props>
+                </prop>
+            </props>
 
-		</constructor-arg>
-	</bean>
+        </constructor-arg>
+    </bean>
 
 </beans>

@@ -1,10 +1,9 @@
 package com.onekin.tagcloud.repository;
 
-import javax.transaction.Transactional;
-
+import com.onekin.tagcloud.model.ComponentPackage;
 import org.springframework.data.repository.CrudRepository;
 
-import com.onekin.tagcloud.model.ComponentPackage;
+import javax.transaction.Transactional;
 
 @Transactional
 public interface ComponentPackageRepository extends CrudRepository<ComponentPackage, Long> {
