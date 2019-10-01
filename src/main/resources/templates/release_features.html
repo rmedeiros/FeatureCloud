@@ -3,7 +3,22 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="layout/template">
+<head>
+    <th:block layout:fragment="script">
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+              integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+              crossorigin="anonymous">
+        <link rel="stylesheet"
+              href="/css/bootstrap-datepicker3.standalone.min.css">
 
+
+        <script src="/js/bootstrap-datepicker.min.js"></script>
+        <link rel="stylesheet"
+              href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </th:block>
+</head>
 <body>
 <section layout:fragment="content">
 
@@ -34,9 +49,68 @@
 
 
     <hr/>
-    <div id="tp"></div>
-    <script th:inline="javascript">
+    <div id="tp">
+        <div class="thumbnail tree-info" style="">
+            <h4>Delta metadata</h4>
+            <hr>
+            <p class="c6 c12">
+                <span class="c0">FROM:&nbsp;</span><span class="c20">(21 Dec
+						2017)</span><span class="c25">&nbsp;</span><span class="c0">-
+						TO:&nbsp;</span><span class="c20">(31 Dec 2017)</span>
+            </p>
 
+            <p class="c6 c12">
+                <span class="c0">HASHES: &nbsp;</span><span class="c6 c12">9c00cff</span><span
+                    class="c6 c12">&nbsp;- 8dc10fb4 </span>
+            </p>
+            <p class="c6 c12">
+                <span class="c0">TAGS: </span><span class="c6 c12">1.1.7 </span><span
+                    class="c6 c12">&nbsp;- 1.1.8</span>
+            </p>
+            <p class="c6 c12">
+                <span class="c0">Total code churn: &nbsp;</span><span
+                    class="c9"> 694 insertions(+), 223 deletions(-)</span>
+            </p>
+            <p class="c6 c12">
+                <span class="c0">#ifdefs modified:</span><span class="c9">&nbsp;228</span>
+            </p>
+
+        </div>
+        <div class="slider-container">
+            <p>
+                <label for="amount">Minimum Scattering level:</label> <input type="text" id="amountScattering"
+                                                                             class="slider-amount"
+                                                                             readonly=""
+                                                                             style="border: 0; color: #6e9bfb; font-weight: bold;">
+            </p>
+            <div id="slider-scattering" style="height: 200px;"
+                 class="ui-slider ui-corner-all ui-slider-vertical ui-widget ui-widget-content">
+                <div
+                        class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min"
+                        style="height: 35%;"></div>
+                <span tabindex="0"
+                      class="ui-slider-handle ui-corner-all ui-state-default"
+                      style="bottom: 35%;"></span>
+            </div>
+            <p style="margin-top: 5vh;">
+                <label for="amount">Minimum FeatureSiblings:</label> <input type="text" id="amountTangling"
+                                                                            class="slider-amount"
+                                                                            readonly=""
+                                                                            style="border: 0; color: #6e9bfb; font-weight: bold;">
+            </p>
+            <div id="slider-tangling" style="height: 200px;"
+                 class="ui-slider ui-corner-all ui-slider-vertical ui-widget ui-widget-content">
+                <div
+                        class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min"
+                        style="height: 67%;"></div>
+                <span tabindex="0"
+                      class="ui-slider-handle ui-corner-all ui-state-default"
+                      style="bottom: 67%;"></span>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        var features = [[${features}]];
 
         var xScale = d3.scale.linear()
             .domain([0, [[${maxModifiedLines}]]])

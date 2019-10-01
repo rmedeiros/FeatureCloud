@@ -16,3 +16,4 @@ GNU GPL v3.0
 * [Bootstrap](http://getbootstrap.com)
 * [jQuery](http://jquery.com)
 * [Spring Boot](https://github.com/spring-projects/spring-boot)
+* [PhyloPlot](https://github.com/adamzy/PhyloPlot)
