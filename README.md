@@ -1,4 +1,5 @@
 # FeatureCloud
+[![Build Status](https://travis-ci.com/rmedeiros/FeatureCloud.svg?branch=feature%2Fsnapshot-visualization)](https://travis-ci.com/rmedeiros/FeatureCloud)
 
 FeatureCloud is a tag based visualization tool used to improve comprehensibility and maintenance
 of preprocessor-based SPL code. A quick demo is available at [https://vimeo.com/338522586](https://vimeo.com/338522586)

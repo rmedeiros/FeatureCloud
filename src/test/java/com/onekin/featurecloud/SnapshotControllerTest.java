@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -27,23 +27,69 @@ public class SnapshotControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void getFeatureTagCloud() throws Exception {
+    public void getFeatureTagCloudTest() throws Exception {
         mockMvc.perform(get("/release/features/")
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void getFeatureVariationPoints() throws Exception {
+    public void getFeatureVariationPointsTest() throws Exception {
         mockMvc.perform(get("/release/features/nozzle_park_feature/")
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void getVariationPointContent() throws Exception {
+    public void getVariationPointContentTest() throws Exception {
         mockMvc.perform(get("/features/nozzle_park_feature/asset/151/")
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void  getFeaturesFilteredByProductTest()  throws Exception{
+
+        this.mockMvc.perform(get("/release/features/filtered").param("product","creality")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
+    }
+
+
+    @Test
+    public void  getFeaturesFilteredByPackageTest()  throws Exception{
+
+        this.mockMvc.perform(get("/release/features/filtered").param("packageId","1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
+    }
+
+    @Test
+    public void  getFeaturesFilteredTest()  throws Exception{
+
+        this.mockMvc.perform(get("/release/features/filtered").param("packageId","1").param("product","creality")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
+    }
+
+
+    @Test
+    public void  getFeaturesFilteredNullTest()  throws Exception{
+
+        this.mockMvc.perform(get("/release/features/filtered")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
     }
 }
