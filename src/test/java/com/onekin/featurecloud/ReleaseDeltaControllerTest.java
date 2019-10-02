@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(
 webEnvironment=SpringBootTest.WebEnvironment.MOCK,
         classes = FeatureCloudApplication.class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(printOnlyOnFailure = true)
 public class ReleaseDeltaControllerTest {
 
     @Autowired
