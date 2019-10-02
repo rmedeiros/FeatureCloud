@@ -1,16 +1,12 @@
 package com.onekin.featurecloud.controller;
 
-import com.onekin.featurecloud.model.Feature;
-import com.onekin.featurecloud.model.VariationPoint;
-import com.onekin.featurecloud.model.CoreAsset;
-import com.onekin.featurecloud.service.SnapshotServiceImpl;
+import com.onekin.featurecloud.model.*;
+import com.onekin.featurecloud.service.SnapshotService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +18,7 @@ import java.util.stream.Collectors;
 public class SnapshotController {
 
     @Autowired
-    private SnapshotServiceImpl snapshotServiceImpl;
+    private SnapshotService snapshotService;
 
     @GetMapping("/")
     public String getVariationPoints(Model model) {
@@ -32,15 +28,22 @@ public class SnapshotController {
     @GetMapping("/features/")
     public String getFeatureTagCloud(Model model,
                                      @RequestParam(required = false, name = "product", defaultValue = "0") String productId) {
-        List<Feature> features = snapshotServiceImpl.getFeatures();
+        List<Feature> features = snapshotService.getFeatures();
         List<Integer> modifiedLinesList = new ArrayList<>();
         List<Integer> scatteringLevel = new ArrayList<>();
         for (Feature feature : features) {
             modifiedLinesList.add(feature.getLinesAdded());
             scatteringLevel.add(feature.getFeatureScattering());
         }
+
+        Iterable<Product> products = snapshotService.getProductIds();
+        Iterable<ComponentPackage> componentPackages = snapshotService.getComponentPackages();
+
+        model.addAttribute("products", products);
+        model.addAttribute("componentPackages", componentPackages);
+
         int maxModifiedLines = Collections.max(modifiedLinesList);
-        String newickString = snapshotServiceImpl
+        String newickString = snapshotService
                 .getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
         model.addAttribute("newickString", newickString);
         model.addAttribute("features", features);
@@ -54,7 +57,7 @@ public class SnapshotController {
     @GetMapping("/features/{featureName}/")
     public String getFeatureVariationPoints(@PathVariable(value = "featureName") String featureName, Model model) {
 
-        List<VariationPoint> variationPoints = snapshotServiceImpl.getReleaseVariationPoint(featureName);
+        List<VariationPoint> variationPoints = snapshotService.getReleaseVariationPoint(featureName);
         int totalLines = variationPoints.stream().map(VariationPoint::getLinesAdded)
                 .collect(Collectors.summingInt(i -> i));
         model.addAttribute("variationPoints", variationPoints);
@@ -66,24 +69,38 @@ public class SnapshotController {
 
     @GetMapping("/features/{featureName}/asset/{variationPointId}/")
     public String getVariationPointContent(@PathVariable(value = "variationPointId") Integer variationPointId,
-                                      @PathVariable(value = "featureName") String featureName, Model model) {
-        CoreAsset coreAsset = snapshotServiceImpl.getVariationPointBody(variationPointId);
+                                           @PathVariable(value = "featureName") String featureName, Model model) {
+        CoreAsset coreAsset = snapshotService.getVariationPointBody(variationPointId);
         model.addAttribute("coreAsset", coreAsset);
         model.addAttribute("currentFeature", featureName);
         return "release_vp_code";
 
     }
-/*
-	@ResponseBody
-	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE }, path = "/features/filtered")
-	public FeaturesResponse getFeaturesFiltered(@RequestBody Filter filter) {
-		List<Feature> features = softwareProductLineService.getFeaturesFiltered(filter);
-		int totalLines = features.stream().map(Feature::getLinesAdded).collect(Collectors.summingInt(i -> i))
-				+ features.stream().map(Feature::getLinesDeleted).collect(Collectors.summingInt(i -> i));
-		return new FeaturesResponse(features, totalLines);
 
-	}
+    @ResponseBody
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, path = "/features/filtered")
+    public FeaturesResponse getFeaturesFiltered(@RequestParam(value = "product", defaultValue = "All") String productId,
+                                                @RequestParam(value = "packageId", defaultValue="0", required = false) Integer packageId) {
+        List<Feature> features;
+        String newickString;
+        if (("All".equalsIgnoreCase(productId) || "".equalsIgnoreCase(productId)) && packageId == 0) {
+            features = snapshotService.getFeatures();
+        } else {
+            features = snapshotService.getFeaturesFilteredByProductAndPackage(productId, packageId);
+        }
+        newickString = snapshotService
+                .getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
+        List<Integer> modifiedLinesList = new ArrayList<>();
+        modifiedLinesList.add(0);
+        for (Feature feature : features) {
+            modifiedLinesList.add(feature.getLinesAdded());
+        }
+        int maxModifiedLines = Collections.max(modifiedLinesList);
+
+        return new FeaturesResponse(features, maxModifiedLines, newickString);
+
+    }
+/*
 
 	@ResponseBody
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {

@@ -31,16 +31,34 @@
         <div class="analisy-mode right">
             <div class="filter-buttons">
                 <div class="dropdown">
-                    <button class="btn btn-primary dropdown-button">
+                    <button id="selectedProduct"
+                            class="btn btn-primary dropdown-button" data-id="All">
                         Feature configuration: All<i class="fas fa-chevron-down"></i>
                     </button>
                     <div id="myDropdown" class="dropdown-content">
                         <i class="fas fa-search"></i> <input type="text"
-                                                             placeholder="Search.." id="myInput"
-                                                             onkeyup="filterFunction()">
-                        <a href="#" class="prod-config">All</a> <a
+                                                             placeholder="Search.." id="myInput" class="searchInput"
+                                                             onkeyup="filterFunction('myinput','mydropdown')"> <a
+                            href="#" class="prod-config" data-id="0">All</a> <a
                             th:each="product : ${products}" href="#" class="prod-config"
                             th:text="${product.productId}"></a>
+                    </div>
+                </div>
+                <!-- Package filter -->
+                <div class="dropdown">
+                    <button id="selectedPackage"
+                            class="btn btn-primary dropdown-button" data-id="0">
+                        Module selection: All<i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="packageDropdown" class="dropdown-content">
+                        <i class="fas fa-search"></i> <input type="text"
+                                                             placeholder="Search.." id="myInput2" class="searchInput"
+                                                             onkeyup="filterFunction('myInput2','packageDropdown')">
+                        <a href="#" class="componentPackage-config" data-id="0">All</a> <a
+                            th:each="componentPackage : ${componentPackages}" href="#"
+                            class="componentPackage-config"
+                            th:text="${componentPackage.name}"
+                            th:data-id="${componentPackage.idpackage}"></a>
                     </div>
                 </div>
             </div>
@@ -112,6 +130,20 @@
     <script th:inline="javascript">
         var features = [[${features}]];
 
+        $(".dropdown-button").click(function () {
+            if ($(this).siblings(".dropdown-content").hasClass("show")) {
+                $(this).siblings(".dropdown-content").removeClass("show");
+            } else {
+                $(this).siblings(".dropdown-content").addClass("show");
+            }
+        });
+        $('body').click(function (e) {
+            if (!$(".dropdown").is(e.target) && $(".dropdown").has(e.target).length === 0) {
+                $(".dropdown-content").removeClass("show")
+            }
+            ;
+        })
+
         var xScale = d3.scale.linear()
             .domain([0, [[${maxModifiedLines}]]])
             .range([100, 255]);
@@ -134,7 +166,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: "/features/filtered",
+                    url: "/release/features/filtered",
                     accept: "application/json",
                     data: JSON.stringify({
                         productReleaseId: $("#product-list").find('.dropdown-toggle').attr("data-id"),
@@ -150,6 +182,48 @@
             });
 
         });
+
+
+
+        successHandler = function (data) {
+            var labelcolors = "";
+            var labelscales = ""
+            features = data.features;
+            data.features.forEach(function (element, index, array) {
+                labelcolors += element.name + ":#0000ff" + Math.floor(xScale(element.linesDeleted + element.linesAdded)).toString(16)
+                labelscales += element.name + ":" + Math.round(xScaleScattering(element.featureScattering) * 100) / 100
+                if (index < array.length - 1) {
+                    labelscales += ", "
+                    labelcolors += ", "
+                }
+            });
+            options.labelcolors = labelcolors;
+            options.labelscales = labelscales;
+            options.treestring = data.newickString
+            $("#tp").find("svg").remove();
+            doplot();
+        };
+        ajaxCall = function () {
+            $.ajax({
+                type: 'GET',
+                url: "/release/features/filtered?product=" + $("#selectedProduct").attr("data-id") + "&packageId=" + parseInt($("#selectedPackage").attr("data-id")),
+                accept: "application/json",
+                success: successHandler
+            });
+        };
+        $(".componentPackage-config").click(function (e) {
+            $(e.currentTarget).parent().siblings("button").attr("data-id", $(e.currentTarget).attr("data-id"));
+            $(e.currentTarget).parent().siblings("button").html("Feature configuration: " + e.currentTarget.text + "<i class='fas fa-chevron-down'></i>");
+            ajaxCall();
+
+        });
+        $(".prod-config").click(function (e) {
+            $(e.currentTarget).parent().siblings("button").attr("data-id", e.currentTarget.text)
+            $(e.currentTarget).parent().siblings("button").html("Feature configuration: " + e.currentTarget.text + "<i class='fas fa-chevron-down'></i>");
+            ajaxCall();
+
+        });
+
 
     </script>
 

@@ -17,9 +17,9 @@ public interface SnapshotService {
 
     List<Feature> getFeaturesFilteredByProductAndPackage(String productId, int packageId);
 
-    String getNewickTreeByProduct(List<String> collect);
-
     Iterable<ComponentPackage> getComponentPackages();
+
+    List<VariationPoint> getReleaseVariationPoint(String featureName);
 
     CoreAsset getVariationPointBody(Integer variationPointId);
 }

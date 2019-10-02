@@ -588,3 +588,8 @@ div#slider-scattering {
 div#slider-tangling {
     background: #337AB8;
 }
+
+#tp svg {
+    padding-left: 10%;
+    padding-top: 3%;
+}

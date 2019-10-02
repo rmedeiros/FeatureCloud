@@ -3,6 +3,8 @@ package com.onekin.featurecloud.service;
 import com.onekin.featurecloud.dao.FeatureDAO;
 import com.onekin.featurecloud.dao.VariationPointDAO;
 import com.onekin.featurecloud.model.*;
+import com.onekin.featurecloud.repository.ComponentPackageRepository;
+import com.onekin.featurecloud.repository.ProductRepository;
 import com.onekin.featurecloud.utils.NewickUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,13 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Autowired
     private VariationPointDAO variationPointDao;
 
+    @Autowired
+    private ComponentPackageRepository componentPackageRepo;
+
+    @Autowired
+    private ProductRepository productsRepo;
+
+    @Override
     public List<Feature> getFeatures() {
         return featuresDao.getAllFeatures();
     }
@@ -40,25 +49,20 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public Iterable<Product> getProductIds() {
-        return null;
+        return productsRepo.findAll();
     }
 
     @Override
     public List<Feature> getFeaturesFilteredByProductAndPackage(String productId, int packageId) {
-        return null;
-    }
-
-    @Override
-    public String getNewickTreeByProduct(List<String> collect) {
-        return null;
+        return featuresDao.getSnapshotFeaturesByProduct(productId,packageId);
     }
 
     @Override
     public Iterable<ComponentPackage> getComponentPackages() {
-        return null;
+        return componentPackageRepo.findAll();
     }
 
-
+    @Override
     public List<VariationPoint> getReleaseVariationPoint(String featureName) {
 
         return variationPointDao.getReleaseVariationPoints(featureName);

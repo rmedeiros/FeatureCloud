@@ -154,6 +154,31 @@ public class FeatureDAOImpl implements FeatureDAO {
         return features;
     }
 
+
+    @Override
+    public List<Feature> getSnapshotFeaturesByProduct(String productId, int packageId) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        String query;
+
+        if (productId != null && !("".equals(productId.trim())) && !("All".equals(productId)) && (packageId != 0)) {
+            parameters.addValue("productId", productId);
+            parameters.addValue("idpackage", packageId);
+            query = "get.features.by.all";
+        } else if (packageId != 0) {
+            parameters.addValue("idpackage", packageId);
+            query = "get.features.by.package";
+        } else {
+            parameters.addValue("productId", productId);
+            query = "get.features.by.product";
+        }
+        List<Feature> features = namedJdbcTemplate.query(snapshotSqlQueries.getProperty(query), parameters,
+                new FeatureRowMapper());
+        setFeatureScattering(features, GET_SCATTERING,snapshotSqlQueries);
+        setFeatureTanglingMetric(features, snapshotSqlQueries);
+        return features;
+    }
+
+
     @Override
     public String getDeltaTangling(List<String> featureIdList) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();

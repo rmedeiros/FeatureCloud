@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.onekin</groupId>
-    <artifactId>spl-tag-cloud</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <artifactId>featurecloud</artifactId>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>spl-tag-cloud</name>
-    <description>Variation-point visualization tag-cloud</description>
+    <name>FeatureCloud</name>
+    <description>Tag Cloud based visualization tool used to improve comprehensibility and maintenance of preprocessor-based SPL code</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -73,7 +73,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
 
 
     </dependencies>
@@ -90,6 +94,14 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.13.0</version>
+                <configuration>
+                    <!-- optional configuration -->
                 </configuration>
             </plugin>
         </plugins>

@@ -77,7 +77,7 @@ public class ReleaseDeltaController {
                                                 @RequestParam(value = "packageId", required = false) Integer packageId) {
         List<Feature> features;
         String newickString;
-        if (("All".equalsIgnoreCase(productId) || "".equalsIgnoreCase(productId)) && packageId == 0) {
+        if (("All".equalsIgnoreCase(productId) || "".equalsIgnoreCase(productId)) &&   0 == packageId) {
             features = releaseDeltaService.getFeatures();
 
             newickString = releaseDeltaService
