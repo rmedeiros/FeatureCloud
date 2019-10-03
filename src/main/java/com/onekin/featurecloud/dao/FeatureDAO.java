@@ -13,6 +13,8 @@ public interface FeatureDAO {
 
     String getTanglingFeatureList(List<String> featureIdList);
 
+    String getTanglingFeatureListByPackage(List<String> featureIdList, int packageId);
+
     List<Feature> getAllFeatures();
 
     List<Feature> getSnapshotFeaturesByProduct(String productId, int packageId);

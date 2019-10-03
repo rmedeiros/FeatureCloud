@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -92,5 +94,16 @@ public class SnapshotControllerTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
+    }
+
+    @Test
+    public void getNewickStringFilteredTest() throws Exception{
+        this.mockMvc.perform(post("/release/newick/filtered")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new String[]{"'NOZZLE_PARK_FEATURE", "AUTOB_BED_LEBELING","PIDTEMP","X_BED_SIZE,Y_BED_SIZE","NEWPANEL"}))).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("NOZZLE_PARK_FEATURE")));
     }
 }

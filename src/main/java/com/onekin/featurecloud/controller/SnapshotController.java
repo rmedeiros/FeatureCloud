@@ -88,8 +88,14 @@ public class SnapshotController {
         } else {
             features = snapshotService.getFeaturesFilteredByProductAndPackage(productId, packageId);
         }
-        newickString = snapshotService
-                .getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
+        if(packageId==0){
+            newickString = snapshotService
+                    .getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
+            List<Integer> modifiedLinesList = new ArrayList<>();
+        }else{
+            newickString = snapshotService
+                    .getNewickTreeFiltered(features.stream().map(Feature::getId).collect(Collectors.toList()),packageId);
+        }
         List<Integer> modifiedLinesList = new ArrayList<>();
         modifiedLinesList.add(0);
         for (Feature feature : features) {
@@ -100,18 +106,14 @@ public class SnapshotController {
         return new FeaturesResponse(features, maxModifiedLines, newickString);
 
     }
-/*
 
-	@ResponseBody
-	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE }, path = "/variationpoints/filtered")
-	public VariationPointsResponse getVariationPointsFiltered(@RequestBody Filter filter) {
-		List<VariationPoint> variationPoints = softwareProductLineService.getVariationPointsFiltered(filter);
-		int totalLines = variationPoints.stream().map(VariationPoint::getLinesAdded)
-				.collect(Collectors.summingInt(i -> i))
-				+ variationPoints.stream().map(VariationPoint::getLinesDeleted).collect(Collectors.summingInt(i -> i));
-		return new VariationPointsResponse(variationPoints, totalLines);
+    @ResponseBody
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
+            MediaType.TEXT_PLAIN_VALUE}, path = "/newick/filtered")
+    public String getNewickStringFiltered(@RequestBody List<String> features) {
+        String newick = snapshotService.getNewickTree(features);
+        return newick;
 
-	}*/
+    }
 
 }

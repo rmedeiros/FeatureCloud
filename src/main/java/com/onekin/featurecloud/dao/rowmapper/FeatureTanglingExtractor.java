@@ -21,7 +21,7 @@ public class FeatureTanglingExtractor implements ResultSetExtractor<String> {
                     featureTanglingList += "aaaa " + rs.getString(1) + ' ' + rs.getString(2);
 
                 } else {
-                    featureTanglingList += "aaaa " + rs.getString(1) + ' ' + rs.getString(2) + ' ';
+                    featureTanglingList += " aaaa " + rs.getString(1) + ' ' + rs.getString(2) + ' ';
                 }
                 if (rs.getString(1).equals(rs.getString(2))) {
                     repeated.add(rs.getString(1) + ' ' + rs.getString(2));

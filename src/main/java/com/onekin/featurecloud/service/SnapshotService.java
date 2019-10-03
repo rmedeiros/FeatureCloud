@@ -22,4 +22,6 @@ public interface SnapshotService {
     List<VariationPoint> getReleaseVariationPoint(String featureName);
 
     CoreAsset getVariationPointBody(Integer variationPointId);
+
+    String getNewickTreeFiltered(List<String> featureIdList, int packageId);
 }

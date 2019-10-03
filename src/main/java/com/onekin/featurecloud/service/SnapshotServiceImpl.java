@@ -43,8 +43,12 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public String getNewickTree(List<String> featureIdList) {
-        String featureStringList = featuresDao.getTanglingFeatureList(featureIdList);
-        return NewickUtils.getNewickFormatString(featureStringList);
+        String tanglingFeatureList="";
+        for (String featureId : featureIdList) {
+            tanglingFeatureList += " aaaa " + featureId + ' ' + featureId;
+        }
+        tanglingFeatureList += featuresDao.getTanglingFeatureList(featureIdList);
+        return NewickUtils.getNewickFormatString(tanglingFeatureList);
     }
 
     @Override
@@ -71,6 +75,16 @@ public class SnapshotServiceImpl implements SnapshotService {
     public CoreAsset getVariationPointBody(Integer variationPointId) {
 
         return variationPointDao.getVPContentAndAsset(variationPointId);
+    }
+
+    @Override
+    public String getNewickTreeFiltered(List<String> featureIdList, int packageId) {
+        String tanglingFeatureList="";
+        for (String featureId : featureIdList) {
+            tanglingFeatureList += " aaaa " + featureId + ' ' + featureId;
+        }
+        tanglingFeatureList += featuresDao.getTanglingFeatureListByPackage(featureIdList,packageId);
+        return NewickUtils.getNewickFormatString(tanglingFeatureList);
     }
 
 }

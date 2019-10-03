@@ -26,12 +26,17 @@ public class FeatureDAOImpl implements FeatureDAO {
 
     private static final String GET_TANGLING = "get.tangling";
 
+    private static final String GET_TANGLING_BY_PACKAGE = "get.tangling.by.package";
+
+
     private static final String GET_SCATTERING = "get.scattering";
 
     private static final String GET_SCATTERING_DELTA = "get.scattering.delta";
 
     private static final String GET_TANGLING_DELTA = "get.tangling.delta";
     private static final String GET_TANGLING_METRIC = "get.tangling.metric";
+    private static final String GET_TANGLING_METRIC_BY_PACKAGE = "get.tangling.metric.by.package";
+
 
     private static final String GET_TANGLING_DELTA_BY_PRODUCT = "get.tangling.delta.by.product";
 
@@ -122,6 +127,15 @@ public class FeatureDAOImpl implements FeatureDAO {
     }
 
     @Override
+    public String getTanglingFeatureListByPackage(List<String> featureIdList, int packageId) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("packageId", packageId);
+        parameters.addValue("ids", featureIdList);
+        return namedJdbcTemplate.query(snapshotSqlQueries.getProperty(GET_TANGLING_BY_PACKAGE), parameters,
+                new FeatureTanglingExtractor());
+    }
+
+    @Override
     public List<Feature> getAllFeatures() {
 
         List<Feature> features = namedJdbcTemplate.query(snapshotSqlQueries.getProperty(GET_RELEASE_FEATURES),
@@ -173,9 +187,31 @@ public class FeatureDAOImpl implements FeatureDAO {
         }
         List<Feature> features = namedJdbcTemplate.query(snapshotSqlQueries.getProperty(query), parameters,
                 new FeatureRowMapper());
-        setFeatureScattering(features, GET_SCATTERING,snapshotSqlQueries);
-        setFeatureTanglingMetric(features, snapshotSqlQueries);
+        setFeatureScattering(features, GET_SCATTERING, snapshotSqlQueries);
+
+        if(packageId==0) {
+            setFeatureTanglingMetric(features, snapshotSqlQueries);
+
+        }else {
+            setFeatureTanglingMetricFiltered(features, snapshotSqlQueries,packageId);
+        }
         return features;
+    }
+
+    private void setFeatureTanglingMetricFiltered(List<Feature> features, Properties snapshotSqlQueries, int packageId) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        List<String> featureIds = features.stream().map(Feature::getId).collect(Collectors.toList());
+        parameters.addValue("ids", featureIds);
+        parameters.addValue("packageId", packageId);
+
+        Map<String, Integer> featuresTanglingMap = namedJdbcTemplate.query(snapshotSqlQueries.getProperty(GET_TANGLING_METRIC_BY_PACKAGE), parameters,
+                new FeatureScatteringExtractor());
+        int tanglingMetric;
+        for (Feature feature : features) {
+            tanglingMetric = featuresTanglingMap.get(feature.getId()) == null ? 0
+                    : featuresTanglingMap.get(feature.getId());
+            feature.setTangling(tanglingMetric);
+        }
     }
 
 
