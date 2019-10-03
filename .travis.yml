@@ -1,6 +1,11 @@
-language: java
-
-notifications:
-  email:
-    on_success: change
-    on_failure: always
+matrix:
+  include:
+    - language: python
+      python: 2.7
+      install:
+        - pip install -r src/main/resources/requirements.txt
+    - language: java
+      notifications:
+        email:
+          on_success: change
+          on_failure: always
