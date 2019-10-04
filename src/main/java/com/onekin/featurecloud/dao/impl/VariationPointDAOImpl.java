@@ -1,10 +1,12 @@
 package com.onekin.featurecloud.dao.impl;
 
 import com.onekin.featurecloud.dao.VariationPointDAO;
-import com.onekin.featurecloud.dao.rowmapper.CoreAssetRowMapper;
 import com.onekin.featurecloud.dao.rowmapper.CustomDiffRowMapper;
 import com.onekin.featurecloud.dao.rowmapper.VariationPointRowMapper;
-import com.onekin.featurecloud.model.*;
+import com.onekin.featurecloud.model.CustomDiff;
+import com.onekin.featurecloud.model.DeveloperGroupCustInVariationPoint;
+import com.onekin.featurecloud.model.Filter;
+import com.onekin.featurecloud.model.VariationPoint;
 import com.onekin.featurecloud.utils.QueriesConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -102,24 +104,11 @@ public class VariationPointDAOImpl implements VariationPointDAO {
         return data;
     }
 
-    @Override
-    public List<VariationPoint> getReleaseVariationPoints(String featureName) {
-        List<VariationPoint> variationPoints = jdbcTemplate
-                .query(snapshotSqlQueries.getProperty(GET_RELEASE_FEATURE_VARIATION_POINTS), new PreparedStatementSetter() {
-
-                    public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                        preparedStatement.setString(1, featureName);
-                    }
-                }, new VariationPointRowMapper());
-
-        return variationPoints;
-    }
 
     @Override
-    public CoreAsset getVPContentAndAsset(Integer variationPointId) {
-        CoreAsset coreAsset = jdbcTemplate.queryForObject(snapshotSqlQueries.getProperty(GET_RELEASE_VP_CONTENT),
-                new Object[]{variationPointId}, new CoreAssetRowMapper());
+    public List<VariationPoint> getVariationPointsByFeatureSibling(Integer featureSiblingId) {
+        List<VariationPoint> variationPoints = jdbcTemplate.query(snapshotSqlQueries.getProperty(GET_RELEASE_VP_CONTENT),
+                new Object[]{featureSiblingId}, new VariationPointRowMapper());
 
-        return coreAsset;
-    }
+        return variationPoints;    }
 }

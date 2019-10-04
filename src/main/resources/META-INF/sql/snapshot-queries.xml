@@ -25,10 +25,9 @@
                 </prop>
                 <prop key="get.release.vp.content">
                     <![CDATA[
-						SELECT C.IDCOREASSET, C.NAME, VP.BODY
-					  	FROM VARIATION_POINT VP
-					  	INNER JOIN CORE_ASSET C ON VP.IDCOREASSET=C.IDCOREASSET
-					  	WHERE VP.IDVARIATIONPOINT=?;
+						SELECT IDVARIATIONPOINT, LINES_NUMBER, vp.IDCOREASSET,PATH,EXPRESSION, BODY
+					  	FROM VARIATION_POINT VP INNER JOIN CORE_ASSET CA ON VP.IDCOREASSET=CA.IDCOREASSET
+					  	WHERE VP.ID_FEATURE_GROUP=?;
 				  	]]>
                 </prop>
                 <prop key="get.tangling">
@@ -100,6 +99,15 @@
 			  			WHERE IDPACKAGE=:idpackage AND ID_FEATURE!='NO FEATURE'  GROUP BY ID_FEATURE;
 
 					]]>
+                </prop>
+
+                <prop key="get.featuresibling">
+                    <![CDATA[
+                        SELECT fg.id_feature_group, sum(vp.LINES_NUMBER), 0, feature_expression
+                        from features_in_variationpoints inner join variation_point vp on id_variationpoint=idvariationpoint inner join feature_group fg on fg.id_feature_group=vp.id_feature_group
+                        where id_feature=? group by fg.id_feature_group;
+
+			        ]]>
                 </prop>
             </props>
 

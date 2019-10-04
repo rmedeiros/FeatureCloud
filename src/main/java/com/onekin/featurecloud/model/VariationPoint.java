@@ -10,14 +10,14 @@ public class VariationPoint {
     private String expression;
     private Integer coreAssetId;
     private String coreAssetName;
-    private DeveloperGroupCustInVariationPoint mostImportantDeveloperGroup;
+    private String content;
 
     public VariationPoint() {
         super();
     }
 
     public VariationPoint(Integer id, Integer linesAdded, Integer linesDeleted, String expression, Integer coreAssetId,
-                          String coreAssetName, DeveloperGroupCustInVariationPoint mostImportantDeveloperGroup) {
+                          String coreAssetName, String content) {
         super();
         this.id = id;
         this.linesAdded = linesAdded;
@@ -25,7 +25,6 @@ public class VariationPoint {
         this.expression = expression;
         this.coreAssetId = coreAssetId;
         this.coreAssetName = coreAssetName;
-        this.mostImportantDeveloperGroup = mostImportantDeveloperGroup;
     }
 
     public Integer getId() {
@@ -80,12 +79,16 @@ public class VariationPoint {
         this.expression = expression;
     }
 
-    public DeveloperGroupCustInVariationPoint getMostImportantDeveloperGroup() {
-        return mostImportantDeveloperGroup;
+    public String getContent() {
+        try {
+            return Formatting.decodeFromBase64(content);
+        } catch (Exception e) {
+            return content;
+        }
     }
 
-    public void setMostImportantDeveloperGroup(DeveloperGroupCustInVariationPoint mostImportantDeveloperGroup) {
-        this.mostImportantDeveloperGroup = mostImportantDeveloperGroup;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override

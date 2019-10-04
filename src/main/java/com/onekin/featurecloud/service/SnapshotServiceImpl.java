@@ -1,6 +1,7 @@
 package com.onekin.featurecloud.service;
 
 import com.onekin.featurecloud.dao.FeatureDAO;
+import com.onekin.featurecloud.dao.FeatureSiblingDAO;
 import com.onekin.featurecloud.dao.VariationPointDAO;
 import com.onekin.featurecloud.model.*;
 import com.onekin.featurecloud.repository.ComponentPackageRepository;
@@ -25,6 +26,9 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Autowired
     private ProductRepository productsRepo;
+
+    @Autowired
+    private FeatureSiblingDAO featureSiblingDao;
 
     @Override
     public List<Feature> getFeatures() {
@@ -67,14 +71,9 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     @Override
-    public List<VariationPoint> getReleaseVariationPoint(String featureName) {
+    public List<FeatureSibling> getFeatureFeatureSiblings(String featureName) {
 
-        return variationPointDao.getReleaseVariationPoints(featureName);
-    }
-    @Override
-    public CoreAsset getVariationPointBody(Integer variationPointId) {
-
-        return variationPointDao.getVPContentAndAsset(variationPointId);
+        return featureSiblingDao.getAllFeaturesiblingsByFeature(featureName);
     }
 
     @Override
@@ -85,6 +84,11 @@ public class SnapshotServiceImpl implements SnapshotService {
         }
         tanglingFeatureList += featuresDao.getTanglingFeatureListByPackage(featureIdList,packageId);
         return NewickUtils.getNewickFormatString(tanglingFeatureList);
+    }
+
+    @Override
+    public List<VariationPoint> getFeatureSiblingVariationPointsBody(Integer featureSiblingId) {
+        return variationPointDao.getVariationPointsByFeatureSibling(featureSiblingId);
     }
 
 }

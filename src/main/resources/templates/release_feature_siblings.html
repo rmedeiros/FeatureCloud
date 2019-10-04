@@ -42,8 +42,6 @@
                     th:text=${#strings.capitalize(currentFeature)}></span></li>
             <li></li>
         </ol>
-        <h2 class="analisy-mode-vp display-4">Variation points analysis</h2>
-
     </div>
     <div id="tagcloud"></div>
 
@@ -54,10 +52,10 @@
 
         var feature = [[${currentFeature}]];
         var frequency_list = [];
-        /*[# th:each="variationPoint : ${variationPoints}"]*/
+        /*[# th:each="featureSibling : ${featureSiblings}"]*/
         frequency_list.push({
-            "text": [[${variationPoint.expression}]], "size": [[${variationPoint.linesAdded}]],
-            "coreAssetName": [[${variationPoint.coreAssetName}]], "coreAssetId": "[[${variationPoint.id}]]"
+            "text": [[${featureSibling.featureExpression}]], "size": [[${featureSibling.modifiedLines}]],
+             "coreAssetId": "[[${featureSibling.id}]]"
         });
         /*[/]*/
 
@@ -80,9 +78,6 @@
             })
                 .attr("data-toggle", "tooltip")
                 .attr("data-placement", "top")
-                .attr("title", function (d) {
-                    return d.coreAssetName;
-                })
                 .append("text")
                 .style("font-size", function (d) {
                     return d.size + "px";
@@ -156,7 +151,6 @@
                                 newList.push({
                                     "text": variationPoint.expression,
                                     "size": fontSize,
-                                    "coreAssetName": variationPoint.coreAssetName,
                                     "coreAssetId": variationPoint.coreAssetId
                                 });
                             });

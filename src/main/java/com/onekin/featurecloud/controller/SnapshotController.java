@@ -55,23 +55,23 @@ public class SnapshotController {
     }
 
     @GetMapping("/features/{featureName}/")
-    public String getFeatureVariationPoints(@PathVariable(value = "featureName") String featureName, Model model) {
+    public String getFeatureFeatureSiblings(@PathVariable(value = "featureName") String featureName, Model model) {
 
-        List<VariationPoint> variationPoints = snapshotService.getReleaseVariationPoint(featureName);
-        int totalLines = variationPoints.stream().map(VariationPoint::getLinesAdded)
+        List<FeatureSibling> featureSiblings = snapshotService.getFeatureFeatureSiblings(featureName);
+        int totalLines = featureSiblings.stream().map(FeatureSibling::getModifiedLines)
                 .collect(Collectors.summingInt(i -> i));
-        model.addAttribute("variationPoints", variationPoints);
+        model.addAttribute("featureSiblings", featureSiblings);
         model.addAttribute("totalLines", totalLines);
         model.addAttribute("currentFeature", featureName);
-        return "release_variation_points";
+        return "release_feature_siblings";
     }
 
 
-    @GetMapping("/features/{featureName}/asset/{variationPointId}/")
-    public String getVariationPointContent(@PathVariable(value = "variationPointId") Integer variationPointId,
-                                           @PathVariable(value = "featureName") String featureName, Model model) {
-        CoreAsset coreAsset = snapshotService.getVariationPointBody(variationPointId);
-        model.addAttribute("coreAsset", coreAsset);
+    @GetMapping("/features/{featureName}/asset/{featureSiblingId}/")
+    public String getVariationPointsByFeatureSibling(@PathVariable(value = "featureSiblingId") Integer featureSiblingId,
+                                                     @PathVariable(value = "featureName") String featureName, Model model) {
+        List<VariationPoint> variationPoints = snapshotService.getFeatureSiblingVariationPointsBody(featureSiblingId);
+        model.addAttribute("variationPoints", variationPoints);
         model.addAttribute("currentFeature", featureName);
         return "release_vp_code";
 
@@ -80,7 +80,7 @@ public class SnapshotController {
     @ResponseBody
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, path = "/features/filtered")
     public FeaturesResponse getFeaturesFiltered(@RequestParam(value = "product", defaultValue = "All") String productId,
-                                                @RequestParam(value = "packageId", defaultValue="0", required = false) Integer packageId) {
+                                                @RequestParam(value = "packageId", defaultValue = "0", required = false) Integer packageId) {
         List<Feature> features;
         String newickString;
         if (("All".equalsIgnoreCase(productId) || "".equalsIgnoreCase(productId)) && packageId == 0) {
@@ -88,13 +88,13 @@ public class SnapshotController {
         } else {
             features = snapshotService.getFeaturesFilteredByProductAndPackage(productId, packageId);
         }
-        if(packageId==0){
+        if (packageId == 0) {
             newickString = snapshotService
                     .getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
             List<Integer> modifiedLinesList = new ArrayList<>();
-        }else{
+        } else {
             newickString = snapshotService
-                    .getNewickTreeFiltered(features.stream().map(Feature::getId).collect(Collectors.toList()),packageId);
+                    .getNewickTreeFiltered(features.stream().map(Feature::getId).collect(Collectors.toList()), packageId);
         }
         List<Integer> modifiedLinesList = new ArrayList<>();
         modifiedLinesList.add(0);
@@ -115,5 +115,13 @@ public class SnapshotController {
         return newick;
 
     }
+
+    @ResponseBody
+    @GetMapping(produces = {
+            MediaType.TEXT_PLAIN_VALUE}, path = "/coreasset/{coreaAssetId}")
+    public CoreAsset getCoreAsset(@PathVariable(value = "coreaAssetId") Integer coreaAssetId) {
+        return snapshotService.getCoreAsset(coreaAssetId);
+    }
+
 
 }

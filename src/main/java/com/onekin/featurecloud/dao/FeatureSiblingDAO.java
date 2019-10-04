@@ -8,4 +8,5 @@ public interface FeatureSiblingDAO {
 
     List<FeatureSibling> getModifiedFeaturesiblings(String id_feature);
 
+    List<FeatureSibling> getAllFeaturesiblingsByFeature(String id_feature);
 }

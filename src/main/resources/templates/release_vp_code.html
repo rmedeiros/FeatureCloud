@@ -9,7 +9,10 @@
         <link rel="stylesheet" href="/css/highlight/github.css">
         <script src="/js/highlight/highlight.pack.js"></script>
         <script src="/js/highlight/highlightjs-line-numbers.min.js"></script>
-
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+              integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+              crossorigin="anonymous">
         <script>
             hljs.initHighlightingOnLoad();
             hljs.initLineNumbersOnLoad();
@@ -26,15 +29,72 @@
                    th:text="${#strings.capitalize(currentFeature)}"></a></li>
             <!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
         </ol>
-        <h2 class="analisy-mode-vp display-4">Variation points diff analysis</h2>
+        <h2 class="analisy-mode-vp display-4">Variation points analysis</h2>
 
     </div>
     <div class="container">
-        <h2 class="asset-title" th:text="${coreAsset.name}"></h2>
-        <pre class="code-pre">
-				<code th:text="${coreAsset.content}"></code>
-			</pre>
+
+        <div id="accordion">
+            <div class="card" th:each="variationPoint,iter : ${variationPoints}">
+                <div class="card-header" th:id="'heading'+${iter.index}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse"
+                                th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
+                                th:aria-controls="'collapse'+${iter.index}" th:inline="text">
+                            FILE: [[${#strings.capitalize(variationPoint.coreAssetName)}]]<i
+                                class="fas fa-caret-down"></i>
+                        </button>
+                        <i class="fas fa-external-link-alt show-coreasset"
+                           th:data-id="${variationPoint.coreAssetId}" onclick="showCoreAssetContent(this)"></i>
+                    </h5>
+
+
+                    <div th:id="'collapse'+${iter.index}" class="collapse"
+                         th:aria-labelledby="'heading'+${iter.index}"
+                         data-parent="#accordion">
+                        <h2 class="asset-title" th:text="${variationPoint.expression}"></h2>
+                        <pre class="code-pre">
+                        <code th:text="${variationPoint.content}"></code>
+                    </pre>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
     </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <pre class="code-pre">
+                        <code></code>
+                    </pre>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function showCoreAssetContent(element){
+            $.ajax({
+                url: "/coreasset/"+element.getAttribute(data-id),
+                context: document.body,
+                success: function(){
+                    $(this).addClass("done");
+                }
+            });
+            $("#myModal").modal()
+        }
+    </script>
 </section>
 
 

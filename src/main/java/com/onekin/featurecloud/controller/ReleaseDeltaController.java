@@ -48,7 +48,7 @@ public class ReleaseDeltaController {
     }
 
     @GetMapping("/features/{featureName}/")
-    public String getFeatureVariationPoints(@PathVariable(value = "featureName") String featureName, Model model) {
+    public String getFeatureFeatureSiblings(@PathVariable(value = "featureName") String featureName, Model model) {
 
         List<FeatureSibling> featureSiblings = releaseDeltaService.getModifiedFeaturesiblings(featureName);
         int totalLines = featureSiblings.stream().map(FeatureSibling::getModifiedLines)

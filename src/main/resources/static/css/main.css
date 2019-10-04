@@ -593,3 +593,8 @@ div#slider-tangling {
     padding-left: 10%;
     padding-top: 3%;
 }
+
+.show-coreasset{
+        cursor: pointer;
+        color: lightgrey;
+}

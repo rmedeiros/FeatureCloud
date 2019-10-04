@@ -37,7 +37,7 @@ public class ReleaseDeltaControllerTest {
     }
 
     @Test
-    public void getFeatureVariationPointsTest() throws Exception{
+    public void getFeatureFeatureSiblingsTest() throws Exception{
         mockMvc.perform(get("/features/nozzle_park_feature/")
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk());
