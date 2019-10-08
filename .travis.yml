@@ -7,4 +7,4 @@
       before_install:
         - sudo apt-get update
         - sudo apt-get install python2.7
-        - pip install -r src/main/resources/requirements.txt
+        - sudo pip install -r src/main/resources/requirements.txt
