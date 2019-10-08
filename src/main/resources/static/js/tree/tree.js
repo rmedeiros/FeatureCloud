@@ -32,6 +32,10 @@ $(function() {
           feature.tangling <=
             tanglingMap[$("#slider-tangling").slider("values")[1]]
       );
+      if(featuresFiltered.length==0){
+        alert("There is not any feature matching the selected filters, please change the filters");
+        return;
+      }
       let featureIds = featuresFiltered.map(feature => feature.id);
       $.ajax({
         type: "POST",

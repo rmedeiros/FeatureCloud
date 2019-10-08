@@ -11,13 +11,14 @@ public class VariationPoint {
     private Integer coreAssetId;
     private String coreAssetName;
     private String content;
+    private Integer startLine;
 
     public VariationPoint() {
         super();
     }
 
     public VariationPoint(Integer id, Integer linesAdded, Integer linesDeleted, String expression, Integer coreAssetId,
-                          String coreAssetName, String content) {
+                          String coreAssetName, String content, Integer startLine) {
         super();
         this.id = id;
         this.linesAdded = linesAdded;
@@ -25,6 +26,7 @@ public class VariationPoint {
         this.expression = expression;
         this.coreAssetId = coreAssetId;
         this.coreAssetName = coreAssetName;
+        this.startLine = startLine;
     }
 
     public Integer getId() {
@@ -89,6 +91,14 @@ public class VariationPoint {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getStartLine() {
+        return startLine;
+    }
+
+    public void setStartLine(Integer startLine) {
+        this.startLine = startLine;
     }
 
     @Override

@@ -3,14 +3,17 @@ package com.onekin.featurecloud.service;
 import com.onekin.featurecloud.dao.FeatureDAO;
 import com.onekin.featurecloud.dao.FeatureSiblingDAO;
 import com.onekin.featurecloud.dao.VariationPointDAO;
+import com.onekin.featurecloud.exceptions.CoreAssetNotFoundException;
 import com.onekin.featurecloud.model.*;
 import com.onekin.featurecloud.repository.ComponentPackageRepository;
+import com.onekin.featurecloud.repository.CoreAssetRepository;
 import com.onekin.featurecloud.repository.ProductRepository;
 import com.onekin.featurecloud.utils.NewickUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SnapshotServiceImpl implements SnapshotService {
@@ -29,6 +32,9 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Autowired
     private FeatureSiblingDAO featureSiblingDao;
+
+    @Autowired
+    private CoreAssetRepository coreAssetRepository;
 
     @Override
     public List<Feature> getFeatures() {
@@ -89,6 +95,17 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public List<VariationPoint> getFeatureSiblingVariationPointsBody(Integer featureSiblingId) {
         return variationPointDao.getVariationPointsByFeatureSibling(featureSiblingId);
+    }
+
+    @Override
+    public CoreAsset getCoreAsset(Integer coreaAssetId) throws CoreAssetNotFoundException {
+
+        Optional<CoreAsset>  coreAssetOptional = coreAssetRepository.findById(coreaAssetId);
+        if(coreAssetOptional.isPresent()){
+            return coreAssetOptional.get();
+        }else{
+            throw new CoreAssetNotFoundException("Core asset with id "+coreaAssetId + "not found");
+        }
     }
 
 }

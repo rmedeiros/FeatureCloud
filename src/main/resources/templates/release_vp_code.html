@@ -5,6 +5,9 @@
       layout:decorator="layout/template">
 <head>
     <th:block layout:fragment="script">
+        <link rel="stylesheet"
+              href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <link rel="stylesheet" href="/css/highlight/github.css">
         <script src="/js/highlight/highlight.pack.js"></script>
@@ -54,7 +57,7 @@
                          data-parent="#accordion">
                         <h2 class="asset-title" th:text="${variationPoint.expression}"></h2>
                         <pre class="code-pre">
-                        <code th:text="${variationPoint.content}"></code>
+                        <code th:data-ln-offset="${variationPoint.startLine -2}" th:text="${variationPoint.content}"></code>
                     </pre>
                     </div>
                 </div>
@@ -66,7 +69,7 @@
 
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
 
             <!-- Modal content-->
             <div class="modal-content">
@@ -76,7 +79,7 @@
                 </div>
                 <div class="modal-body">
                     <pre class="code-pre">
-                        <code></code>
+                        <code  class="js"></code>
                     </pre>
                 </div>
             </div>
@@ -86,14 +89,25 @@
     <script>
         function showCoreAssetContent(element){
             $.ajax({
-                url: "/coreasset/"+element.getAttribute(data-id),
+                url: "/release/coreasset/"+element.getAttribute("data-id"),
                 context: document.body,
-                success: function(){
-                    $(this).addClass("done");
+                success: function(data){
+                    $("#myModal").find("code").text(data.content);
+                    let block = $("#myModal").find("code")[0]
+                    hljs.highlightBlock(block);
+                    hljs.lineNumbersBlock(block);
+
+                    $("#myModal").find("h4").text(data.path);
+                    $("#myModal").modal()
+
+
                 }
             });
-            $("#myModal").modal()
         }
+        $('.modal-dialog').draggable({
+            handle: ".modal-header"
+        });
+
     </script>
 </section>
 

@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CoreAssetRepository extends CrudRepository<CoreAsset, Long> {
+public interface CoreAssetRepository extends CrudRepository<CoreAsset, Integer> {
 
     CoreAsset getCoreAssetByIdcoreasset(int idcoreasset);
 }

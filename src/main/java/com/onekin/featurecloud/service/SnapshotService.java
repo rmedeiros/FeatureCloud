@@ -1,5 +1,6 @@
 package com.onekin.featurecloud.service;
 
+import com.onekin.featurecloud.exceptions.CoreAssetNotFoundException;
 import com.onekin.featurecloud.model.*;
 
 import java.util.List;
@@ -25,5 +26,5 @@ public interface SnapshotService {
 
     List<VariationPoint> getFeatureSiblingVariationPointsBody(Integer featureSiblingId);
 
-    CoreAsset getCoreAsset(Integer coreaAssetId);
+    CoreAsset getCoreAsset(Integer coreaAssetId) throws CoreAssetNotFoundException;
 }

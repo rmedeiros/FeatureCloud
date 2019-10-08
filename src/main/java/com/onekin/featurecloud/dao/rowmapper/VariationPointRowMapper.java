@@ -19,6 +19,7 @@ public class VariationPointRowMapper implements RowMapper<VariationPoint> {
 
         variationPointCust.setExpression(resultSet.getString(5));
         variationPointCust.setContent(resultSet.getString(6));
+        variationPointCust.setStartLine(resultSet.getInt(7));
 
         return variationPointCust;
     }

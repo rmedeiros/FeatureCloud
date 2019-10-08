@@ -1,5 +1,6 @@
 package com.onekin.featurecloud.controller;
 
+import com.onekin.featurecloud.exceptions.CoreAssetNotFoundException;
 import com.onekin.featurecloud.model.*;
 import com.onekin.featurecloud.service.SnapshotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,8 +119,8 @@ public class SnapshotController {
 
     @ResponseBody
     @GetMapping(produces = {
-            MediaType.TEXT_PLAIN_VALUE}, path = "/coreasset/{coreaAssetId}")
-    public CoreAsset getCoreAsset(@PathVariable(value = "coreaAssetId") Integer coreaAssetId) {
+            MediaType.APPLICATION_JSON_VALUE}, path = "/coreasset/{coreaAssetId}")
+    public CoreAsset getCoreAsset(@PathVariable(value = "coreaAssetId") Integer coreaAssetId) throws CoreAssetNotFoundException {
         return snapshotService.getCoreAsset(coreaAssetId);
     }
 
