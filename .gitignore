@@ -31,3 +31,11 @@ exportCSV.csv
 temp.txt.liddell.nexus
 temp.txt.oddsratio.nexus
 python
+
+.mvn
+__pycache__
+__pycache__/
+mvnw
+mvnw.cmd
+
+src/main/resources/TreecloudFunctions.pyc

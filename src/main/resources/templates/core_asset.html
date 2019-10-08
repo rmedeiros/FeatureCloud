@@ -1,96 +1,96 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	layout:decorator="layout/template">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/template">
 <head>
-<th:block layout:fragment="script">
+    <th:block layout:fragment="script">
 
-	<link rel="stylesheet" href="/css/diff2html.min.css">
-	<link rel="stylesheet"
-		href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-		integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-		crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/diff2html.min.css">
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+              integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+              crossorigin="anonymous">
 
-	<script src="/js/diff2html.min.js"></script>
-	<script src="/js/diff2html-ui.min.js"></script>
-	
-	
-	
-</th:block>
+        <script src="/js/diff2html.min.js"></script>
+        <script src="/js/diff2html-ui.min.js"></script>
+
+
+    </th:block>
 </head>
 <body>
 
-	<section layout:fragment="content">
+<section layout:fragment="content">
 
-		<div class="title-container">
-			<ol class="breadcrumb">
-				<li><a href="/">Home</a></li>
-				<li><a th:href="@{/features/?product=}+${product}">FeatureCloud 1.1.7  - 1.1.8</a></li>
-				<li><a th:href="@{/features/}+${currentFeature}+@{/?product=}"
-					th:text="${#strings.capitalize(currentFeature)}"></a></li>
-				<li>AUTO_BED_LEVELING_UBL - EEPROM_SETTINGS</li>
-					
-				<!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
-			</ol>
+    <div class="title-container">
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a th:href="@{/features/?product=}+${product}">FeatureCloud 1.1.7 - 1.1.8</a></li>
+            <li><a th:href="@{/features/}+${currentFeature}+@{/?product=}"
+                   th:text="${#strings.capitalize(currentFeature)}"></a></li>
+            <li>AUTO_BED_LEVELING_UBL - EEPROM_SETTINGS</li>
 
-		</div>
+            <!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
+        </ol>
 
-		<div class="container">
+    </div>
 
-			<div id="accordion">
-				<div class="card" th:each="diffValue,iter : ${diffValues}">
-					<div class="card-header" th:id="'heading'+${iter.index}">
-						<h5 class="mb-0">
-							<button class="btn btn-link" data-toggle="collapse"
-								th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
-								th:aria-controls="'collapse'+${iter.index}" th:inline="text">
-								FILE: [[${#strings.capitalize(diffValue.path)}]]  -  TYPE:
-								[[${#strings.capitalize(diffValue.type)}]] <i
-									class="fas fa-caret-down"></i>
-							</button>
-						</h5>
-					</div>
+    <div class="container">
 
-					<div th:id="'collapse'+${iter.index}" class="collapse"
-						th:aria-labelledby="'heading'+${iter.index}"
-						data-parent="#accordion">
-						<div class="card-body diffview" th:id="'diffview'+${iter.index}"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<script th:inline="javascript">
-			/*<![CDATA[*/
-				function getMetaContentByName(name, content) {
-					var content = (content == null) ? 'content' : content;
-					return document.querySelector("meta[name='" + name + "']")
-							.getAttribute(content);
-				}
-				$(document).ready(function() {
-					/** For the diff view **/
-					var diffValues = /*[[${diffValues}]]*/;
-					diffValues.forEach(function(diffvalue,i){
-						if (diffvalue.first == null)
-							diffvalue.first="Could not obtain diff value";
-						console.log("diffvalue:\n" + diffvalue.content);
-						var diff2htmlUi = new Diff2HtmlUI({
-							diff : diffvalue.content
-						});
-						console.log(diff2htmlUi);
-						diff2htmlUi.draw('#diffview'+i, {
-							inputFormat : 'json',
-							showFiles : true,
-							matching : 'lines'
-						});
-					});
-					/*double*/
-				});//end of on document load
-				
-				/*]]>*/
-			</script>
-	</section>
+        <div id="accordion">
+            <div class="card" th:each="diffValue,iter : ${diffValues}">
+                <div class="card-header" th:id="'heading'+${iter.index}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse"
+                                th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
+                                th:aria-controls="'collapse'+${iter.index}" th:inline="text">
+                            FILE: [[${#strings.capitalize(diffValue.path)}]] - TYPE:
+                            [[${#strings.capitalize(diffValue.type)}]] <i
+                                class="fas fa-caret-down"></i>
+                        </button>
+                    </h5>
+                </div>
+
+                <div th:id="'collapse'+${iter.index}" class="collapse"
+                     th:aria-labelledby="'heading'+${iter.index}"
+                     data-parent="#accordion">
+                    <div class="card-body diffview" th:id="'diffview'+${iter.index}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function getMetaContentByName(name, content) {
+            var content = (content == null) ? 'content' : content;
+            return document.querySelector("meta[name='" + name + "']")
+                .getAttribute(content);
+        }
+
+        $(document).ready(function () {
+            /** For the diff view **/
+            var diffValues = /*[[${diffValues}]]*/;
+            diffValues.forEach(function (diffvalue, i) {
+                if (diffvalue.first == null)
+                    diffvalue.first = "Could not obtain diff value";
+                console.log("diffvalue:\n" + diffvalue.content);
+                var diff2htmlUi = new Diff2HtmlUI({
+                    diff: diffvalue.content
+                });
+                console.log(diff2htmlUi);
+                diff2htmlUi.draw('#diffview' + i, {
+                    inputFormat: 'json',
+                    showFiles: true,
+                    matching: 'lines'
+                });
+            });
+            /*double*/
+        });//end of on document load
+
+        /*]]>*/
+    </script>
+</section>
 
 
 </body>

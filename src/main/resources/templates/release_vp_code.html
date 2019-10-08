@@ -1,42 +1,115 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	layout:decorator="layout/template">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout/template">
 <head>
-<th:block layout:fragment="script">
+    <th:block layout:fragment="script">
+        <link rel="stylesheet"
+              href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-	<link rel="stylesheet" href="/css/highlight/github.css">
-	<script src="/js/highlight/highlight.pack.js"></script>
-	<script src="/js/highlight/highlightjs-line-numbers.min.js"></script>
-
-	<script>
-		hljs.initHighlightingOnLoad();
-		hljs.initLineNumbersOnLoad();
-	</script>
-</th:block>
+        <link rel="stylesheet" href="/css/highlight/github.css">
+        <script src="/js/highlight/highlight.pack.js"></script>
+        <script src="/js/highlight/highlightjs-line-numbers.min.js"></script>
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+              integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+              crossorigin="anonymous">
+        <script>
+            hljs.initHighlightingOnLoad();
+            hljs.initLineNumbersOnLoad();
+        </script>
+    </th:block>
 </head>
 <body>
-	<section layout:fragment="content">
-		<div class="title-container">
-			<ol class="breadcrumb">
-				<li><a href="/">Home</a></li>
-				<li><a th:href="@{/release/features/?product=}+${product}">Features</a></li>
-				<li><a th:href="@{/release/features/}+${currentFeature}+@{/?product=}"
-					th:text="${#strings.capitalize(currentFeature)}"></a></li>
-				<!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
-			</ol>
-			<h2 class="analisy-mode-vp display-4">Variation points diff analysis</h2>
+<section layout:fragment="content">
+    <div class="title-container">
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a th:href="@{/release/features/?product=}+${product}">Features</a></li>
+            <li><a th:href="@{/release/features/}+${currentFeature}+@{/?product=}"
+                   th:text="${#strings.capitalize(currentFeature)}"></a></li>
+            <!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
+        </ol>
+        <h2 class="analisy-mode-vp display-4">Variation points analysis</h2>
 
-		</div>
-		<div class="container">
-			<h2 class="asset-title" th:text="${coreAsset.name}"></h2>
-			<pre class="code-pre"> 
-				<code th:text="${coreAsset.content}"></code>
-			</pre>
-		</div>
-	</section>
+    </div>
+    <div class="container">
 
+        <div id="accordion">
+            <div class="card" th:each="variationPoint,iter : ${variationPoints}">
+                <div class="card-header" th:id="'heading'+${iter.index}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse"
+                                th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
+                                th:aria-controls="'collapse'+${iter.index}" th:inline="text">
+                            FILE: [[${#strings.capitalize(variationPoint.coreAssetName)}]]<i
+                                class="fas fa-caret-down"></i>
+                        </button>
+                        <i class="fas fa-external-link-alt show-coreasset"
+                           th:data-id="${variationPoint.coreAssetId}" onclick="showCoreAssetContent(this)"></i>
+                    </h5>
+
+
+                    <div th:id="'collapse'+${iter.index}" class="collapse"
+                         th:aria-labelledby="'heading'+${iter.index}"
+                         data-parent="#accordion">
+                        <h2 class="asset-title" th:text="${variationPoint.expression}"></h2>
+                        <pre class="code-pre">
+                        <code th:data-ln-offset="${variationPoint.startLine -2}" th:text="${variationPoint.content}"></code>
+                    </pre>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-xl">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <pre class="code-pre">
+                        <code  class="js"></code>
+                    </pre>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function showCoreAssetContent(element){
+            $.ajax({
+                url: "/release/coreasset/"+element.getAttribute("data-id"),
+                context: document.body,
+                success: function(data){
+                    $("#myModal").find("code").text(data.content);
+                    let block = $("#myModal").find("code")[0]
+                    hljs.highlightBlock(block);
+                    hljs.lineNumbersBlock(block);
+
+                    $("#myModal").find("h4").text(data.path);
+                    $("#myModal").modal()
+
+
+                }
+            });
+        }
+        $('.modal-dialog').draggable({
+            handle: ".modal-header"
+        });
+
+    </script>
+</section>
 
 
 </body>
