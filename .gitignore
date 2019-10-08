@@ -37,3 +37,5 @@ __pycache__
 __pycache__/
 mvnw
 mvnw.cmd
+
+src/main/resources/TreecloudFunctions.pyc
