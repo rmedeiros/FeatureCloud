@@ -27,4 +27,6 @@ public interface SnapshotService {
     List<VariationPoint> getFeatureSiblingVariationPointsBody(Integer featureSiblingId);
 
     CoreAsset getCoreAsset(Integer coreaAssetId) throws CoreAssetNotFoundException;
+
+    SnapshotMetada getMetadataBox();
 }

@@ -37,6 +37,8 @@ public class SnapshotController {
             scatteringLevel.add(feature.getFeatureScattering());
         }
 
+        SnapshotMetada snapMetadata= snapshotService.getMetadataBox();
+
         Iterable<Product> products = snapshotService.getProductIds();
         Iterable<ComponentPackage> componentPackages = snapshotService.getComponentPackages();
 
@@ -46,6 +48,7 @@ public class SnapshotController {
         int maxModifiedLines = Collections.max(modifiedLinesList);
         String newickString = snapshotService
                 .getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
+        model.addAttribute("metaData",snapMetadata);
         model.addAttribute("newickString", newickString);
         model.addAttribute("features", features);
         model.addAttribute("maxModifiedLines", maxModifiedLines);
