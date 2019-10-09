@@ -355,8 +355,8 @@
 
 
         options.treestring = [[${newickString}]];
-        options.labelcolors = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]] + ":#0000ff" + Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
-        options.labelscales = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]] + ":" + Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
+        options.labelcolors = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]] + ":#0000ff" + Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
+        options.labelscales = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]] + ":" + Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
 
 
         successHandler = function (data) {

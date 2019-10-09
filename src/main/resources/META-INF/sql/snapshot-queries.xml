@@ -111,14 +111,14 @@
                 </prop>
                 <prop key="get.metadata">
                     <![CDATA[
-                        SELECT *
-                                FROM
-                                (
-                                    SELECT count(idfeature) as features FROM feature
-                                    )
-                                    full join(
-                                    SELECT SUM(lines_number) as variable_lines, count(idvariationpoint)  from variation_point ) as a;
-
+                        SELECT features,variable_lines,variationpoints  FROM
+                        (
+                            SELECT count(idfeature) as features FROM feature
+                        ) as t2
+                        cross join
+                        (
+                             SELECT SUM(lines_number) as variable_lines, count(idvariationpoint) as variationpoints  from variation_point
+                        ) as t;
 			        ]]>
                 </prop>
             </props>

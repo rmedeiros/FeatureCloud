@@ -1,6 +1,7 @@
-package com.onekin.featurecloud;
+package com.onekin.featurecloud.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onekin.featurecloud.FeatureCloudApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -28,6 +29,7 @@ public class SnapshotControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
 
     @Test
     public void getFeatureTagCloudTest() throws Exception {
@@ -51,59 +53,70 @@ public class SnapshotControllerTest {
     }
 
     @Test
-    public void  getFeaturesFilteredByProductTest()  throws Exception{
+    public void getFeaturesFilteredByProductTest() throws Exception {
 
-        this.mockMvc.perform(get("/release/features/filtered").param("product","creality")
+        this.mockMvc.perform(get("/release/features/filtered").param("product", "creality")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
+                .andExpect(jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
     }
 
 
     @Test
-    public void  getFeaturesFilteredByPackageTest()  throws Exception{
+    public void getFeaturesFilteredByPackageTest() throws Exception {
 
-        this.mockMvc.perform(get("/release/features/filtered").param("packageId","1")
+        this.mockMvc.perform(get("/release/features/filtered").param("packageId", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
+                .andExpect(jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
     }
 
     @Test
-    public void  getFeaturesFilteredTest()  throws Exception{
+    public void getFeaturesFilteredTest() throws Exception {
 
-        this.mockMvc.perform(get("/release/features/filtered").param("packageId","1").param("product","creality")
+        this.mockMvc.perform(get("/release/features/filtered").param("packageId", "1").param("product", "creality")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
+                .andExpect(jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
     }
 
 
     @Test
-    public void  getFeaturesFilteredNullTest()  throws Exception{
+    public void getFeaturesFilteredNullTest() throws Exception {
 
         this.mockMvc.perform(get("/release/features/filtered")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect( jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
+                .andExpect(jsonPath("$.maxModifiedLines").isNumber()).andExpect(jsonPath("$.newickString").isString());
     }
 
     @Test
-    public void getNewickStringFilteredTest() throws Exception{
+    public void getNewickStringFilteredTest() throws Exception {
         this.mockMvc.perform(post("/release/newick/filtered")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(new String[]{"'NOZZLE_PARK_FEATURE", "AUTOB_BED_LEBELING","PIDTEMP","X_BED_SIZE,Y_BED_SIZE","NEWPANEL"}))).andDo(print())
+                .content(objectMapper.writeValueAsString(new String[]{"'NOZZLE_PARK_FEATURE", "AUTOB_BED_LEBELING", "PIDTEMP", "X_BED_SIZE,Y_BED_SIZE", "NEWPANEL"})))
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("NOZZLE_PARK_FEATURE")));
+    }
+
+    @Test
+    public void getCoreAssetTest() throws Exception {
+        this.mockMvc.perform(get("/release/coreasset/48")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", equalTo("digipot_mcp4451.cpp")))
+                .andExpect(jsonPath("$.path", equalTo("Marlin/digipot_mcp4451.cpp")));
     }
 }
