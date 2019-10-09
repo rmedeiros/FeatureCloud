@@ -1,4 +1,4 @@
-package com.onekin.featurecloud;
+package com.onekin.featurecloud.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

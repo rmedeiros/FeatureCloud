@@ -27,7 +27,7 @@
     <div class="title-container">
         <ol class="breadcrumb breadcrumb-arrow">
             <li><a href="/">Home</a></li>
-            <li class="active"><span>Features 0640bd0</span></li>
+            <li class="active"><span>Features tag2</span></li>
             <li></li>
         </ol>
         <div class="analisy-mode right">
@@ -71,30 +71,18 @@
     <hr/>
     <div id="tp">
         <div class="thumbnail tree-info" style="">
-            <h4>Delta metadata</h4>
+            <h4>Variability metadata</h4>
             <hr>
             <p class="c6 c12">
-                <span class="c0">FROM:&nbsp;</span><span class="c20">(21 Dec
-						2017)</span><span class="c25">&nbsp;</span><span class="c0">-
-						TO:&nbsp;</span><span class="c20">(31 Dec 2017)</span>
+                <span class="c0">Features:&nbsp;</span><span class="c20"><span class="c20" th:text="${metaData.features}"></span>
             </p>
 
             <p class="c6 c12">
-                <span class="c0">HASHES: &nbsp;</span><span class="c6 c12">9c00cff</span><span
-                    class="c6 c12">&nbsp;- 8dc10fb4 </span>
+                <span class="c0">Varation Points: &nbsp;</span><span class="c20" th:text="${metaData.variationPoints}"></span>
             </p>
             <p class="c6 c12">
-                <span class="c0">TAGS: </span><span class="c6 c12">1.1.7 </span><span
-                    class="c6 c12">&nbsp;- 1.1.8</span>
+                <span class="c0">Variable Lines : </span><span class="c20" th:text="${metaData.variableCode}"></span>
             </p>
-            <p class="c6 c12">
-                <span class="c0">Total code churn: &nbsp;</span><span
-                    class="c9"> 694 insertions(+), 223 deletions(-)</span>
-            </p>
-            <p class="c6 c12">
-                <span class="c0">#ifdefs modified:</span><span class="c9">&nbsp;228</span>
-            </p>
-
         </div>
         <div class="slider-container">
             <p>

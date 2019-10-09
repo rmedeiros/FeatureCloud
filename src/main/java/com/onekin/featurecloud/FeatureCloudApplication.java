@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 
+
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = {ControllerMarker.class, DaoMarker.class, ServiceMarker.class, RepositoryMarker.class})
 @ImportResource({"classpath:META-INF/sql/queries.xml","classpath:META-INF/sql/snapshot-queries.xml"})

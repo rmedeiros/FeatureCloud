@@ -2,6 +2,7 @@ package com.onekin.featurecloud.service;
 
 import com.onekin.featurecloud.dao.FeatureDAO;
 import com.onekin.featurecloud.dao.FeatureSiblingDAO;
+import com.onekin.featurecloud.dao.MetadaBoxDAO;
 import com.onekin.featurecloud.dao.VariationPointDAO;
 import com.onekin.featurecloud.exceptions.CoreAssetNotFoundException;
 import com.onekin.featurecloud.model.*;
@@ -35,6 +36,9 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Autowired
     private CoreAssetRepository coreAssetRepository;
+
+    @Autowired
+    private MetadaBoxDAO metadataBoxDao;
 
     @Override
     public List<Feature> getFeatures() {
@@ -106,6 +110,11 @@ public class SnapshotServiceImpl implements SnapshotService {
         }else{
             throw new CoreAssetNotFoundException("Core asset with id "+coreaAssetId + "not found");
         }
+    }
+
+    @Override
+    public SnapshotMetada getMetadataBox() {
+        return metadataBoxDao.getSnapshotMetadataBox();
     }
 
 }

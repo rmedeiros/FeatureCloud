@@ -6,7 +6,7 @@
 
     <groupId>com.onekin</groupId>
     <artifactId>featurecloud</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5-snapshot-metadatabox-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>FeatureCloud</name>
@@ -93,7 +93,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
