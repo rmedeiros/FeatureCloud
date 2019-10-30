@@ -15,7 +15,7 @@ public class DeveloperGroup {
     @Transient
     private List<Developer> developers;
 
-    public DeveloperGroup(Integer idDeveloperGroup, List<Developer> developers, String color) {
+    public DeveloperGroup(Integer idDeveloperGroup, List<Developer> developers) {
         super();
         this.idDeveloperGroup = idDeveloperGroup;
         this.developers = developers;
@@ -25,7 +25,7 @@ public class DeveloperGroup {
         super();
     }
 
-    public DeveloperGroup(int id, String name) {
+    public DeveloperGroup(int id) {
         this.idDeveloperGroup = id;
     }
 

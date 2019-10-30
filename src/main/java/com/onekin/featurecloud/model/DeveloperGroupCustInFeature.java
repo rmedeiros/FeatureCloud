@@ -70,9 +70,8 @@ public class DeveloperGroupCustInFeature {
                 return false;
         } else if (!featureId.equals(other.featureId))
             return false;
-        if (modifiedLines != other.modifiedLines)
-            return false;
-        return true;
+        return (modifiedLines == other.modifiedLines);
+
     }
 
     @Override

@@ -34,14 +34,14 @@ public class FeatureSiblingDaoImpl implements FeatureSiblingDAO {
 
 
     @Override
-    public List<FeatureSibling> getModifiedFeaturesiblings(String id_feature) {
-        return jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURE_SIBLINGS_DELTA), new String[]{id_feature}, new FeatureSiblingRowMapper());
+    public List<FeatureSibling> getModifiedFeaturesiblings(String idFeature) {
+        return jdbcTemplate.query(sqlQueries.getProperty(GET_FEATURE_SIBLINGS_DELTA), new String[]{idFeature}, new FeatureSiblingRowMapper());
     }
 
 
     @Override
-    public List<FeatureSibling> getAllFeaturesiblingsByFeature(String id_feature) {
-        return jdbcTemplate.query(snapshotQueries.getProperty(GET_FEATURE_SIBLINGS), new String[]{id_feature}, new FeatureSiblingRowMapper());
+    public List<FeatureSibling> getAllFeaturesiblingsByFeature(String idFeature) {
+        return jdbcTemplate.query(snapshotQueries.getProperty(GET_FEATURE_SIBLINGS), new String[]{idFeature}, new FeatureSiblingRowMapper());
     }
 
 

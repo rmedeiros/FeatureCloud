@@ -14,7 +14,9 @@ public class ComponentPackage {
     int isroot;
 
     public ComponentPackage() {
+        super();
     }
+
 
     public int getIdpackage() {
         return idpackage;

@@ -37,7 +37,6 @@ public class FeatureDAOImpl implements FeatureDAO {
     private static final String GET_TANGLING_METRIC = "get.tangling.metric";
     private static final String GET_TANGLING_METRIC_BY_PACKAGE = "get.tangling.metric.by.package";
 
-
     private static final String GET_TANGLING_DELTA_BY_PRODUCT = "get.tangling.delta.by.product";
 
 

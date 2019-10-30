@@ -77,7 +77,7 @@ public class ReleaseDeltaController {
                                                 @RequestParam(value = "packageId", required = false) Integer packageId) {
         List<Feature> features;
         String newickString;
-        if (("All".equalsIgnoreCase(productId) || "".equalsIgnoreCase(productId)) &&   0 == packageId) {
+        if (("All".equalsIgnoreCase(productId) || "".equalsIgnoreCase(productId)) && 0 == packageId) {
             features = releaseDeltaService.getFeatures();
 
             newickString = releaseDeltaService
@@ -102,9 +102,7 @@ public class ReleaseDeltaController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
             MediaType.TEXT_PLAIN_VALUE}, path = "/newick/filtered")
     public String getNewickStringFiltered(@RequestBody List<String> features) {
-        String newick = releaseDeltaService.getNewickTree(features);
-        return newick;
-
+        return releaseDeltaService.getNewickTree(features);
     }
 
 }

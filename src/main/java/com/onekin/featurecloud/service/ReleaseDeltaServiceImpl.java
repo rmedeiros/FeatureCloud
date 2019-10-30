@@ -57,24 +57,25 @@ public class ReleaseDeltaServiceImpl implements ReleaseDeltaService {
 
     @Override
     public String getNewickTree(List<String> featureIdList) {
-        String tanglingFeatureList = "";
+        StringBuilder bld = new StringBuilder();
         for (String featureId : featureIdList) {
-            tanglingFeatureList += " aaaa " + featureId + ' ' + featureId;
+            bld.append(" aaaa " + featureId + ' ' + featureId);
         }
-        tanglingFeatureList += featureDAO.getDeltaTangling(featureIdList);
+        bld.append(featureDAO.getDeltaTangling(featureIdList));
 
-        return NewickUtils.getNewickFormatString(tanglingFeatureList);
+        return NewickUtils.getNewickFormatString(bld.toString());
     }
 
     @Override
     public String getNewickTreeByProduct(List<String> featureIdList) {
-        String tanglingFeatureList = "";
-        for (String featureId : featureIdList) {
-            tanglingFeatureList += " aaaa " + featureId + ' ' + featureId;
-        }
-        tanglingFeatureList += featureDAO.getDeltaTanglingByProduct(featureIdList);
 
-        return NewickUtils.getNewickFormatString(tanglingFeatureList);
+        StringBuilder bld = new StringBuilder();
+        for (String featureId : featureIdList) {
+            bld.append(" aaaa " + featureId + ' ' + featureId);
+        }
+        bld.append(featureDAO.getDeltaTanglingByProduct(featureIdList));
+
+        return NewickUtils.getNewickFormatString(bld.toString());
     }
 
     @Override
