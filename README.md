@@ -7,12 +7,36 @@ of preprocessor-based SPL code. A quick demo is available at [https://vimeo.com/
 
 
 ## Requirements
-Java 8+
+Java 8 +
+
+Maven 3.6 +
 
 Python 2.7
 
+
 ## Installation & Usage
 
+### With Docker
+The easiest way of running FeatureCloud is with Docker: 
+
+1. Install docker on your computer
+2. Open a terminal in the root of the project
+3. run docker-compose up
+
+### Mannualy
+If you want to build and run FeatureCloud on your own, you have to follow these steps:
+1. Install FeatureCloud [requirements](#requirements)
+2. Install python needed packages ([python reqs](src/main/resources/requirements.txt)):
+
+     ``` $ pip install -r src/main/resources/requirements.txt  ```
+3. Package the jar using Maven:
+
+     ``` $ mvn package  ```
+4. Run the jar with Java:
+
+     ``` $ java -jar target/featurecloud-[VERSION].jar  ```
+
+    
 
 ## Based on
 

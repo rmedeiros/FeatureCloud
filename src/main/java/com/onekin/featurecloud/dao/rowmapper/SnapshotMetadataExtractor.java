@@ -1,7 +1,6 @@
 package com.onekin.featurecloud.dao.rowmapper;
 
 import com.onekin.featurecloud.model.SnapshotMetada;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
@@ -11,7 +10,7 @@ public class SnapshotMetadataExtractor implements ResultSetExtractor<SnapshotMet
 
 
     @Override
-    public SnapshotMetada extractData(ResultSet rs) throws SQLException, DataAccessException {
+    public SnapshotMetada extractData(ResultSet rs) throws SQLException {
         SnapshotMetada snapshotMetada = new SnapshotMetada();
 
         if(rs.next()) {

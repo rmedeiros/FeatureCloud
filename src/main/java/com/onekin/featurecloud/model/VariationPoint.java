@@ -27,6 +27,7 @@ public class VariationPoint {
         this.coreAssetId = coreAssetId;
         this.coreAssetName = coreAssetName;
         this.startLine = startLine;
+        this.content = content;
     }
 
     public Integer getId() {

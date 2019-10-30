@@ -67,9 +67,7 @@ public class DeveloperGroupCustInVariationPoint {
             return false;
         if (idVariationPoint != other.idVariationPoint)
             return false;
-        if (modifiedLines != other.modifiedLines)
-            return false;
-        return true;
+        return (modifiedLines == other.modifiedLines);
     }
 
     @Override

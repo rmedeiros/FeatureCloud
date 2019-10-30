@@ -22,6 +22,7 @@ public class Feature {
         this.linesAdded = linesAdded;
         this.id = id;
         this.mostImportantDeveloperGroup = mostImportantDeveloperGroup;
+        this.tangling = tangling;
     }
 
     public String getId() {
