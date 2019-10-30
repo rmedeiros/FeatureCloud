@@ -2,6 +2,7 @@ package com.onekin.featurecloud.service;
 
 import com.onekin.featurecloud.dao.FeatureDAO;
 import com.onekin.featurecloud.dao.FeatureSiblingDAO;
+import com.onekin.featurecloud.dao.MetadaBoxDAO;
 import com.onekin.featurecloud.dao.VariationPointDAO;
 import com.onekin.featurecloud.exceptions.CoreAssetNotFoundException;
 import com.onekin.featurecloud.model.*;
@@ -36,6 +37,9 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Autowired
     private CoreAssetRepository coreAssetRepository;
 
+    @Autowired
+    private MetadaBoxDAO metadataBoxDao;
+
     @Override
     public List<Feature> getFeatures() {
         return featuresDao.getAllFeatures();
@@ -48,17 +52,17 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public List<Feature> getFeaturesFiltered(Filter filter) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public String getNewickTree(List<String> featureIdList) {
-        String tanglingFeatureList="";
+        StringBuilder bld = new StringBuilder();
         for (String featureId : featureIdList) {
-            tanglingFeatureList += " aaaa " + featureId + ' ' + featureId;
+            bld.append(" aaaa " + featureId + ' ' + featureId);
         }
-        tanglingFeatureList += featuresDao.getTanglingFeatureList(featureIdList);
-        return NewickUtils.getNewickFormatString(tanglingFeatureList);
+        bld.append(featuresDao.getTanglingFeatureList(featureIdList));
+        return NewickUtils.getNewickFormatString(bld.toString());
     }
 
     @Override
@@ -68,7 +72,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public List<Feature> getFeaturesFilteredByProductAndPackage(String productId, int packageId) {
-        return featuresDao.getSnapshotFeaturesByProduct(productId,packageId);
+        return featuresDao.getSnapshotFeaturesByProduct(productId, packageId);
     }
 
     @Override
@@ -84,12 +88,12 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public String getNewickTreeFiltered(List<String> featureIdList, int packageId) {
-        String tanglingFeatureList="";
+        StringBuilder bld = new StringBuilder();
         for (String featureId : featureIdList) {
-            tanglingFeatureList += " aaaa " + featureId + ' ' + featureId;
+            bld.append(" aaaa " + featureId + ' ' + featureId);
         }
-        tanglingFeatureList += featuresDao.getTanglingFeatureListByPackage(featureIdList,packageId);
-        return NewickUtils.getNewickFormatString(tanglingFeatureList);
+        bld.append(featuresDao.getTanglingFeatureListByPackage(featureIdList, packageId));
+        return NewickUtils.getNewickFormatString(bld.toString());
     }
 
     @Override
@@ -100,12 +104,17 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public CoreAsset getCoreAsset(Integer coreaAssetId) throws CoreAssetNotFoundException {
 
-        Optional<CoreAsset>  coreAssetOptional = coreAssetRepository.findById(coreaAssetId);
-        if(coreAssetOptional.isPresent()){
+        Optional<CoreAsset> coreAssetOptional = coreAssetRepository.findById(coreaAssetId);
+        if (coreAssetOptional.isPresent()) {
             return coreAssetOptional.get();
-        }else{
-            throw new CoreAssetNotFoundException("Core asset with id "+coreaAssetId + "not found");
+        } else {
+            throw new CoreAssetNotFoundException("Core asset with id " + coreaAssetId + "not found");
         }
+    }
+
+    @Override
+    public SnapshotMetada getMetadataBox() {
+        return metadataBoxDao.getSnapshotMetadataBox();
     }
 
 }

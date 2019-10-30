@@ -17,6 +17,9 @@
 
 
     </th:block>
+    <title>
+        CoreAsset Delta
+    </title>
 </head>
 <body>
 
@@ -45,8 +48,8 @@
                                 th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
                                 th:aria-controls="'collapse'+${iter.index}" th:inline="text">
                             FILE: [[${#strings.capitalize(diffValue.path)}]] - TYPE:
-                            [[${#strings.capitalize(diffValue.type)}]] <i
-                                class="fas fa-caret-down"></i>
+                            [[${#strings.capitalize(diffValue.type)}]] <em
+                                class="fas fa-caret-down"></em>
                         </button>
                     </h5>
                 </div>

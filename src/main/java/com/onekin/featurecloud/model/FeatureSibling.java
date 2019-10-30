@@ -6,7 +6,7 @@ import java.util.Set;
 public class FeatureSibling {
 
     private int id;
-    private Set<String> features = new HashSet<String>();
+    private Set<String> features = new HashSet<>();
     private String featureExpression;
     private int modifiedLines;
 
@@ -83,9 +83,7 @@ public class FeatureSibling {
         if (getClass() != obj.getClass())
             return false;
         FeatureSibling other = (FeatureSibling) obj;
-        if (id != other.id)
-            return false;
-        return true;
+        return (id == other.id);
     }
 
     @Override

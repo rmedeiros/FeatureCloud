@@ -35,6 +35,7 @@ python
 .mvn
 __pycache__
 __pycache__/
+__pycache__/*
 mvnw
 mvnw.cmd
 

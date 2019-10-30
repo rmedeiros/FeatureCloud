@@ -37,6 +37,8 @@ public class SnapshotController {
             scatteringLevel.add(feature.getFeatureScattering());
         }
 
+        SnapshotMetada snapMetadata= snapshotService.getMetadataBox();
+
         Iterable<Product> products = snapshotService.getProductIds();
         Iterable<ComponentPackage> componentPackages = snapshotService.getComponentPackages();
 
@@ -46,6 +48,7 @@ public class SnapshotController {
         int maxModifiedLines = Collections.max(modifiedLinesList);
         String newickString = snapshotService
                 .getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
+        model.addAttribute("metaData",snapMetadata);
         model.addAttribute("newickString", newickString);
         model.addAttribute("features", features);
         model.addAttribute("maxModifiedLines", maxModifiedLines);
@@ -92,7 +95,6 @@ public class SnapshotController {
         if (packageId == 0) {
             newickString = snapshotService
                     .getNewickTree(features.stream().map(Feature::getId).collect(Collectors.toList()));
-            List<Integer> modifiedLinesList = new ArrayList<>();
         } else {
             newickString = snapshotService
                     .getNewickTreeFiltered(features.stream().map(Feature::getId).collect(Collectors.toList()), packageId);
@@ -112,8 +114,7 @@ public class SnapshotController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
             MediaType.TEXT_PLAIN_VALUE}, path = "/newick/filtered")
     public String getNewickStringFiltered(@RequestBody List<String> features) {
-        String newick = snapshotService.getNewickTree(features);
-        return newick;
+        return snapshotService.getNewickTree(features);
 
     }
 

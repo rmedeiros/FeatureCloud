@@ -232,9 +232,9 @@
             <h4>Delta metadata</h4>
             <hr>
             <p class="c6 c12">
-                <span class="c0">FROM:&nbsp;</span><span class="c20">(21 Dec
-						2017)</span><span class="c25">&nbsp;</span><span class="c0">-
-						TO:&nbsp;</span><span class="c20">(31 Dec 2017)</span>
+                <span class="c0">FROM:&nbsp;</span><span class="c20">(21 May
+						2019)</span><span class="c25">&nbsp;</span><span class="c0">-
+						TO:&nbsp;</span><span class="c20">(25 Jul 2019)</span>
             </p>
 
             <p class="c6 c12">
@@ -355,8 +355,8 @@
 
 
         options.treestring = [[${newickString}]];
-        options.labelcolors = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]] + ":#0000ff" + Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
-        options.labelscales = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name}]] + ":" + Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
+        options.labelcolors = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]] + ":#0000ff" + Math.floor(xScale([[${feature.linesDeleted+feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
+        options.labelscales = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]] + ":" + Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
 
 
         successHandler = function (data) {
@@ -364,8 +364,8 @@
             var labelscales = ""
             features = data.features;
             data.features.forEach(function (element, index, array) {
-                labelcolors += element.name + ":#0000ff" + Math.floor(xScale(element.linesDeleted + element.linesAdded)).toString(16)
-                labelscales += element.name + ":" + Math.round(xScaleScattering(element.featureScattering) * 100) / 100
+                labelcolors += element.name.toUpperCase() + ":#0000ff" + Math.floor(xScale(element.linesDeleted + element.linesAdded)).toString(16)
+                labelscales += element.name.toUpperCase() + ":" + Math.round(xScaleScattering(element.featureScattering) * 100) / 100
                 if (index < array.length - 1) {
                     labelscales += ", "
                     labelcolors += ", "

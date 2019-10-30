@@ -1,14 +1,19 @@
 package com.onekin.featurecloud.utils;
 
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Iterator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.*;
 
 public class Formatting {
+    private static final Logger logger = LogManager.getLogger(Formatting.class);
 
+    private Formatting() {
+        // Hide implicit public constructor
+    }
 
-    public static ArrayList<String> extractMiniPaths(ArrayList<String> longPath) {
-        System.out.println(longPath);
+    public static List<String> extractMiniPaths(List<String> longPath) {
+        logger.info(longPath);
         ArrayList<String> splittedPaths = new ArrayList<>();
         Iterator<String> it = longPath.iterator();
         String filePath;
@@ -26,8 +31,8 @@ public class Formatting {
         return splittedPaths;
     }
 
-    public static ArrayList<String> extractMiniPathsAndFile(ArrayList<String> longPath) {
-        System.out.println(longPath);
+    public static List<String> extractMiniPathsAndFile(List<String> longPath) {
+        logger.info(longPath);
         ArrayList<String> splittedPaths = new ArrayList<>();
         Iterator<String> it = longPath.iterator();
         String filePath;
@@ -53,8 +58,8 @@ public class Formatting {
     }
 
 
-    public static ArrayList<String> extractPathsFromPathList(ArrayList<String> paths) {
-        ArrayList<String> thepaths = new ArrayList<String>();
+    public static List<String> extractPathsFromPathList(List<String> paths) {
+        ArrayList<String> thepaths = new ArrayList<>();
 
         for (int i = 0; i < paths.size(); i++) {
             String path = paths.get(i);
@@ -67,15 +72,15 @@ public class Formatting {
                 }
                 if (!thepaths.contains(partialpath)) {
                     thepaths.add(partialpath);
-                    System.out.println("Added path:" + partialpath);
+                    logger.info("Added path: %s", partialpath);
                 }
             }
         }
         return thepaths;
     }
 
-    public static ArrayList<String> extractPathsFromPathListWitoutFilePath(ArrayList<String> paths) {
-        ArrayList<String> thepaths = new ArrayList<String>();
+    public static List<String> extractPathsFromPathListWitoutFilePath(List<String> paths) {
+        ArrayList<String> thepaths = new ArrayList<>();
 
         for (int i = 0; i < paths.size(); i++) {
             String path = paths.get(i);
@@ -88,7 +93,7 @@ public class Formatting {
                 }
                 if (!thepaths.contains(partialpath)) {
                     thepaths.add(partialpath);
-                    System.out.println("Added path:" + partialpath);
+                    logger.info("Added path: %s", partialpath);
                 }
             }
         }
@@ -99,34 +104,26 @@ public class Formatting {
     public static String decodeFromBase64(String encoded) {
 
         byte[] valueDecoded = Base64.getDecoder().decode(encoded);
-        ;
-        //	System.out.println("Decoded value is: " + new String(valueDecoded));
-
         return new String(valueDecoded);
     }
 
-    public static ArrayList<String> stringToArrayList(String string, String parseBy) {
-        ArrayList<String> list = new ArrayList<String>();
-        if (string == null) return null;
-
+    public static List<String> stringToArrayList(String string, String parseBy) {
+        if (string == null) return new ArrayList<>();
         String[] array = string.split(parseBy);
-        for (int i = 0; i < array.length; i++) {
-            list.add(array[i]);
-        }
-        return list;
+        return Arrays.asList(array) ;
     }
 
 
-    public static String fromArrayListToString(ArrayList<String> list) {
+    public static String fromArrayListToString(List<String> list) {
 
 
-        String text = "";
         Iterator<String> it = list.iterator();
+        StringBuilder strBuilder = new StringBuilder();
         while (it.hasNext()) {
-            text += it.next();
+            strBuilder.append(it.next());
         }
 
-        return text;
+        return strBuilder.toString();
     }
 
 }
