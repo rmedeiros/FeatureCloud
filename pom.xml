@@ -6,7 +6,7 @@
 
     <groupId>com.onekin</groupId>
     <artifactId>featurecloud</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
     <packaging>jar</packaging>
 
     <name>FeatureCloud</name>
