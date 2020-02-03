@@ -1,10 +1,21 @@
-      language: java
-      notifications:
-        email:
-          on_success: change
-          on_failure: always
-      sudo: required
-      before_install:
-        - sudo apt-get update
-        - sudo apt-get install python2.7
-        - sudo pip install -r src/main/resources/requirements.txt
+language: java
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+sudo: required
+before_install:
+- sudo apt-get update
+- sudo apt-get install python2.7
+- sudo pip install -r src/main/resources/requirements.txt
+
+
+addons:
+  sonarcloud:
+    organization: "rmedeiros"
+    token:
+      secure: "ge2S41d/G34oqmWjeU7iirzMSrtMUE/e/ll7a8gFCqfNs1MwzPArsn/R73sw9Zp4U1Z7xSWoO05L4aZTqE0rfaoHk1TVL3KyphNRlcPlN7GS79ocQg6jPtMsH705STXb5xEyldDWpwgGgknIWJ8VcwSA/KzPXOuGQkZfUZcNlS2Rxdy4Taq6bmTpNu4QmKMls1ZSwSHoPgoDFX2JvVUq3kOjNCcaY7YrPfojg7YoiRcGeR8/KDOVk+BI1TVodZykhCuG508lHrfS3+wC6zgelwzEUcYiiPc+zZav7+ytvHOwi7Ga/Azd4IejBc0XjM7MGZ3hbCQQ6kt83GvkKGde6MkwuFqndtiF7ehMVIpFlq2S4em141I7q9nab1vbh0fz5Zl9OKcBeCMR/FO6FGoEPjfI2W0Wkl8gCA2kLsjLw+93qpw+3szKwN3NBB9pnyOlLB2h+bIhg8m/pnG7MNRaZsLeNYMWOG9i4j/WxxIQjYku2sgGHZKoS8HTUM7K6kphThfTYZI8gPAJ+rW4fRaeqYM2Cgr4vpcj/lCd2nJgLnSwowIKEtIGanFY0QsKiAfUAluitXFlvBvt9n5GF+ok0jqoyNsXZ8RKRaxbo/8SGkGM1muWxtjTr2u6ZLv579I1IgZ2TbGvK+wrtPQ6qlsty+eU+JbgD98k5nOLHcl8L1E=" # encrypted value of your token
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
