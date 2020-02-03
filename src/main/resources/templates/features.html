@@ -2,9 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/template">
+      layout:decorator="layout/template"
+      xml:lang="HTML5"
+>
 <head>
     <th:block layout:fragment="script">
+        <title>FeatureCloud</title>
         <script src="/js/tree/eqplot.js"></script>
         <script src="/js/tree/tree.js"></script>
         <link rel="stylesheet"
@@ -34,15 +37,15 @@
                 <button id="dateCollapseButton" class="btn btn-primary"
                         type="button" data-toggle="collapse" data-target="#dateCollapse"
                         aria-expanded="true" aria-controls="dateCollapse">
-                    Time Window<i class="fas fa-chevron-down"></i>
+                    Time Window<em class="fas fa-chevron-down"></em>
                 </button>
                 <div class="dropdown">
                     <button id="selectedProduct"
                             class="btn btn-primary dropdown-button" data-id="All">
-                        Feature configuration: All<i class="fas fa-chevron-down"></i>
+                        Feature configuration: All<em class="fas fa-chevron-down"></em>
                     </button>
                     <div id="myDropdown" class="dropdown-content">
-                        <i class="fas fa-search"></i> <input type="text"
+                        <em class="fas fa-search"></em> <input type="text"
                                                              placeholder="Search.." id="myInput" class="searchInput"
                                                              onkeyup="filterFunction('myinput','mydropdown')"> <a
                             href="#" class="prod-config" data-id="0">All</a> <a
@@ -54,10 +57,10 @@
                 <div class="dropdown">
                     <button id="selectedPackage"
                             class="btn btn-primary dropdown-button" data-id="0">
-                        Module selection: All<i class="fas fa-chevron-down"></i>
+                        Module selection: All<em class="fas fa-chevron-down"></em>
                     </button>
                     <div id="packageDropdown" class="dropdown-content">
-                        <i class="fas fa-search"></i> <input type="text"
+                        <em class="fas fa-search"></em> <input type="text"
                                                              placeholder="Search.." id="myInput2" class="searchInput"
                                                              onkeyup="filterFunction('myInput2','packageDropdown')">
                         <a href="#" class="componentPackage-config" data-id="0">All</a> <a
@@ -108,41 +111,40 @@
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">2aaf66b</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">e0dba46</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                             <li class="active">
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">20f6a45</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">6f40d57</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">b567790</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <!-- Left and right controls -->
                                 <a class="left carousel-control commit" href="#myCarousel"
                                    data-slide="prev"> <span
                                         class="glyphicon glyphicon-chevron-left"></span> <span
@@ -166,43 +168,41 @@
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">dcd4052</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">21ba70d</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                             <li class="active">
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">0640bd0</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">decf844</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="thumbnail carousel">
                                                     <p class="main-menu">HASH</p>
                                                     <p class="main-menu">9491912</p>
-                                                    <i class="fas fa-info-circle"></i>
+                                                    <em class="fas fa-info-circle"></em>
                                                 </div>
                                             </li>
                                         </ul>
 
                                     </div>
                                 </div>
-
-                                <!-- Left and right controls -->
                                 <a class="left carousel-control commit" href="#myCarousel"
                                    data-slide="prev"> <span
                                         class="glyphicon glyphicon-chevron-left"></span> <span

@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/template">
+      layout:decorator="layout/template"
+      xml:lang="HTML5"
+>
 <head>
     <th:block layout:fragment="script">
 
@@ -32,8 +34,6 @@
             <li><a th:href="@{/features/}+${currentFeature}+@{/?product=}"
                    th:text="${#strings.capitalize(currentFeature)}"></a></li>
             <li>AUTO_BED_LEVELING_UBL - EEPROM_SETTINGS</li>
-
-            <!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
         </ol>
 
     </div>

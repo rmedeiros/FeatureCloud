@@ -33,7 +33,7 @@ public class SnapshotServiceTest {
     @Test
     public void getMetadataText(){
         SnapshotMetada snapshotMetada = snapshotService.getMetadataBox();
-        assert(snapshotMetada.getFeatures()>0);
+        assert (snapshotMetada.getFeatures()>0);
         assert(snapshotMetada.getVariationPoints()>0);
         assert(snapshotMetada.getVariableCode()>0);
     }

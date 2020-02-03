@@ -58,48 +58,6 @@ public class Formatting {
     }
 
 
-    public static List<String> extractPathsFromPathList(List<String> paths) {
-        ArrayList<String> thepaths = new ArrayList<>();
-
-        for (int i = 0; i < paths.size(); i++) {
-            String path = paths.get(i);
-            String[] parsed = path.split("/"); //[input, js, sensors.js]
-            for (int j = 0; j < parsed.length; j++) {
-                String partialpath = "";
-                for (int z = 0; z <= j; z++) {
-                    if (z == 0) partialpath = partialpath.concat(parsed[z]);
-                    else partialpath = partialpath.concat("/" + parsed[z]);
-                }
-                if (!thepaths.contains(partialpath)) {
-                    thepaths.add(partialpath);
-                    logger.info("Added path: %s", partialpath);
-                }
-            }
-        }
-        return thepaths;
-    }
-
-    public static List<String> extractPathsFromPathListWitoutFilePath(List<String> paths) {
-        ArrayList<String> thepaths = new ArrayList<>();
-
-        for (int i = 0; i < paths.size(); i++) {
-            String path = paths.get(i);
-            String[] parsed = path.split("/"); //[input, js, sensors.js]
-            for (int j = 0; j < parsed.length - 1; j++) {
-                String partialpath = "";
-                for (int z = 0; z <= j; z++) {
-                    if (z == 0) partialpath = partialpath.concat(parsed[z]);
-                    else partialpath = partialpath.concat("/" + parsed[z]);
-                }
-                if (!thepaths.contains(partialpath)) {
-                    thepaths.add(partialpath);
-                    logger.info("Added path: %s", partialpath);
-                }
-            }
-        }
-        return thepaths;
-    }
-
 
     public static String decodeFromBase64(String encoded) {
 
@@ -110,7 +68,7 @@ public class Formatting {
     public static List<String> stringToArrayList(String string, String parseBy) {
         if (string == null) return new ArrayList<>();
         String[] array = string.split(parseBy);
-        return Arrays.asList(array) ;
+        return Arrays.asList(array);
     }
 
 

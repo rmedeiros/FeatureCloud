@@ -2,9 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/template">
+      layout:decorator="layout/template"
+      xml:lang="HTML5"
+>
 <head>
     <th:block layout:fragment="script">
+        <title>Code Churn</title>
         <link rel="stylesheet"
               href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -17,8 +20,8 @@
               integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
               crossorigin="anonymous">
         <script>
-            hljs.initHighlightingOnLoad();
-            hljs.initLineNumbersOnLoad();
+          hljs.initHighlightingOnLoad()
+          hljs.initLineNumbersOnLoad()
         </script>
     </th:block>
 </head>
@@ -30,7 +33,6 @@
             <li><a th:href="@{/release/features/?product=}+${product}">Features</a></li>
             <li><a th:href="@{/release/features/}+${currentFeature}+@{/?product=}"
                    th:text="${#strings.capitalize(currentFeature)}"></a></li>
-            <!-- <li class="active"><span th:text="${coreAsset.name}"></span></li> -->
         </ol>
         <h2 class="analisy-mode-vp display-4">Variation points analysis</h2>
 
@@ -44,11 +46,11 @@
                         <button class="btn btn-link" data-toggle="collapse"
                                 th:data-target="'#collapse'+${iter.index}" aria-expanded="true"
                                 th:aria-controls="'collapse'+${iter.index}" th:inline="text">
-                            FILE: [[${#strings.capitalize(variationPoint.coreAssetName)}]]<i
-                                class="fas fa-caret-down"></i>
+                            FILE: [[${#strings.capitalize(variationPoint.coreAssetName)}]]<em
+                                class="fas fa-caret-down"></em>
                         </button>
-                        <i class="fas fa-external-link-alt show-coreasset"
-                           th:data-id="${variationPoint.coreAssetId}" onclick="showCoreAssetContent(this)"></i>
+                        <em class="fas fa-external-link-alt show-coreasset"
+                            th:data-id="${variationPoint.coreAssetId}" onclick="showCoreAssetContent(this)"></em>
                     </h5>
 
 
@@ -57,7 +59,8 @@
                          data-parent="#accordion">
                         <h2 class="asset-title" th:text="${variationPoint.expression}"></h2>
                         <pre class="code-pre">
-                        <code th:data-ln-offset="${variationPoint.startLine -2}" th:text="${variationPoint.content}"></code>
+                        <code th:data-ln-offset="${variationPoint.startLine -2}"
+                              th:text="${variationPoint.content}"></code>
                     </pre>
                     </div>
                 </div>
@@ -87,26 +90,26 @@
         </div>
     </div>
     <script>
-        function showCoreAssetContent(element){
-            $.ajax({
-                url: "/release/coreasset/"+element.getAttribute("data-id"),
-                context: document.body,
-                success: function(data){
-                    $("#myModal").find("code").text(data.content);
-                    let block = $("#myModal").find("code")[0]
-                    hljs.highlightBlock(block);
-                    hljs.lineNumbersBlock(block);
+      function showCoreAssetContent (element) {
+        $.ajax({
+          url: '/release/coreasset/' + element.getAttribute('data-id'),
+          context: document.body,
+          success: function (data) {
+            $('#myModal').find('code').text(data.content)
+            let block = $('#myModal').find('code')[0]
+            hljs.highlightBlock(block)
+            hljs.lineNumbersBlock(block)
 
-                    $("#myModal").find("h4").text(data.path);
-                    $("#myModal").modal()
+            $('#myModal').find('h4').text(data.path)
+            $('#myModal').modal()
 
+          }
+        })
+      }
 
-                }
-            });
-        }
-        $('.modal-dialog').draggable({
-            handle: ".modal-header"
-        });
+      $('.modal-dialog').draggable({
+        handle: '.modal-header'
+      })
 
     </script>
 </section>

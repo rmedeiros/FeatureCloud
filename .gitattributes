@@ -1,2 +1,3 @@
 *.sql linguist-detectable=false
 src/main/resources/sql-inserts/*.sql linguist-detectable=false
+*.css linguist-detectable=false

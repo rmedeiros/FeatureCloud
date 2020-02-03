@@ -2,38 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/template">
+      layout:decorator="layout/template"
+      xml:lang="HTML5"
+>
+<head>
+    <title>FeatureSiblings</title>
+</head>
 <body>
 <section layout:fragment="content">
-    <!-- <nav class="navbar navbar-default">
-        <div class="container-fluid filters-container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-
-    <!-- Collect the nav links, forms, and other content for toggling
-
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed"
-            data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
-            aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span> <span
-                class="icon-bar"></span> <span class="icon-bar"></span> <span
-                class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand">Filters </a>
-    </div>
-    <div class="collapse navbar-collapse"
-        id="bs-example-navbar-collapse-2">
-        <ul class="nav navbar-nav">
-            <li><a>Product release:</a></li>
-            <li class="dropdown" id="product-list"><a href="#"
-                class="dropdown-toggle" data-toggle="dropdown" role="button"
-                aria-haspopup="true" aria-expanded="false"></a>
-        </ul>
-    </div>
-     /.navbar-collapse
-</div>
-</nav>-->
-
     <div class="title-container">
         <ol class="breadcrumb">
             <li><a href="/">Home</a></li>
@@ -47,9 +23,7 @@
 
 
     <script th:inline="javascript">
-
         var frequency_list = [];
-
         var feature = [[${currentFeature}]];
         var frequency_list = [];
         /*[# th:each="featureSibling : ${featureSiblings}"]*/
@@ -58,8 +32,6 @@
              "coreAssetId": "[[${featureSibling.id}]]"
         });
         /*[/]*/
-
-
         var svg_location = "#tagcloud";
         var width = $(document).width();
         var height = 620;

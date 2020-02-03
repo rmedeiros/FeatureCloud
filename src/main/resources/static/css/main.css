@@ -118,7 +118,7 @@ div.verticalScroll {
     padding-top: 18vh;
 }
 
-.thumbnail i {
+.thumbnail em {
     top: 50%;
     left: 32%;
     position: relative;
@@ -390,7 +390,7 @@ important;
             background: lightgrey;
         }
 
-        .thumbnail.carousel i {
+        .thumbnail.carousel em {
             top: 50%;
             position: inherit;
             left: 83%;

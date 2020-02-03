@@ -39,6 +39,9 @@ public class FeatureDAOImpl implements FeatureDAO {
 
     private static final String GET_TANGLING_DELTA_BY_PRODUCT = "get.tangling.delta.by.product";
 
+    private static final String PRODUCT_ID= "productId";
+    private static final String PACKAGE_ID = "idpackage";
+
 
     @Autowired
     private NamedParameterJdbcTemplate namedJdbcTemplate;
@@ -150,14 +153,14 @@ public class FeatureDAOImpl implements FeatureDAO {
         String query;
 
         if (productId != null && !("".equals(productId.trim())) && !("All".equals(productId)) && (packageId != 0)) {
-            parameters.addValue("productId", productId);
-            parameters.addValue("idpackage", packageId);
+            parameters.addValue(PRODUCT_ID, productId);
+            parameters.addValue(PACKAGE_ID, packageId);
             query = "get.features.by.all";
         } else if (packageId != 0) {
-            parameters.addValue("idpackage", packageId);
+            parameters.addValue(PACKAGE_ID, packageId);
             query = "get.features.by.package";
         } else {
-            parameters.addValue("productId", productId);
+            parameters.addValue(PRODUCT_ID, productId);
             query = "get.features.by.product";
         }
         List<Feature> features = namedJdbcTemplate.query(deltaSqlQueries.getProperty(query), parameters,
@@ -174,14 +177,14 @@ public class FeatureDAOImpl implements FeatureDAO {
         String query;
 
         if (productId != null && !("".equals(productId.trim())) && !("All".equals(productId)) && (packageId != 0)) {
-            parameters.addValue("productId", productId);
-            parameters.addValue("idpackage", packageId);
+            parameters.addValue(PRODUCT_ID, productId);
+            parameters.addValue(PACKAGE_ID, packageId);
             query = "get.features.by.all";
         } else if (packageId != 0) {
-            parameters.addValue("idpackage", packageId);
+            parameters.addValue(PACKAGE_ID, packageId);
             query = "get.features.by.package";
         } else {
-            parameters.addValue("productId", productId);
+            parameters.addValue(PRODUCT_ID, productId);
             query = "get.features.by.product";
         }
         List<Feature> features = namedJdbcTemplate.query(snapshotSqlQueries.getProperty(query), parameters,
