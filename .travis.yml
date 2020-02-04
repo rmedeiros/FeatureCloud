@@ -1,22 +1,18 @@
 language: java
 sudo: required
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install python2.7
-  - sudo pip install -r src/main/resources/requirements.txt
-
+- sudo apt-get update
+- sudo apt-get install python2.7
+- sudo pip install -r src/main/resources/requirements.txt
 addons:
   sonarcloud:
-    organization: "rmedeiros"
+    organization: rmedeiros
     token:
-      secure: "XWTfgoLEvK0Lyhm9Kdy5SMF2zre93RTusJYdJY8sPpDbQ0/vt87QW3nYxdE40Xx+IeWvWSE3S6aWKpy4+ONBy++zdwpqH2nZ8OlEjKs+LimZyAZMWSNhA3QjX0LV10ZLQczGQEioekvu9OcqFsc3tho/YQT6FQrrbPhMuxLqe1pCvBt1aJuG2YRvqntyLrbQhp+EAO8x5w1DduFI7f6WR/LlTOFkyZCntrBONwmKWIFx6LfbJloVaMoE1E51Yq8cch3LQc7yiuVV74ktutQ9E8ieTS4v7903Ga21Ad43yOvo00rUcmFswOMZspncnYi5Tr6SUP+5eLqQuYWLQnv2Cmuoh+A+srt/QWkUBMLmYI7drceDV2gkGJ9XiGqGDnBNV42o4N03jotNVHy6i0tEru4Z9Q+nbLii9OWXgSOSta+AwH89Z/j954zpS2R81VPlb4g/qwylQsGShE2+x5GJDMVIxMM8tlk8+NkyK5ZbSTN2DRf2mnlxNfqndhq64BlLxsrb6FpEeKze7Dqpg+dNkXouIkRxPXQJqqo0JsbAZxS2amh5W7EtnUflUE3aSxVjmq+5FmFVLynMYFFLClZMu1Q+MRyxndZPy2pGel3w5nZD1prnwhIm3ouZbpGS8V27oOZiCD00jrKxkZEclVzlSuzeES561DENMNZgocgGHQA="
-
-
+      secure: "MgP1r+94RSGgRZo3wPqWnQCT9Gbx3SOhSYeUH19t3VcP5mPlxf2N2vGQ+BrwDT/CG/NbVhCvedkGhognhUs2fDf4XvfEKM59O/5+i9gGDwuU7HZG0Di6zD8VkyDleZKzYWfhavVhLPpjLUHX6cKrr+JXjC7bdXELUKDSwo/UojOiyzIN71DsknJLwMtEQ7Lz7p8ZYW3IxL92aOeKQMyb8WaNmaO+fBAJnVIWnoTP2qkTGVM5BHIxldjixDB766lb8yZKDdJPtzdSaRbUEJcfoKnS6CMpS65coFaCVjVYzWafJ0I0AGPiVS1Uwg6T7kss2okHsJwRW8e8YrT/xeTesudq7IST+MCJG9Sjzw5b1MX2uFIOp54X+w3l2LVC0Hii5H1AcW15rhqm2nj65x4TcZOyEacOO9+sGF9BBkQgPsaroj0dINwmXSGwwNWnVZX3U36XyDx04Tz+JmjkSTMe9q+0xQfiw1bKsl2wdq8zIKNWWuBsBODkmnghS6v6bzUqn0S/d/8Ylo/wpV+/d/oketWUQGXD4dvI9gzkcvUG7y7zyZOh6araGMeOT5D9CCmSvuyP2JJx+eI1AEjmQfTE/C/FWZQm+zIr/5TsOzKszTi1f8sQ8ucyAogoFu5MyPcUv+mNmRddJeJGGLrMOAzHUBS6OUVDih14Ks4OK5++Xrc="
 script:
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=rmedeiros_featurecloud
-
+- mvn clean verify sonar:sonar -Dsonar.projectKey=rmedeiros_FeatureCloud
 notifications:
   email:
     on_success: chang
     on_failure: always
+
