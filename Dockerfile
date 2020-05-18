@@ -4,6 +4,7 @@ FROM maven:3.6.2-jdk-8  as build
 # Set the current working directory inside the image
 WORKDIR /app
 
+
 # Copy the pom.xml file
 COPY pom.xml .
 
