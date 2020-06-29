@@ -1,5 +1,11 @@
 package com.onekin.featurecloud.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.PagedIterable;
+
+import java.util.List;
+
 public class Feature {
 
     private String id;
@@ -9,6 +15,9 @@ public class Feature {
     private DeveloperGroupCustInFeature mostImportantDeveloperGroup;
     private int featureScattering;
     private int tangling;
+    @JsonIgnore
+    private List<GHIssue> issues;
+    private boolean hasIssues;
 
     public Feature() {
         super();
@@ -73,6 +82,14 @@ public class Feature {
         this.tangling = tangling;
     }
 
+    public List<GHIssue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(List<GHIssue> issues) {
+        this.issues = issues;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -113,4 +130,11 @@ public class Feature {
                 + featureScattering + ", tangling=" + tangling + "]";
     }
 
+    public void setHasIssues(boolean hasIssues) {
+        this.hasIssues=hasIssues;
+    }
+
+    public boolean hasIssues() {
+        return hasIssues;
+    }
 }

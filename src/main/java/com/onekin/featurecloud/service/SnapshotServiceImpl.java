@@ -5,13 +5,16 @@ import com.onekin.featurecloud.dao.FeatureSiblingDAO;
 import com.onekin.featurecloud.dao.MetadaBoxDAO;
 import com.onekin.featurecloud.dao.VariationPointDAO;
 import com.onekin.featurecloud.exceptions.CoreAssetNotFoundException;
+import com.onekin.featurecloud.github.FeatureIssueFinder;
 import com.onekin.featurecloud.model.*;
 import com.onekin.featurecloud.repository.ComponentPackageRepository;
 import com.onekin.featurecloud.repository.CoreAssetRepository;
 import com.onekin.featurecloud.repository.ProductRepository;
 import com.onekin.featurecloud.utils.NewickUtils;
+import org.kohsuke.github.GHIssue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +43,14 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Autowired
     private MetadaBoxDAO metadataBoxDao;
 
+    @Autowired
+    private FeatureIssueFinder featureIssueFinder;
+
     @Override
     public List<Feature> getFeatures() {
-        return featuresDao.getAllFeatures();
+        List<Feature> features = featuresDao.getAllFeatures();
+        featureIssueFinder.setHasFeatureIssues(features);
+        return features;
     }
 
     @Override
@@ -115,6 +123,12 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public SnapshotMetada getMetadataBox() {
         return metadataBoxDao.getSnapshotMetadataBox();
+    }
+
+    @Override
+    @ModelAttribute("featureIssues")
+    public List<GHIssue> getFeatureIssues(String featureName) {
+        return featureIssueFinder.getFeatureIssues(featureName);
     }
 
 }

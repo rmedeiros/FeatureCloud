@@ -131,6 +131,7 @@
             if (!$(".dropdown").is(e.target) && $(".dropdown").has(e.target).length === 0) {
                 $(".dropdown-content").removeClass("show")
             }
+
             ;
         })
 
@@ -143,7 +144,7 @@
 
 
         options.treestring = [[${newickString}]];
-        options.labelcolors = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]] + ":#0000ff" + Math.floor(xScale([[${feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
+        options.labelcolors = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]] + /*[# th:if="${feature.hasIssues()}"]*/":#0bbf02" +/*[/]*//*[# th:unless="${feature.hasIssues()}"]*/":#0000ff" +/*[/]*/ Math.floor(xScale([[${feature.linesAdded}]])).toString(16)/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
         options.labelscales = /*[# th:each="feature,iter : ${features}"]*/[[${feature.name.toUpperCase()}]] + ":" + Math.round(xScaleScattering([[${feature.featureScattering}]]) * 100) / 100/*[# th:unless="${iter.last}"]*/ + "," + /*[/]*//*[/]*/;
 
 

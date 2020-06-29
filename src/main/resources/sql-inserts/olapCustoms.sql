@@ -2,25 +2,25 @@
 -- Thu Nov  2 18:00:19 2017
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
-DROP SCHEMA  IF EXISTS `WebAnnotatorFeatureCloud`;
+DROP SCHEMA  IF EXISTS `WebAnnotator`;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema WebAnnotatorFeatureCloud
+-- Schema WebAnnotator
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema WebAnnotatorFeatureCloud
+-- Schema WebAnnotator
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `WebAnnotatorFeatureCloud` DEFAULT CHARACTER SET utf8 ;
-USE `WebAnnotatorFeatureCloud` ;
+CREATE SCHEMA IF NOT EXISTS `WebAnnotator` DEFAULT CHARACTER SET utf8 ;
+USE `WebAnnotator` ;
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`component_package`
+-- Table `WebAnnotator`.`component_package`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`component_package` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`component_package` (
   `idpackage` INT NOT NULL,
   `name` VARCHAR(45) NULL,
   `isroot` INT NULL,
@@ -30,9 +30,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`core_asset`
+-- Table `WebAnnotator`.`core_asset`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`core_asset` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`core_asset` (
   `idcoreasset` INT NOT NULL,
   `name` VARCHAR(200) NULL,
   `path` VARCHAR(200) NULL,
@@ -44,16 +44,16 @@ CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`core_asset` (
   INDEX `fk_core_asset_component_package1_idx` (`idpackage` ASC),
   CONSTRAINT `fk_core_asset_component_package1`
     FOREIGN KEY (`idpackage`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`component_package` (`idpackage`)
+    REFERENCES `WebAnnotator`.`component_package` (`idpackage`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`feature_group`
+-- Table `WebAnnotator`.`feature_group`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`feature_group` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`feature_group` (
   `id_feature_group` INT NOT NULL,
   `feature_expression` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id_feature_group`))
@@ -61,9 +61,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`variation_point`
+-- Table `WebAnnotator`.`variation_point`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`variation_point` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`variation_point` (
   `idvariationpoint` INT NOT NULL,
   `expression` LONGTEXT NULL,
   `idcoreasset` INT NOT NULL,
@@ -76,30 +76,30 @@ CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`variation_point` (
   INDEX `fk_VariationPoint_Feature_group1_idx` (`id_feature_group` ASC),
   CONSTRAINT `fk_ProductAssetVP_ProductAsset1`
     FOREIGN KEY (`idcoreasset`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`core_asset` (`idcoreasset`)
+    REFERENCES `WebAnnotator`.`core_asset` (`idcoreasset`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_VariationPoint_Feature_group1`
     FOREIGN KEY (`id_feature_group`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`feature_group` (`id_feature_group`)
+    REFERENCES `WebAnnotator`.`feature_group` (`id_feature_group`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`developer_group`
+-- Table `WebAnnotator`.`developer_group`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`developer_group` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`developer_group` (
   `id_developer_group` INT NOT NULL,
   PRIMARY KEY (`id_developer_group`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`product_release`
+-- Table `WebAnnotator`.`product_release`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`product_release` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`product_release` (
   `idproductrelease` VARCHAR(200) NOT NULL,
   `name` VARCHAR(200) NULL,
   `date` DATETIME NULL,
@@ -109,9 +109,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`customization_fact`
+-- Table `WebAnnotator`.`customization_fact`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`customization_fact` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`customization_fact` (
   `idcustomization` INT NOT NULL,
   `lines_added` INT NULL,
   `lines_deleted` INT NULL,
@@ -129,26 +129,26 @@ CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`customization_fact` (
   INDEX `fk_CustomizationFact_ProductRelease1_idx` (`idproductrelease` ASC),
   CONSTRAINT `fk_Customization_ProductAssetVP`
     FOREIGN KEY (`idvariationpoint`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`variation_point` (`idvariationpoint`)
+    REFERENCES `WebAnnotator`.`variation_point` (`idvariationpoint`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_CustomizationFact_developer_group1`
     FOREIGN KEY (`id_developer_group`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`developer_group` (`id_developer_group`)
+    REFERENCES `WebAnnotator`.`developer_group` (`id_developer_group`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_CustomizationFact_ProductRelease1`
     FOREIGN KEY (`idproductrelease`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`product_release` (`idproductrelease`)
+    REFERENCES `WebAnnotator`.`product_release` (`idproductrelease`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`developer`
+-- Table `WebAnnotator`.`developer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`developer` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`developer` (
   `iddeveloper` INT NOT NULL,
   `name` VARCHAR(200) NULL,
   `email` VARCHAR(100) NULL,
@@ -157,9 +157,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`parent_feature`
+-- Table `WebAnnotator`.`parent_feature`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`parent_feature` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`parent_feature` (
   `idparentfeature` INT NOT NULL,
   `name` VARCHAR(45) NULL,
   `responsible` VARCHAR(45) NULL,
@@ -168,9 +168,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`feature`
+-- Table `WebAnnotator`.`feature`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`feature` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`feature` (
   `idfeature` VARCHAR(200) NOT NULL,
   `name` VARCHAR(200) NULL,
   `isNew` INT NULL,
@@ -179,16 +179,16 @@ CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`feature` (
   INDEX `fk_feature_ParentFeature1_idx` (`idparent` ASC),
   CONSTRAINT `fk_feature_ParentFeature1`
     FOREIGN KEY (`idparent`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`parent_feature` (`idparentfeature`)
+    REFERENCES `WebAnnotator`.`parent_feature` (`idparentfeature`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`feature_bridge`
+-- Table `WebAnnotator`.`feature_bridge`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`feature_bridge` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`feature_bridge` (
   `id_feature_group` INT NOT NULL,
   `id_feature` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id_feature_group`, `id_feature`),
@@ -196,21 +196,21 @@ CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`feature_bridge` (
   INDEX `fk_Feature_group_has_Feature_Feature_group1_idx` (`id_feature_group` ASC),
   CONSTRAINT `fk_Feature_group_has_Feature_Feature_group1`
     FOREIGN KEY (`id_feature_group`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`feature_group` (`id_feature_group`)
+    REFERENCES `WebAnnotator`.`feature_group` (`id_feature_group`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Feature_group_has_Feature_Feature1`
     FOREIGN KEY (`id_feature`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`feature` (`idfeature`)
+    REFERENCES `WebAnnotator`.`feature` (`idfeature`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `WebAnnotatorFeatureCloud`.`developer_bridge`
+-- Table `WebAnnotator`.`developer_bridge`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`developer_bridge` (
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`developer_bridge` (
   `id_developer_group` INT NOT NULL,
   `id_developer` INT NOT NULL,
   PRIMARY KEY (`id_developer_group`, `id_developer`),
@@ -218,78 +218,78 @@ CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`developer_bridge` (
   INDEX `fk_developer_bridge_Developer1_idx` (`id_developer` ASC),
   CONSTRAINT `fk_developer_bridge_developer_group1`
     FOREIGN KEY (`id_developer_group`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`developer_group` (`id_developer_group`)
+    REFERENCES `WebAnnotator`.`developer_group` (`id_developer_group`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_developer_bridge_Developer1`
     FOREIGN KEY (`id_developer`)
-    REFERENCES `WebAnnotatorFeatureCloud`.`developer` (`iddeveloper`)
+    REFERENCES `WebAnnotator`.`developer` (`iddeveloper`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `WebAnnotatorFeatureCloud` ;
+USE `WebAnnotator` ;
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`new_assets_in_products`
+-- Placeholder table for view `WebAnnotator`.`new_assets_in_products`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`new_assets_in_products` (`'id'` INT, `'idasset'` INT, `'name'` INT, `'path'` INT, `'content'` INT, `'size'` INT, `'pr_id'` INT, `'pr_name'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`new_assets_in_products` (`'id'` INT, `'idasset'` INT, `'name'` INT, `'path'` INT, `'content'` INT, `'size'` INT, `'pr_id'` INT, `'pr_name'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`features_in_variationpoints`
+-- Placeholder table for view `WebAnnotator`.`features_in_variationpoints`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`features_in_variationpoints` (`'id'` INT, `'id_variationpoint'` INT, `expression` INT, `'feature_name'` INT, `'id_feature'` INT, `'id_coreasset'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`features_in_variationpoints` (`'id'` INT, `'id_variationpoint'` INT, `expression` INT, `'feature_name'` INT, `'id_feature'` INT, `'id_coreasset'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`churn_productportfolio_features`
+-- Placeholder table for view `WebAnnotator`.`churn_productportfolio_features`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`churn_productportfolio_features` (`'id'` INT, `'id_feature'` INT, `'featuremodified'` INT, `'id_pr'` INT, `'pr_name'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`churn_productportfolio_features` (`'id'` INT, `'id_feature'` INT, `'featuremodified'` INT, `'id_pr'` INT, `'pr_name'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`churn_coreassets_and_features_by_pr`
+-- Placeholder table for view `WebAnnotator`.`churn_coreassets_and_features_by_pr`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`churn_coreassets_and_features_by_pr` (`'id'` INT, `'idcoreasset'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'ca_name'` INT, `'ca_path'` INT, `'idfeature'` INT, `'churn'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`churn_coreassets_and_features_by_pr` (`'id'` INT, `'idcoreasset'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'ca_name'` INT, `'ca_path'` INT, `'idfeature'` INT, `'churn'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`coreassets_and_features`
+-- Placeholder table for view `WebAnnotator`.`coreassets_and_features`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`coreassets_and_features` (`'id'` INT, `'idcoreasset'` INT, `'caname'` INT, `'capath'` INT, `'idpackage'` INT, `'idfeature'` INT, `'size'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`coreassets_and_features` (`'id'` INT, `'idcoreasset'` INT, `'caname'` INT, `'capath'` INT, `'idpackage'` INT, `'idfeature'` INT, `'size'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`customs_by_feature_and_coreasset`
+-- Placeholder table for view `WebAnnotator`.`customs_by_feature_and_coreasset`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`customs_by_feature_and_coreasset` (`'id'` INT, `'idcustomization'` INT, `'idfeature'` INT, `'idcoreasset'` INT, `'idparentfeature'` INT, `'parentfeaturename'` INT, `'caname'` INT, `'capath'` INT, `'idproductrelease'` INT, `'prname'` INT, `'added'` INT, `'deleted'` INT, `'custom_diff'` INT, `'messages'` INT, `'commits'` INT, `'maindiff'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`customs_by_feature_and_coreasset` (`'id'` INT, `'idcustomization'` INT, `'idfeature'` INT, `'idcoreasset'` INT, `'idparentfeature'` INT, `'parentfeaturename'` INT, `'caname'` INT, `'capath'` INT, `'idproductrelease'` INT, `'prname'` INT, `'added'` INT, `'deleted'` INT, `'custom_diff'` INT, `'messages'` INT, `'commits'` INT, `'maindiff'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`churn_parent_features_productportfolio`
+-- Placeholder table for view `WebAnnotator`.`churn_parent_features_productportfolio`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`churn_parent_features_productportfolio` (`'id'` INT, `'id_parentfeature'` INT, `'parentfeaturename'` INT, `'id_pr'` INT, `'pr_name'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`churn_parent_features_productportfolio` (`'id'` INT, `'id_parentfeature'` INT, `'parentfeaturename'` INT, `'id_pr'` INT, `'pr_name'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`churn_parent_features_product_packages`
+-- Placeholder table for view `WebAnnotator`.`churn_parent_features_product_packages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`churn_parent_features_product_packages` (`'id'` INT, `'id_parentfeature'` INT, `'parentfeaturename'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'idpackage'` INT, `'package_name'` INT, `'isroot'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`churn_parent_features_product_packages` (`'id'` INT, `'id_parentfeature'` INT, `'parentfeaturename'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'idpackage'` INT, `'package_name'` INT, `'isroot'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`churn_parent_features_package_assets`
+-- Placeholder table for view `WebAnnotator`.`churn_parent_features_package_assets`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`churn_parent_features_package_assets` (`'id'` INT, `'id_parentfeature'` INT, `'parentfeaturename'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'idpackage'` INT, `'package_name'` INT, `'isroot'` INT, `'idcoreasset'` INT, `'caname'` INT, `'capath'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`churn_parent_features_package_assets` (`'id'` INT, `'id_parentfeature'` INT, `'parentfeaturename'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'idpackage'` INT, `'package_name'` INT, `'isroot'` INT, `'idcoreasset'` INT, `'caname'` INT, `'capath'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`churn_features_product_packages`
+-- Placeholder table for view `WebAnnotator`.`churn_features_product_packages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`churn_features_product_packages` (`'id'` INT, `'idfeature'` INT, `'featurename'` INT, `'idparentfeature'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'idpackage'` INT, `'package_name'` INT, `'isroot'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`churn_features_product_packages` (`'id'` INT, `'idfeature'` INT, `'featurename'` INT, `'idparentfeature'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'idpackage'` INT, `'package_name'` INT, `'isroot'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `WebAnnotatorFeatureCloud`.`churn_features_package_assets`
+-- Placeholder table for view `WebAnnotator`.`churn_features_package_assets`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `WebAnnotatorFeatureCloud`.`churn_features_package_assets` (`'id'` INT, `'idfeature'` INT, `'featurename'` INT, `'idparentfeature'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'idpackage'` INT, `'package_name'` INT, `'isroot'` INT, `'idcoreasset'` INT, `'caname'` INT, `'capath'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
+CREATE TABLE IF NOT EXISTS `WebAnnotator`.`churn_features_package_assets` (`'id'` INT, `'idfeature'` INT, `'featurename'` INT, `'idparentfeature'` INT, `'idproductrelease'` INT, `'pr_name'` INT, `'idpackage'` INT, `'package_name'` INT, `'isroot'` INT, `'idcoreasset'` INT, `'caname'` INT, `'capath'` INT, `'added'` INT, `'deleted'` INT, `'churn'` INT);
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`new_assets_in_products`
+-- View `WebAnnotator`.`new_assets_in_products`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`new_assets_in_products`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`new_assets_in_products`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `new_assets_in_products` AS
 
 select UUID() as 'id', ca.idcoreasset as 'idasset', ca.name as 'name', ca.path as 'path', ca.content as 'content', ca.size as 'size', pr.idproductrelease as 'pr_id', pr.name as 'pr_name'
@@ -299,10 +299,10 @@ inner join product_release pr on pr.idproductrelease = c.idproductrelease
 where isNewAsset=1;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`features_in_variationpoints`
+-- View `WebAnnotator`.`features_in_variationpoints`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`features_in_variationpoints`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`features_in_variationpoints`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `features_in_variationpoints` AS
     SELECT 
         UUID() AS `id`,
@@ -321,10 +321,10 @@ CREATE  OR REPLACE VIEW `features_in_variationpoints` AS
         JOIN `feature` `f` ON ((`f`.`idfeature` = `fb`.`id_feature`)));
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`churn_productportfolio_features`
+-- View `WebAnnotator`.`churn_productportfolio_features`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`churn_productportfolio_features`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`churn_productportfolio_features`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `churn_productportfolio_features` AS
 
 select UUID() as 'id',f.idfeature as 'id_feature' ,f.name as 'featuremodified', pr.idproductrelease as 'id_pr', pr.name as 'pr_name',
@@ -338,10 +338,10 @@ inner join product_release pr on pr.idproductrelease = c.idproductrelease
 group by f.idfeature, pr.idproductrelease;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`churn_coreassets_and_features_by_pr`
+-- View `WebAnnotator`.`churn_coreassets_and_features_by_pr`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`churn_coreassets_and_features_by_pr`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`churn_coreassets_and_features_by_pr`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `churn_coreassets_and_features_by_pr` AS
 
 select UUID() as 'id', ca.idcoreasset as 'idcoreasset', pr.idproductrelease as 'idproductrelease' , pr.name as 'pr_name', ca.name as 'ca_name',
@@ -357,10 +357,10 @@ inner join product_release pr on pr.idproductrelease = c.idproductrelease
 group by f.idfeature, pr.idproductrelease, ca.idcoreasset;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`coreassets_and_features`
+-- View `WebAnnotator`.`coreassets_and_features`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`coreassets_and_features`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`coreassets_and_features`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `coreassets_and_features` AS
 
 select UUID() as 'id', ca.idcoreasset as 'idcoreasset', ca.name as 'caname', ca.path as 'capath', ca.idpackage as 'idpackage',
@@ -371,10 +371,10 @@ inner join feature_bridge fb on fb.id_feature_group = fg.id_feature_group
 inner join feature f on f.idfeature = fb.id_feature;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`customs_by_feature_and_coreasset`
+-- View `WebAnnotator`.`customs_by_feature_and_coreasset`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`customs_by_feature_and_coreasset`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`customs_by_feature_and_coreasset`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `customs_by_feature_and_coreasset` AS
 
 select UUID() as 'id', c.idcustomization as 'idcustomization', f.idfeature as 'idfeature', ca.idcoreasset as 'idcoreasset', f.idparent as 'idparentfeature', pf.name as 'parentfeaturename',
@@ -392,10 +392,10 @@ inner join product_release pr on pr.idproductrelease = c.idproductrelease
 inner join core_asset ca on ca.idcoreasset = vp.idcoreasset;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`churn_parent_features_productportfolio`
+-- View `WebAnnotator`.`churn_parent_features_productportfolio`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`churn_parent_features_productportfolio`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`churn_parent_features_productportfolio`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `churn_parent_features_productportfolio` AS
 
 select UUID() as 'id',pf.idparentfeature as 'id_parentfeature', pf.name as 'parentfeaturename', pr.idproductrelease as 'id_pr', pr.name as 'pr_name',
@@ -410,10 +410,10 @@ inner join product_release pr on pr.idproductrelease = c.idproductrelease
 group by pf.idparentfeature, pr.idproductrelease;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`churn_parent_features_product_packages`
+-- View `WebAnnotator`.`churn_parent_features_product_packages`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`churn_parent_features_product_packages`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`churn_parent_features_product_packages`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `churn_parent_features_product_packages` AS
 
 select UUID() as 'id',pf.idparentfeature as 'id_parentfeature', pf.name as 'parentfeaturename', pr.idproductrelease as 'idproductrelease', pr.name as 'pr_name', cp.idpackage as 'idpackage', cp.name as 'package_name', cp.isroot as 'isroot',
@@ -432,10 +432,10 @@ inner join product_release pr on pr.idproductrelease = c.idproductrelease
 group by pf.idparentfeature, pr.idproductrelease, cp.idpackage;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`churn_parent_features_package_assets`
+-- View `WebAnnotator`.`churn_parent_features_package_assets`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`churn_parent_features_package_assets`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`churn_parent_features_package_assets`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `churn_parent_features_package_assets` AS
 
 select UUID() as 'id',pf.idparentfeature as 'id_parentfeature', pf.name as 'parentfeaturename', pr.idproductrelease as 'idproductrelease', pr.name as 'pr_name', cp.idpackage as 'idpackage', cp.name as 'package_name', 
@@ -455,10 +455,10 @@ inner join product_release pr on pr.idproductrelease = c.idproductrelease
 group by pf.idparentfeature, pr.idproductrelease, cp.idpackage, ca.idcoreasset;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`churn_features_product_packages`
+-- View `WebAnnotator`.`churn_features_product_packages`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`churn_features_product_packages`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`churn_features_product_packages`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `churn_features_product_packages` AS
 
 select UUID() as 'id',f.idfeature as 'idfeature', f.name as 'featurename', f.idparent as 'idparentfeature', pr.idproductrelease as 'idproductrelease', pr.name as 'pr_name', cp.idpackage as 'idpackage', cp.name as 'package_name', cp.isroot as 'isroot',
@@ -476,10 +476,10 @@ inner join product_release pr on pr.idproductrelease = c.idproductrelease
 group by f.idfeature, pr.idproductrelease, cp.idpackage;
 
 -- -----------------------------------------------------
--- View `WebAnnotatorFeatureCloud`.`churn_features_package_assets`
+-- View `WebAnnotator`.`churn_features_package_assets`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WebAnnotatorFeatureCloud`.`churn_features_package_assets`;
-USE `WebAnnotatorFeatureCloud`;
+DROP TABLE IF EXISTS `WebAnnotator`.`churn_features_package_assets`;
+USE `WebAnnotator`;
 CREATE  OR REPLACE VIEW `churn_features_package_assets` AS
 
 select UUID() as 'id',f.idfeature as 'idfeature', f.name as 'featurename', f.idparent as 'idparentfeature', pr.idproductrelease as 'idproductrelease', pr.name as 'pr_name', 

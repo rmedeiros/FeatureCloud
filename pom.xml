@@ -10,7 +10,9 @@
     <packaging>jar</packaging>
 
     <name>FeatureCloud</name>
-    <description>Tag Cloud based visualization tool used to improve comprehensibility and maintenance of preprocessor-based SPL code</description>
+    <description>Tag Cloud based visualization tool used to improve comprehensibility and maintenance of
+        preprocessor-based SPL code
+    </description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -92,6 +94,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.kohsuke/github-api -->
+        <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>1.114</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.8.1</version>
         </dependency>
     </dependencies>
 

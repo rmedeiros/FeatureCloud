@@ -2,6 +2,8 @@ package com.onekin.featurecloud.service;
 
 import com.onekin.featurecloud.exceptions.CoreAssetNotFoundException;
 import com.onekin.featurecloud.model.*;
+import org.kohsuke.github.GHIssue;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -29,4 +31,7 @@ public interface SnapshotService {
     CoreAsset getCoreAsset(Integer coreaAssetId) throws CoreAssetNotFoundException;
 
     SnapshotMetada getMetadataBox();
+
+    @ModelAttribute
+    List<GHIssue> getFeatureIssues(String featureName);
 }

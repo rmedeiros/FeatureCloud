@@ -62,6 +62,7 @@ public class SnapshotController {
     public String getFeatureFeatureSiblings(@PathVariable(value = "featureName") String featureName, Model model) {
 
         List<FeatureSibling> featureSiblings = snapshotService.getFeatureFeatureSiblings(featureName);
+        model.addAttribute("featureIssues",snapshotService.getFeatureIssues(featureName));
         int totalLines = featureSiblings.stream().map(FeatureSibling::getModifiedLines)
                 .collect(Collectors.summingInt(i -> i));
         model.addAttribute("featureSiblings", featureSiblings);

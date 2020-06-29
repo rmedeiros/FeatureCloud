@@ -35,15 +35,43 @@
 </nav>-->
 
     <div class="title-container">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li><a href="/release/features/" class="breadcrumb-link">Features</a></li>
-            <li class="active"><span
-                    th:text=${#strings.capitalize(currentFeature)}></span></li>
-            <li></li>
-        </ol>
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/release/features/" class="breadcrumb-link">Features</a></li>
+                    <li class="active"><span
+                            th:text=${#strings.capitalize(currentFeature)}></span></li>
+                    <li></li>
+                </ol>
+            </div>
+        </div>
     </div>
-    <div id="tagcloud"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs nav-justified">
+                    <li class="nav-item active">
+                        <a class="nav-link active" id="feature-sibling-tab" data-toggle="tab" href="#feature-siblings"
+                           role="tab" aria-controls="home" aria-selected="true">Feature siblings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="issues-tab" data-toggle="tab" href="#issues" role="tab"
+                           aria-controls="profile" aria-selected="false">GitHub Issues</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content active in" id="myTabContent">
+        <div class="tab-pane fade active in" id="feature-siblings" role="tabpanel"
+             aria-labelledby="feature-sibling-tab">
+            <div id="tagcloud"></div>
+        </div>
+        <div class="tab-pane fade" id="issues" role="tabpanel" aria-labelledby="issues-tab">
+            <div id="issuescloud"></div>
+        </div>
+    </div>
 
 
     <script th:inline="javascript">
@@ -55,16 +83,23 @@
         /*[# th:each="featureSibling : ${featureSiblings}"]*/
         frequency_list.push({
             "text": [[${featureSibling.featureExpression}]], "size": [[${featureSibling.modifiedLines}]],
-             "coreAssetId": "[[${featureSibling.id}]]"
+            "coreAssetId": "[[${featureSibling.id}]]"
+        });
+        /*[/]*/
+
+        var issues = [];
+        /*[# th:each="issue : ${featureIssues}"]*/
+        issues.push({
+            "text": [[${issue.title}]], "size": Math.random()
         });
         /*[/]*/
 
 
-        var svg_location = "#tagcloud";
         var width = $(document).width();
         var height = 620;
+        var svg_location = "#tagcloud";
 
-        function draw(words) {
+        async function draw(words, callback) {
             d3.selectAll(svg_location).append("svg")
                 .attr("width", width)
                 .attr("height", height)
@@ -94,11 +129,17 @@
                     return d.text;
                 });
             setToolTip();
+            if (typeof callback === "function") {
+                callback()
+            }
         }
 
-        drawWordCloud(frequency_list);
+        drawWordCloud(frequency_list, function () {
+            svg_location = "#issuescloud";
+            drawWordCloud(issues);
+        });
 
-        function drawWordCloud(frequency_list) {
+        function drawWordCloud(frequency_list, callback) {
 
             var xScale = d3.scale.linear()
                 .domain([0, d3.max(frequency_list, function (d) {
@@ -122,7 +163,9 @@
                 })
                 .rotate(0)
                 .font("Impact")
-                .on("end", draw)
+                .on("end", function (cloud) {
+                    draw(cloud, callback)
+                })
                 .start();
 
 
