@@ -183,10 +183,10 @@
                 </prop>
                 <prop key="get.featuresibling.delta">
                     <![CDATA[
-                        SELECT fg.id_feature_group, sum(lines_added), sum(lines_deleted), feature_expression
-                        from features_in_variationpoints inner join customization_fact on id_variationpoint= idvariationpoint natural join feature_group fg  
-                        where id_feature=? group by fg.id_feature_group;
-   					
+   					 SELECT fg.id_feature_group, sum(lines_added), sum(lines_deleted), feature_expression
+                        from  customization_fact cf inner join variation_point vp on cf.idvariationpoint=vp.idvariationpoint inner join feature_group fg on fg.id_feature_group=vp.id_feature_group  inner join feature_bridge fb on fg.id_feature_group=fb.id_feature_group
+                        where fb.id_feature=? group by fg.id_feature_group;
+
 			        ]]>
                 </prop>
             </props>
