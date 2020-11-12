@@ -125,9 +125,9 @@ var clear,
                 .attr("xmlns", "http://www.w3.org/2000/svg")
                 .attr("preserveAspectRatio", "xMinYMin meet");
             if (options.equallength) {
-                tree = equal_angle(options.treestring, 8 * edge_scale, true);
+                tree = equal_angle(options.treestring,  2*edge_scale, true);
             } else {
-                tree = equal_angle(options.treestring, 20 * edge_scale, false);
+                tree = equal_angle(options.treestring, 40 * edge_scale, false);
             }
             nl = tree.postToList();
             labelcolors = parse_labelcolors(options.labelcolors);
@@ -161,7 +161,7 @@ var clear,
                         }
                     ]);
                     if (n.name != null && n.name !== "") {
-                        fontsize = label_fontsize * (labelscales[n.name] || 1);
+                        fontsize = 1.2*label_fontsize * (labelscales[n.name] || 1);
                         color = labelcolors[n.name] || label_color;
                         (ref3 = get_text_size(n.name, fontsize)),
                             (width = ref3[0]),
@@ -336,8 +336,8 @@ var clear,
         };
         load_options = function () {
             var options_string;
-            options.id = "tp";
-            options.equallength = false;
+            options.id = "tp2";
+            options.equallength = true;
             try {
                 options_string = {
                     label_fontsize: 1,

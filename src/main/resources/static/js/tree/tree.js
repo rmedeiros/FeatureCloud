@@ -55,7 +55,7 @@ $(function() {
           });
 
           options.treestring = data;
-          $("#tp")
+          $("#tp2")
             .find("svg")
             .remove();
           doplot();
@@ -104,7 +104,7 @@ $(function() {
         data: JSON.stringify(featureIds),
         success: function(data) {
           options.treestring = data;
-          $("#tp")
+          $("#tp2")
             .find("svg")
             .remove();
           doplot();

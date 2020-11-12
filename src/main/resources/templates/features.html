@@ -8,6 +8,7 @@
 <head>
     <th:block layout:fragment="script">
         <title>FeatureCloud</title>
+        <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
         <script src="/js/tree/eqplot.js"></script>
         <script src="/js/tree/tree.js"></script>
         <link rel="stylesheet"
@@ -287,6 +288,9 @@
             </div>
         </div>
     </div>
+    <div id="tp2">
+
+    </div>
     <script th:inline="javascript">
 
         var features = [[${features}]];
@@ -322,14 +326,6 @@
             }
         }
 
-        $('.carousel').carousel({
-            interval: false
-        });
-        $(function () {
-            $('#datetimepicker1').datepicker();
-            $('#datetimepicker2').datepicker();
-
-        });
 
         $('.collapse').on('hide.bs.collapse', function () {
             $("#" + $(this).attr('id') + "Button").find("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
@@ -374,7 +370,7 @@
             options.labelcolors = labelcolors;
             options.labelscales = labelscales;
             options.treestring = data.newickString
-            $("#tp").find("svg").remove();
+            $("#tp2").find("svg").remove();
             doplot();
         };
         ajaxCall = function () {
@@ -397,7 +393,20 @@
             ajaxCall();
 
         });
+        let element = document.querySelector("#tp2")
+        const pan = panzoom(element, {
+            beforeWheel: e => !e.altKey
+        })
 
+        window.addEventListener('wheel', e => {
+            const transforms = pan.getTransform()
+            pan.moveTo(
+                transforms.x - e.deltaX,
+                transforms.y - e.deltaY,
+            )
+        }, {
+            passive: true
+        })
     </script>
 </section>
 

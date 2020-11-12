@@ -38,12 +38,10 @@ import dendropy
 args={}
 i=1;
 word_file=open("temp2.txt","r")
-wordlist = word_file.readlines()[0]
+wordlist = word_file.readlines()
 word_file.close()
-thefile="temp.txt";
-text_file=open(thefile,"w")
-text_file.write(wordlist);
-text_file.close()
+thefile="temp2.txt";
+
 
 if not(args.has_key("minnb")):
         args["minnb"]=-1
@@ -56,14 +54,14 @@ if minnb<1:
         minnb=1
 
 
-winSize=30;
+winSize=2;
 
 if not(args.has_key("step")):
-        args["step"]="1"
+        args["step"]="2"
 step=int(args["step"]);
 
 
-theformula="oddsratio";
+theformula="jaccard";
 
 
 if not(args.has_key("unit")):
@@ -79,7 +77,7 @@ if not(args.has_key("color")):
 color=args["color"];
 
 
-sepchar="aaaa";
+sepchar="";
 
 if not(args.has_key("splitstreepath")):
         args["splitstreepath"]="C:\TreeCloud\SplitsTree.lnk"
@@ -118,20 +116,20 @@ def buildTreeCloud(thefile,minnb,nbwords,winSize,step,formula,normat,unit,color,
         textPlusWordlist=openText(thefile,sepchar)
         text=textPlusWordlist[0]
         wordlist=textPlusWordlist[1]
-        
+
         #saveTenWordsPerLine(thefile)
         #separateLines(thefile)
-        
+
         #------------------------------
         # wordlist now contains all words of the text as keys
         # whose associated values are nb of occurrences
         #------------------------------
-        
-        freqs=sortByFrequency(wordlist)        
+
+        freqs=sortByFrequency(wordlist)
         #------------------------------
         # freqs is a dict which associates for any n: a dict of all words which appeared n times (in decreasing order)
         #------------------------------
-        
+
         #------------------------------
         # load stoplist
         #------------------------------
@@ -141,21 +139,21 @@ def buildTreeCloud(thefile,minnb,nbwords,winSize,step,formula,normat,unit,color,
                 stoplist={}
 
 
-        
+
         #------------------------------
         # compute list of most frequent words
         #------------------------------
         if nbwords<1:
                 nbwords=len(text)
         if args.has_key("words"):
-        # if a word list is imposed, keep only words inside it
+                # if a word list is imposed, keep only words inside it
                 theResult=imposedWordList(freqs,loadStoplist(args["words"]),sepchar)
         else :
                 theResult=wordList(freqs,stoplist,minnb,nbwords,sepchar)
         keptWordsId=theResult[0]
         keptWords=theResult[1]
         keptWordsFrequencies=theResult[2]
-        
+
 
         #------------------------------
         # keptWords now associates all kept words to their id (integer)
@@ -164,7 +162,7 @@ def buildTreeCloud(thefile,minnb,nbwords,winSize,step,formula,normat,unit,color,
 
         #------------------------------
         # filter text: remove all words not in keptWords from table "text"
-        #------------------------------        
+        #------------------------------
         text = filterText(text,keptWordsId,sepchar)
         #print text
 
@@ -177,7 +175,7 @@ def buildTreeCloud(thefile,minnb,nbwords,winSize,step,formula,normat,unit,color,
         else :
                 coocc = computeCooccurrenceDisjoint(text,keptWordsId,sepchar)
         #print coocc
-                
+
         #------------------------------
         # compute distance matrix from cooccurrence matrices:
         #------------------------------
@@ -191,24 +189,23 @@ def buildTreeCloud(thefile,minnb,nbwords,winSize,step,formula,normat,unit,color,
         #arboricity=computeArboricity(distance)
         #print "Discrete arboricity:",arboricity[0];
         #print "Continuous arboricity:",arboricity[1];
-        
+
         #------------------------------
         # transform distance matrix into CSV File:
         #------------------------------
 
         fileName = exportToCsv(distance,keptWords)
         pdm = dendropy.PhylogeneticDistanceMatrix.from_csv(
-            src=open(fileName),
-            delimiter=";")
+                src=open(fileName),
+                delimiter=";")
         nj_tree = pdm.nj_tree()
         print(nj_tree.as_string("newick"))
-        os.remove(fileName)            
+        os.remove(fileName)
 
 
 
 
 buildTreeCloud(thefile,minnb,nbwords,winSize,step,theformula,normat,unit,color,splitstreepath,dendropath,sepchar)
-os.remove(thefile)            
-                
+
                 
 
