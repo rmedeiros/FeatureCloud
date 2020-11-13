@@ -1,6 +1,7 @@
 .navbar-default {
     background-color: #6e9bfb;
     border-color: #6e9bfb;
+    border: 0;
 }
 
 .navbar-default .navbar-brand {
@@ -69,6 +70,8 @@ pre.code-pre {
 
 .navbar {
     margin-bottom: 0px;
+    border: 0;
+    z-index: 1;
 }
 
 .filters-container {
@@ -189,8 +192,11 @@ h2.analisy-mode-vp {
 }
 
 .title-container {
-    display: table;
+    display: flex;
     font-weight: bold;
+    position: relative;
+    z-index: 1;
+    background: white;
 }
 
 .input-group.date {
@@ -199,8 +205,7 @@ h2.analisy-mode-vp {
 
 hr {
     border-top: 2px solid #6e9bfb70;
-    margin-top: 2vh;
-    margin-bottom: 0;
+    margin: 0;
 }
 
 .right {
@@ -546,6 +551,9 @@ span.c0 {
 
 a.navbar-brand {
     font-size: 20px;
+    position: relative;
+    z-index: 1;
+    border: 0;
 }
 
 
@@ -588,13 +596,15 @@ div#slider-tangling {
     background: #337AB8;
 }
 
-#tp svg {
-    padding-left: 10%;
-    padding-top: 3%;
+#tp {
+    position: relative;
+    display: flex;
+    z-index: 1;
 }
 
+
+
 #tp2 {
-    z-index: -100;
     position: relative;
 }
 

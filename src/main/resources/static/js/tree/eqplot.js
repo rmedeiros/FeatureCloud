@@ -402,6 +402,7 @@ var clear,
             return $("#op").toggle();
         });
         doplot();
+        panZoomRotateTiger = svgPanZoomRotate.init('svg');
         return $("#example").click(function () {
             var labelcolors, labelscales, treestring;
             treestring =

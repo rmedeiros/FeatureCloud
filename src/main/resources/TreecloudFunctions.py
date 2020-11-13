@@ -480,8 +480,9 @@ def computeCooccurrence(text,keptWordsId,winSize,step):
                 #------------------------------
                 #update the cooccurrence matrix by using all words in the window
                 #------------------------------
-				# window currently contains all the words in the window, as well as their number of occurrences in the window                
-                if i % step==0:
+				# window currently contains all the words in the window, as well as their number of occurrences in the window
+
+                if i % step==0 and not 'aaaa' in window.keys():
                         windowWords=window.keys();
                         j=0;
                         while j<len(windowWords):

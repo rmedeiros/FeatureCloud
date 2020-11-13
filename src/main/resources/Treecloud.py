@@ -57,11 +57,11 @@ if minnb<1:
 winSize=2;
 
 if not(args.has_key("step")):
-        args["step"]="2"
+        args["step"]="1"
 step=int(args["step"]);
 
 
-theformula="jaccard";
+theformula="oddsratio";
 
 
 if not(args.has_key("unit")):
@@ -149,7 +149,7 @@ def buildTreeCloud(thefile,minnb,nbwords,winSize,step,formula,normat,unit,color,
                 # if a word list is imposed, keep only words inside it
                 theResult=imposedWordList(freqs,loadStoplist(args["words"]),sepchar)
         else :
-                theResult=wordList(freqs,stoplist,minnb,nbwords,sepchar)
+                theResult=wordList(freqs,stoplist,minnb,nbwords,'aaaa')
         keptWordsId=theResult[0]
         keptWords=theResult[1]
         keptWordsFrequencies=theResult[2]
