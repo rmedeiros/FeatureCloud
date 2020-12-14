@@ -287,6 +287,7 @@ var clear,
                     return "_blank";
                 })
                 .append("text")
+                .attr("class","feature-label")
                 .attr("x", function (d) {
                     return d.lx;
                 })
@@ -360,13 +361,30 @@ var clear,
                 $("#plot")
                     .get(0)
                     .scrollIntoView();
+                document.querySelectorAll(".feature-label").forEach(item => {
+                    item.addEventListener('mouseover', event => {
+                        featureMouseOverEventHandler(event)
+                    });
+                    item.addEventListener('mouseout', event => {
+                        featureMouseOutEventHandler(event)
+                    });
+                });
                 return $("#te").hide();
             } catch (_error) {
                 error = _error;
                 console.log(error);
                 $("#te").html(String(error));
+                document.querySelectorAll(".feature-label").forEach(item => {
+                    item.addEventListener('mouseover', event => {
+                        featureMouseOverEventHandler(event)
+                    });
+                    item.addEventListener('mouseout', event => {
+                        featureMouseOutEventHandler(event)
+                    });
+                });
                 return $("#te").show();
             }
+
         };
         saveplot = function () {
             var _svg, blob, svg_string;
@@ -402,7 +420,7 @@ var clear,
             return $("#op").toggle();
         });
         doplot();
-        panZoomRotateTiger = svgPanZoomRotate.init('svg');
+
         return $("#example").click(function () {
             var labelcolors, labelscales, treestring;
             treestring =

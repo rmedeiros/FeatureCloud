@@ -10,7 +10,7 @@
         <title>FeatureCloud</title>
         <script src="/js/tree/eqplot.js"></script>
         <script src="/js/tree/tree.js"></script>
-        <script src="/js/svg-pan-zoom-rotate.js"></script>
+        <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
 
         <link rel="stylesheet"
               href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
@@ -240,16 +240,8 @@
             ajaxCall();
 
         });
-       /* let element = document.querySelector("#tp2")
-        panzoom(element, {
-          beforeWheel: function(e) {
-            // allow wheel-zoom only if altKey is down. Otherwise - ignore
-            var shouldIgnore = !e.altKey;
-            return shouldIgnore;
-          }
-        });*/
-        var panZoomRotateTiger;
-
+        let element = document.querySelector("#tp2")
+        panzoom(element)
     </script>
 </section>
 
