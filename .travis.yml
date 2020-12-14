@@ -4,13 +4,6 @@ before_install:
 - sudo apt-get update
 - sudo apt-get install python2.7
 - sudo pip install -r src/main/resources/requirements.txt
-addons:
-  sonarcloud:
-    organization: rmedeiros
-    token:
-      secure: "qn7CdGHo5p+Uq3yfDs3hO9LcxR/cyxuOgsqHizf+GoBpeJuO0RXyj29XojddVMPmQsBZd2J61fxpCNvD17MJAPCOuRH+75QwCXgi+7eCm9B2Fh0rJtLlZDlpWc0vAuf5PNehFT24TqrX2ZAVG1PSKG03Wc/ItoEI40nh/BpV8Dt3zJJ4G5NaxsLfxqRkcfG2gGoKklV+lq+Oh7ETvKtttmLESLa0NAwcAM4bmQ3st6c4OQ2aY1cNketNs/C29sjI/yQc9hqg6B1JMBSQlocAZe/Kd4KzacElMlGUFyPJbVnhagv/Ub5qKzohSohlY16l4vCS/eA2sKv7HxpFzmO1mNSnli2q1zlybvNKXkqPnYCGFipQtP9B/1jBp1kaa6ePETyeZAntsIi+2jcLe4gbwCoH4KlHdy7N0UdG5HFnUYqkhzdZvlntbFe40coL03vnORlipX/UhnXSR1+8IepJ6b5o0BhwGvFm057o2uCDm510plDFhxNezvezYcVWhG3w+zgwJ29PWvumfZuXPlRNsYT63br+TsFaexgPnEXEdSs3caJl5+5NAak9/ffR6LX23kQjwln0SyhknWCVlvWz+egjnSlVPJcC+nPEl+TvdEt+/L1zoX09no/8eHxk7j7n/jaszranurqCPKv9pICRGQqqiGQNXTI/kPMhs/xYvOY="
-script:
-  - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=rmedeiros_FeatureCloud
 notifications:
   email:
     on_success: chang

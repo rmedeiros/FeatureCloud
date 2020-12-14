@@ -26,4 +26,5 @@ public interface FeatureDAO {
     String getDeltaTanglingByProduct(List<String> featureIdList);
 
 
+    List<String> getTangledFeaturesIds(String featureId);
 }

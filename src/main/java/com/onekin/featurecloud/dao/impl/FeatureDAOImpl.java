@@ -7,11 +7,14 @@ import com.onekin.featurecloud.dao.rowmapper.FeatureTanglingExtractor;
 import com.onekin.featurecloud.model.Feature;
 import com.onekin.featurecloud.model.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -38,6 +41,9 @@ public class FeatureDAOImpl implements FeatureDAO {
     private static final String GET_TANGLING_METRIC_BY_PACKAGE = "get.tangling.metric.by.package";
 
     private static final String GET_TANGLING_DELTA_BY_PRODUCT = "get.tangling.delta.by.product";
+
+
+
 
     private static final String PRODUCT_ID= "productId";
     private static final String PACKAGE_ID = "idpackage";
@@ -127,6 +133,21 @@ public class FeatureDAOImpl implements FeatureDAO {
         return namedJdbcTemplate.query(deltaSqlQueries.getProperty(GET_TANGLING_DELTA_BY_PRODUCT), parameters,
                 new FeatureTanglingExtractor());
     }
+
+    @Override
+    public List<String> getTangledFeaturesIds(String featureId) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("id", featureId);
+        //ONLY FEATURE GROUPS MODIFIED
+        return namedJdbcTemplate.query("SELECT distinct(ID_FEATURE) from feature_bridge where id_FEATURE_GROUP in(\n" +
+                "SELECT fg.ID_FEATURE_GROUP FROM" +
+                "    feature_group fg inner join feature_bridge fb on fg.ID_FEATURE_GROUP=fb.ID_FEATURE_GROUP\n" +
+                "    inner join variation_point vp on vp.ID_FEATURE_GROUP=fg.ID_FEATURE_GROUP\n" +
+                "    inner join customization_fact cf on vp.IDVARIATIONPOINT=cf.IDVARIATIONPOINT\n" +
+                "    where id_feature=:id)", parameters, (rs, rowNum) -> rs.getString(1)
+        );
+    }
+
 
     @Override
     public String getTanglingFeatureListByPackage(List<String> featureIdList, int packageId) {
