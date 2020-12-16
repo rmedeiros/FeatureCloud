@@ -40,3 +40,7 @@ mvnw
 mvnw.cmd
 
 src/main/resources/TreecloudFunctions.pyc
+
+venv
+.DS_Store
+src/main/.DS_Store

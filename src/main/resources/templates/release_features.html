@@ -17,8 +17,8 @@
         <link rel="stylesheet"
               href="/css/bootstrap-datepicker3.standalone.min.css">
 
+        <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
 
-        <script src="/js/bootstrap-datepicker.min.js"></script>
         <link rel="stylesheet"
               href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -68,7 +68,6 @@
                 </div>
             </div>
         </div>
-        <div id="tp2"></div>
     </div>
 
 
@@ -122,6 +121,8 @@
                       style="bottom: 67%;"></span>
             </div>
         </div>
+    </div>
+    <div id="tp2">
     </div>
     <script th:inline="javascript">
       var features = [[${features}]]
@@ -215,7 +216,17 @@
         ajaxCall()
 
       })
-
+      let element = document.querySelector("#tp2")
+      panzoom(element, {
+          beforeWheel: function(e) {
+              // allow wheel-zoom only if altKey is down. Otherwise - ignore
+              var shouldIgnore = !e.altKey;
+              return shouldIgnore;
+          },
+          bounds:true,
+          maxZoom: 1.5,
+          minZoom: 0.5
+      });
 
     </script>
 

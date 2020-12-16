@@ -241,7 +241,16 @@
 
         });
         let element = document.querySelector("#tp2")
-        panzoom(element)
+        panzoom(element, {
+            beforeWheel: function(e) {
+                // allow wheel-zoom only if altKey is down. Otherwise - ignore
+                var shouldIgnore = !e.altKey;
+                return shouldIgnore;
+            },
+            bounds:true,
+            maxZoom: 1.5,
+            minZoom: 0.5
+        });
     </script>
 </section>
 

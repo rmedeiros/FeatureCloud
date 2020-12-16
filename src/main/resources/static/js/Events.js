@@ -2,7 +2,7 @@ function featureMouseOverEventHandler() {
     let featureName = event.currentTarget.innerHTML
     $.ajax({
         type: "GET",
-        url: path + "/tangled-features/" + featureName,
+        url: "/tangled-features/" + featureName,
         success: function (data) {
             let tangledFeaturesElements = Array.from(document.querySelectorAll("text")).filter(function (element) {
                 return data.includes(element.innerHTML)
@@ -22,7 +22,7 @@ function featureMouseOutEventHandler() {
     let featureName = event.currentTarget.innerHTML
     $.ajax({
         type: "GET",
-        url: path + "/tangled-features/" + featureName,
+        url:  "/tangled-features/" + featureName,
         success: function (data) {
             let tangledFeaturesElements = Array.from(document.querySelectorAll("text")).filter(function (element) {
                 return data.includes(element.innerHTML)

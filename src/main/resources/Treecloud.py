@@ -54,7 +54,7 @@ if minnb<1:
         minnb=1
 
 
-winSize=2;
+winSize=3;
 
 if not(args.has_key("step")):
         args["step"]="1"

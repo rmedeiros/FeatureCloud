@@ -338,7 +338,7 @@ var clear,
         load_options = function () {
             var options_string;
             options.id = "tp2";
-            options.equallength = true;
+            options.equallength = false;
             try {
                 options_string = {
                     label_fontsize: 1,

@@ -57,12 +57,8 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public String getNewickTree(List<String> featureIdList) {
-        StringBuilder bld = new StringBuilder();
-        for (String featureId : featureIdList) {
-            bld.append(" aaaa " + featureId + ' ' + featureId);
-        }
-        bld.append(featuresDao.getTanglingFeatureList(featureIdList));
-        return NewickUtils.getNewickFormatString(bld.toString());
+
+        return NewickUtils.getNewickFormatStringFromApi(featureIdList);
     }
 
     @Override
